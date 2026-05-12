@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendaftaran | Star Jasmani</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="icon" href="dist/logo-removebg.png" />
+  <style>
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+
+<body class="bg-black">
+  <div class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-gray-900 p-4 lg:p-5">
+    <a href="javascript:history.back()" class="flex items-center text-gray-400 hover:text-red-800 transition-colors duration-300">
+      <i class="fas fa-arrow-left mr-2"></i>
+      <span class="font-bold uppercase tracking-widest text-sm">Kembali</span>
+    </a>
+  </div>
+
+  <section class="py-16 bg-black min-h-screen relative overflow-hidden flex flex-col justify-center">
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+      <img src="dist/daftar/bg-daftar.jpg" class="w-full h-full object-cover" alt="bg">
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="text-center mb-12">
+        <h2 class="text-sm uppercase tracking-[0.4em] text-red-800 font-bold mb-3">Informasi Pendaftaran</h2>
+        <h3 class="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase">
+          FREQUENTLY ASKED <span class="text-red-800">QUESTIONS</span>
+        </h3>
+        <div class="w-24 h-1 bg-red-800 mx-auto mt-6"></div>
+      </div>
+
+      <div class="max-w-3xl mx-auto mb-16">
+        <div class="space-y-4">
+          <div class="faq-item border border-gray-800 rounded-2xl bg-gray-900/30 backdrop-blur-sm overflow-hidden transition-all duration-300">
+            <button class="w-full p-6 text-left flex justify-between items-center text-gray-200 hover:text-white" onclick="toggleFAQ(this)">
+              <span class="font-bold text-sm md:text-base uppercase tracking-wider">Apakah pemula yang belum pernah olahraga bisa ikut?</span>
+              <i class="fas fa-chevron-down faq-icon transition-transform duration-300 text-red-800 ml-4"></i>
+            </button>
+            <div class="faq-answer">
+              <p class="p-6 pt-0 text-gray-400 text-sm leading-relaxed">Sangat bisa. Kami menerapkan sistem <i>Sport Science</i> di mana setiap peserta akan dianalisis postur (APECS) dan BMI-nya terlebih dahulu. Program latihan akan disesuaikan dengan kemampuan awal Anda agar progres maksimal dan minim risiko cedera.</p>
+            </div>
+          </div>
+
+          <div class="faq-item border border-gray-800 rounded-2xl bg-gray-900/30 backdrop-blur-sm overflow-hidden transition-all duration-300">
+            <button class="w-full p-6 text-left flex justify-between items-center text-gray-200 hover:text-white" onclick="toggleFAQ(this)">
+              <span class="font-bold text-sm md:text-base uppercase tracking-wider">Dimana lokasi pusat pelatihan Star Jasmani?</span>
+              <i class="fas fa-chevron-down faq-icon transition-transform duration-300 text-red-800 ml-4"></i>
+            </button>
+            <div class="faq-answer">
+              <p class="p-6 pt-0 text-gray-400 text-sm leading-relaxed">Saat ini pelatihan tatap muka berpusat di wilayah Jakarta dan sekitarnya. Kami menggunakan fasilitas olahraga publik yang standar untuk simulasi tes (seperti stadion atau kolam renang standar nasional).</p>
+            </div>
+          </div>
+
+          <div class="faq-item border border-gray-800 rounded-2xl bg-gray-900/30 backdrop-blur-sm overflow-hidden transition-all duration-300">
+            <button class="w-full p-6 text-left flex justify-between items-center text-gray-200 hover:text-white" onclick="toggleFAQ(this)">
+              <span class="font-bold text-sm md:text-base uppercase tracking-wider">Bagaimana cara mendaftar dan pembayarannya?</span>
+              <i class="fas fa-chevron-down faq-icon transition-transform duration-300 text-red-800 ml-4"></i>
+            </button>
+            <div class="faq-answer">
+              <p class="p-6 pt-0 text-gray-400 text-sm leading-relaxed">Anda cukup mengisi data melalui tombol "GABUNG SEKARANG" di bawah. Setelah formulir terkirim, admin kami akan menghubungi Anda melalui WhatsApp untuk konsultasi jadwal, detail biaya, dan teknis pembayaran.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-2xl mx-auto text-center">
+        <div class="bg-gray-900 p-8 md:p-12 rounded-[2rem] border border-red-800/50 shadow-2xl relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-48 h-48 bg-red-800/20 blur-[80px]"></div>
+          
+          <h5 class="text-2xl font-black text-white mb-4 italic uppercase tracking-tight">Siap Memulai Transformasi Fisik?</h5>
+          <p class="text-gray-400 text-sm mb-10 leading-relaxed">Daftarkan diri Anda hari ini dan mulai persiapan bersama pelatih profesional kami.</p>
+          
+          <a href="https://forms.gle/Aq8jhFq6isjvC3h69" class="inline-block w-full sm:w-auto bg-red-800 hover:bg-red-950 text-white font-black py-5 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl tracking-[0.2em] uppercase text-sm" target="_blank">
+            GABUNG SEKARANG!
+          </a>
+          
+          <p class="mt-8 text-[10px] text-gray-600 uppercase tracking-widest italic font-medium">Official Registration Form - Star Jasmani</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function toggleFAQ(button) {
+      const item = button.parentElement;
+      const isActive = item.classList.contains('active');
+
+      // Menutup item FAQ lain yang sedang terbuka
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Jika yang diklik tidak aktif, maka buka
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+  </script>
+</body>
+
+</html>
