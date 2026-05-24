@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Dokumen Sistem Star Jasmani Digital Assessment</title>
+<style>
+  body        { font-family: 'Times New Roman', serif; font-size: 12pt; margin: 2.5cm; line-height: 1.5; }
+  h1          { font-size: 16pt; font-weight: bold; text-align: center; margin-bottom: 6pt; }
+  h2          { font-size: 13pt; font-weight: bold; margin-top: 18pt; margin-bottom: 4pt; border-bottom: 1px solid #333; padding-bottom: 2pt; }
+  h3          { font-size: 12pt; font-weight: bold; margin-top: 12pt; margin-bottom: 2pt; }
+  p           { margin: 4pt 0; text-align: justify; }
+  table       { border-collapse: collapse; width: 100%; margin: 8pt 0; font-size: 11pt; }
+  th          { background-color: #1a1a1a; color: #ffffff; padding: 6pt 8pt; text-align: left; }
+  td          { border: 1px solid #999; padding: 5pt 8pt; vertical-align: top; }
+  tr:nth-child(even) td { background-color: #f5f5f5; }
+  .center     { text-align: center; }
+  .subtitle   { font-size: 12pt; text-align: center; color: #444; margin-bottom: 4pt; }
+  .badge      { display: inline-block; background:#cc0000; color:#fff; padding: 1pt 5pt; border-radius: 3pt; font-size: 10pt; }
+  .formula-box { border: 1.5pt solid #cc0000; padding: 8pt 12pt; margin: 8pt 0; background: #fff8f8; font-family: 'Courier New', monospace; font-size: 11pt; }
+  ul, ol      { margin: 4pt 0 4pt 18pt; }
+  li          { margin-bottom: 2pt; }
+  .page-break { page-break-after: always; }
+  .note       { font-style: italic; color: #555; font-size: 10.5pt; }
+  .header-table td { border: 1px solid #aaa; padding: 4pt 8pt; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  COVER / HALAMAN JUDUL                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<br><br><br>
+<h1>DOKUMEN SPESIFIKASI SISTEM<br>STAR JASMANI DIGITAL ASSESSMENT</h1>
+<p class="subtitle">Web-Based Physical Fitness Assessment Application</p>
+<p class="subtitle"><em>Framework: Laravel 13 &nbsp;|&nbsp; Database: MySQL &nbsp;|&nbsp; Frontend: Blade + Tailwind CSS</em></p>
+
+<br>
+<table class="header-table" style="width:60%; margin:auto;">
+  <tr><td width="40%"><strong>Nama Sistem</strong></td><td>Star Jasmani Digital Assessment</td></tr>
+  <tr><td><strong>Versi Dokumen</strong></td><td>1.0 — Final</td></tr>
+  <tr><td><strong>Tanggal</strong></td><td>18 Mei 2026</td></tr>
+  <tr><td><strong>Status</strong></td><td>Arsitektur Finalized &amp; Locked</td></tr>
+  <tr><td><strong>Developer</strong></td><td>Fariz Fahrun</td></tr>
+  <tr><td><strong>Acuan Penilaian</strong></td><td>Standar Samapta POLRI</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  1. DESKRIPSI UMUM SISTEM                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>1. DESKRIPSI UMUM SISTEM</h2>
+
+<p>Star Jasmani Digital Assessment adalah aplikasi web berbasis Laravel yang dirancang untuk memdigitalisasi proses penilaian dan pemantauan kebugaran jasmani (Samapta) bagi atlet/peserta yang mempersiapkan diri mengikuti seleksi instansi kedinasan (POLRI, TNI-AD/AL/AU).</p>
+
+<p>Sistem ini menggantikan metode pencatatan manual berbasis spreadsheet Excel yang selama ini digunakan oleh pelatih (Coach). Dengan sistem ini, Coach dapat menginput nilai secara <em>real-time</em> di lapangan menggunakan perangkat apapun (smartphone/tablet), sementara setiap atlet dapat memantau tren perkembangan fisiknya sendiri secara mandiri melalui portal pribadi.</p>
+
+<h3>1.1 Tujuan Utama Sistem</h3>
+<ul>
+  <li>Digitalisasi rekam data penilaian Samapta seluruh atlet secara terstruktur per-angkatan (Batch) dan per-parameter sesi</li>
+  <li>Kalkulasi otomatis nilai akhir kelulusan berdasarkan standar formula POLRI</li>
+  <li>Visualisasi tren performa individu dan kelompok melalui dashboard grafik interaktif</li>
+  <li>Generasi laporan resmi (PDF berlogo Star Jasmani) yang dapat dicetak atau diunduh</li>
+  <li>Arsitektur database extensible untuk mendukung multi-instansi (TNI-AD/AL/AU) di masa depan tanpa perubahan kode</li>
+</ul>
+
+<h3>1.2 Target Pengguna</h3>
+<table>
+  <tr><th width="20%">Role</th><th width="25%">Sebutan</th><th>Hak Akses</th></tr>
+  <tr>
+    <td><strong>Admin</strong></td>
+    <td>Coach / Pelatih</td>
+    <td>Akses penuh: kelola semua atlet, buat dan kelola angkatan (Batch), input nilai real-time di lapangan, lihat semua dashboard agregat, generate laporan PDF per atlet atau per periode</td>
+  </tr>
+  <tr>
+    <td><strong>Member</strong></td>
+    <td>Atlet / Peserta</td>
+    <td>Akses privat terbatas: hanya dapat memantau data perkembangan fisik dirinya sendiri, dilarang melihat data atlet lain, dapat mengunduh laporan PDF miliknya sendiri</td>
+  </tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  2. ARSITEKTUR TEKNIS                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>2. ARSITEKTUR TEKNIS</h2>
+
+<h3>2.1 Stack Teknologi</h3>
+<table>
+  <tr><th>Komponen</th><th>Teknologi</th><th>Keterangan</th></tr>
+  <tr><td>Backend Framework</td><td>Laravel 13 (PHP 8.3)</td><td>MVC pattern, Eloquent ORM, Blade templating</td></tr>
+  <tr><td>Database</td><td>MySQL 8.0 (Laragon local) / Supabase PostgreSQL (production)</td><td>Relational, full foreign key constraints</td></tr>
+  <tr><td>Frontend</td><td>Tailwind CSS v3 + Blade Components</td><td>Dark theme, mobile-responsive grid</td></tr>
+  <tr><td>Charting Library</td><td>Chart.js / ApexCharts (JavaScript)</td><td>Bar chart, Line chart, dinamis via @json()</td></tr>
+  <tr><td>PDF Generation</td><td>barryvdh/laravel-dompdf ^3.1</td><td>Landscape A4, logo Star Jasmani, format resmi</td></tr>
+  <tr><td>Auth &amp; Security</td><td>Laravel Auth + RateLimiter</td><td>5 percobaan/menit, session regenerate, soft delete</td></tr>
+  <tr><td>Build Tool</td><td>Vite + npm</td><td>Hot reload untuk development</td></tr>
+</table>
+
+<h3>2.2 Struktur Direktori Utama (Laravel MVC)</h3>
+<table>
+  <tr><th>Direktori / File</th><th>Fungsi</th></tr>
+  <tr><td><code>app/Http/Controllers/Admin/</code></td><td>DashboardController, AthleteController, SamaptaController, BmiController, ReportController</td></tr>
+  <tr><td><code>app/Http/Controllers/Auth/</code></td><td>AuthController — login, logout, redirect by role</td></tr>
+  <tr><td><code>app/Http/Controllers/Member/</code></td><td>DashboardController — performa pribadi + download PDF</td></tr>
+  <tr><td><code>app/Http/Middleware/RoleMiddleware.php</code></td><td>Guard akses berdasarkan role (admin/member) + cek is_active</td></tr>
+  <tr><td><code>app/Http/Requests/StoreSamaptaRequest.php</code></td><td>Form validation ter-otomasi untuk input nilai Samapta</td></tr>
+  <tr><td><code>app/Models/</code></td><td>User, Athlete, Batch, Institution, SamaptaScore, BmiRecord, InjuryRecord</td></tr>
+  <tr><td><code>database/migrations/</code></td><td>12 file migration terurut, semua sudah dijalankan dan diverifikasi</td></tr>
+  <tr><td><code>routes/web.php</code></td><td>Route terpisah per group: guest, auth+admin, auth+member</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  3. SKEMA DATABASE                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>3. SKEMA DATABASE</h2>
+
+<p>Seluruh tabel menggunakan <em>foreign key constraint</em> penuh dengan strategi cascade/restrict yang disesuaikan. Tabel <em>users</em>, <em>athletes</em>, dan <em>samapta_scores</em> menggunakan <em>Soft Delete</em> untuk keamanan data historis.</p>
+
+<h3>3.1 Diagram Relasi Antar Tabel</h3>
+<table>
+  <tr><th>Tabel</th><th>Relasi Ke</th><th>Tipe</th><th>Keterangan</th></tr>
+  <tr><td><strong>users</strong></td><td>athletes</td><td>hasOne</td><td>Setiap user (role member) memiliki satu profil atlet</td></tr>
+  <tr><td><strong>athletes</strong></td><td>users</td><td>belongsTo</td><td>FK: user_id → users.id (cascade delete)</td></tr>
+  <tr><td><strong>athletes</strong></td><td>batches</td><td>belongsTo</td><td>FK: batch_id → batches.id (set null on delete)</td></tr>
+  <tr><td><strong>batches</strong></td><td>athletes</td><td>hasMany</td><td>Satu batch menampung banyak atlet</td></tr>
+  <tr><td><strong>samapta_scores</strong></td><td>athletes</td><td>belongsTo</td><td>FK: athlete_id (cascade delete)</td></tr>
+  <tr><td><strong>samapta_scores</strong></td><td>users</td><td>belongsTo</td><td>FK: assessed_by → users.id (restrict delete)</td></tr>
+  <tr><td><strong>bmi_records</strong></td><td>athletes</td><td>belongsTo</td><td>FK: athlete_id (cascade delete)</td></tr>
+  <tr><td><strong>injury_records</strong></td><td>athletes</td><td>belongsTo</td><td>FK: athlete_id (cascade delete)</td></tr>
+  <tr><td><strong>institutions</strong></td><td>batches</td><td>hasMany</td><td>Via institution_code (extensible)</td></tr>
+</table>
+
+<h3>3.2 Detail Kolom Tabel Utama</h3>
+
+<p><strong>Tabel: users</strong></p>
+<table>
+  <tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+  <tr><td>id</td><td>BIGINT PK</td><td>Auto increment</td></tr>
+  <tr><td>name</td><td>VARCHAR(255)</td><td>Nama lengkap</td></tr>
+  <tr><td>email</td><td>VARCHAR(255) UNIQUE</td><td>Email login</td></tr>
+  <tr><td>password</td><td>VARCHAR(255)</td><td>Bcrypt hashed</td></tr>
+  <tr><td>role</td><td>ENUM(admin, member)</td><td>Hak akses sistem</td></tr>
+  <tr><td>is_active</td><td>BOOLEAN</td><td>Admin bisa nonaktifkan akun</td></tr>
+  <tr><td>deleted_at</td><td>TIMESTAMP NULL</td><td>Soft delete</td></tr>
+</table>
+
+<br>
+<p><strong>Tabel: athletes</strong></p>
+<table>
+  <tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+  <tr><td>id</td><td>BIGINT PK</td><td>Auto increment</td></tr>
+  <tr><td>user_id</td><td>BIGINT FK UNIQUE</td><td>→ users.id, one-to-one</td></tr>
+  <tr><td>batch_id</td><td>BIGINT FK NULL</td><td>→ batches.id, null on delete</td></tr>
+  <tr><td>gender</td><td>ENUM(pria, wanita)</td><td>Menentukan tabel penilaian &amp; tes bagian atas</td></tr>
+  <tr><td>nik</td><td>VARCHAR(20) NULL UNIQUE</td><td>Nomor Induk Kependudukan</td></tr>
+  <tr><td>birth_date</td><td>DATE NULL</td><td>Tanggal lahir</td></tr>
+  <tr><td>height_cm</td><td>DECIMAL(5,1)</td><td>Tinggi badan (cm)</td></tr>
+  <tr><td>weight_kg</td><td>DECIMAL(5,1)</td><td>Berat badan (kg)</td></tr>
+  <tr><td>target_institution</td><td>VARCHAR NULL</td><td>'POLRI', 'TNI-AD', dsb.</td></tr>
+  <tr><td>batch</td><td>VARCHAR(50) NULL</td><td>Label angkatan (legacy string)</td></tr>
+</table>
+
+<br>
+<p><strong>Tabel: samapta_scores</strong></p>
+<table>
+  <tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+  <tr><td>athlete_id</td><td>BIGINT FK</td><td>→ athletes.id</td></tr>
+  <tr><td>assessed_by</td><td>BIGINT FK</td><td>→ users.id (Coach yang menginput)</td></tr>
+  <tr><td>institution</td><td>VARCHAR</td><td>Default 'POLRI'</td></tr>
+  <tr><td>session_label</td><td>VARCHAR NULL</td><td>'Parameter 1', 'Parameter 2', dst.</td></tr>
+  <tr><td>assessment_date</td><td>DATE</td><td>Tanggal pelaksanaan tes</td></tr>
+  <tr><td>raw_lari_meter</td><td>INT NULL</td><td>Jarak lari 12 menit (meter)</td></tr>
+  <tr><td>raw_pushup_reps</td><td>INT NULL</td><td>Jumlah repetisi push-up</td></tr>
+  <tr><td>raw_situp_reps</td><td>INT NULL</td><td>Jumlah repetisi sit-up</td></tr>
+  <tr><td>raw_pullup_reps</td><td>INT NULL</td><td>Jumlah repetisi pull-up (Pria) / chin-up (Wanita)</td></tr>
+  <tr><td>raw_shuttle_seconds</td><td>DECIMAL(6,2) NULL</td><td>Waktu shuttle run (detik)</td></tr>
+  <tr><td>raw_renang_seconds</td><td>DECIMAL(7,2) NULL</td><td>Skor renang (0–100)</td></tr>
+  <tr><td>score_lari</td><td>DECIMAL(5,2) NULL</td><td>Nilai lari (Jasmani A)</td></tr>
+  <tr><td>score_pushup / situp / pullup / shuttle</td><td>DECIMAL(5,2) NULL</td><td>Nilai per item (komponen Jasmani B)</td></tr>
+  <tr><td><strong>score_jasmani_b</strong></td><td>DECIMAL(5,2) NULL</td><td><strong>Rata-rata 4 komponen Jasmani B</strong></td></tr>
+  <tr><td><strong>score_ukg_avg</strong></td><td>DECIMAL(5,2) NULL</td><td><strong>Nilai Jasmani = avg(Jasmani A + Jasmani B)</strong></td></tr>
+  <tr><td>score_renang</td><td>DECIMAL(5,2) NULL</td><td>Nilai renang (0–100)</td></tr>
+  <tr><td><strong>score_final</strong></td><td>DECIMAL(5,2) NULL</td><td><strong>Nilai Akhir Kelulusan</strong></td></tr>
+  <tr><td>grade</td><td>VARCHAR(2) NULL</td><td>A / B / C / D / E</td></tr>
+</table>
+
+<br>
+<p><strong>Tabel: injury_records</strong></p>
+<table>
+  <tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+  <tr><td>athlete_id</td><td>BIGINT FK</td><td>→ athletes.id</td></tr>
+  <tr><td>recorded_by</td><td>BIGINT FK</td><td>→ users.id (Coach yang mencatat)</td></tr>
+  <tr><td>injury_type</td><td>VARCHAR</td><td>Nama/jenis cedera, contoh: 'Cedera Hamstring'</td></tr>
+  <tr><td>description</td><td>TEXT NULL</td><td>Catatan detail cedera</td></tr>
+  <tr><td>injury_date</td><td>DATE NULL</td><td>Tanggal kejadian</td></tr>
+  <tr><td>recovery_notes</td><td>TEXT NULL</td><td>Catatan pemulihan</td></tr>
+  <tr><td>is_recovered</td><td>BOOLEAN</td><td>Status pemulihan</td></tr>
+  <tr><td colspan="3"><em class="note">CATATAN: Tabel ini murni informasi. Tidak ada satu kolom pun yang terhubung ke kalkulasi nilai akhir Samapta.</em></td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  4. LOGIKA KALKULASI SKOR                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>4. LOGIKA KALKULASI SKOR (STANDAR POLRI)</h2>
+
+<h3>4.1 Formula Nilai Akhir Kelulusan</h3>
+<div class="formula-box">
+  <strong>Jasmani A</strong> = Nilai Lari 12 Menit<br><br>
+  <strong>Jasmani B</strong> = (Nilai Push-Up + Nilai Sit-Up + Nilai Pull-Up/Chin-Up + Nilai Shuttle Run) ÷ 4<br><br>
+  <strong>Nilai Jasmani</strong> = (Jasmani A + Jasmani B) ÷ 2<br><br>
+  <strong>Nilai Akhir</strong> = (Nilai Jasmani × 80%) + (Nilai Renang × 20%)
+</div>
+
+<p><em class="note">Contoh perhitungan: Lari 3.000m (Skor 80) | Push-Up 30 (80) | Sit-Up 35 (85) | Pull-Up 10 (80) | Shuttle 12.0s (80) | Renang skor 80</em></p>
+<div class="formula-box">
+  Jasmani B = (80 + 85 + 80 + 80) ÷ 4 = <strong>81,25</strong><br>
+  Nilai Jasmani = (80 + 81,25) ÷ 2 = <strong>80,63</strong><br>
+  Nilai Akhir = (80,63 × 80%) + (80 × 20%) = 64,50 + 16,00 = <strong>80,50 → Grade A</strong>
+</div>
+
+<h3>4.2 Tabel Grade Kelulusan</h3>
+<table>
+  <tr><th>Grade</th><th>Rentang Nilai</th><th>Predikat</th></tr>
+  <tr><td style="text-align:center"><strong>A</strong></td><td>≥ 80,00</td><td>Sangat Baik</td></tr>
+  <tr><td style="text-align:center"><strong>B</strong></td><td>70,00 – 79,99</td><td>Baik</td></tr>
+  <tr><td style="text-align:center"><strong>C</strong></td><td>60,00 – 69,99</td><td>Cukup</td></tr>
+  <tr><td style="text-align:center"><strong>D</strong></td><td>50,00 – 59,99</td><td>Kurang</td></tr>
+  <tr><td style="text-align:center"><strong>E</strong></td><td>&lt; 50,00</td><td>Tidak Lulus</td></tr>
+</table>
+
+<h3>4.3 Aturan Gender pada Komponen Tes</h3>
+<table>
+  <tr><th>Komponen</th><th>Atlet Pria</th><th>Atlet Wanita</th></tr>
+  <tr><td>Lari 12 Menit</td><td>Tabel penilaian Pria (maks. 3.700m = 100)</td><td>Tabel penilaian Wanita (maks. 3.000m = 100)</td></tr>
+  <tr><td>Push-Up</td><td>Tabel Pria (maks. 50 rep = 100)</td><td>Tabel Wanita (maks. 35 rep = 100)</td></tr>
+  <tr><td>Sit-Up</td><td>Tabel Pria (maks. 50 rep = 100)</td><td>Tabel Wanita (maks. 40 rep = 100)</td></tr>
+  <tr><td><strong>Kekuatan Atas</strong></td><td><strong>Pull-Up</strong> (maks. 20 rep = 100)</td><td><strong>Chin-Up</strong> (maks. 15 rep = 100)</td></tr>
+  <tr><td>Shuttle Run</td><td>Tabel Pria (maks. ≤10.0 dtk = 100)</td><td>Tabel Wanita (maks. ≤11.0 dtk = 100)</td></tr>
+  <tr><td>Renang</td><td colspan="2">Skor langsung 0–100 (diinput oleh Coach)</td></tr>
+</table>
+
+<h3>4.4 Extensibilitas Multi-Instansi</h3>
+<p>Arsitektur database dirancang agar siap mendukung instansi lain (TNI-AD/AL/AU) tanpa perubahan kode program. Tabel <code>institutions</code> menyimpan kolom <code>ukg_weight</code> dan <code>renang_weight</code> per instansi, sehingga bobot persentase dapat diubah langsung dari panel Admin.</p>
+
+<table>
+  <tr><th>Kode Instansi</th><th>Nama</th><th>Bobot Jasmani</th><th>Bobot Renang</th></tr>
+  <tr><td>POLRI</td><td>Kepolisian Negara Republik Indonesia</td><td>80%</td><td>20%</td></tr>
+  <tr><td>TNI-AD</td><td>TNI Angkatan Darat</td><td>80%</td><td>20%</td></tr>
+  <tr><td>TNI-AL</td><td>TNI Angkatan Laut</td><td>70%</td><td>30%</td></tr>
+  <tr><td>TNI-AU</td><td>TNI Angkatan Udara</td><td>80%</td><td>20%</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  5. STRUKTUR PERIODE & BATCHING                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>5. STRUKTUR PERIODE &amp; MANAJEMEN ANGKATAN (BATCHING)</h2>
+
+<h3>5.1 Konsep Periodisasi Tes</h3>
+<p>Dalam satu tahun berjalan, sistem menampung <strong>2 hingga 4 Parameter sesi tes</strong> yang berjalan secara berkala. Setiap parameter mewakili satu siklus penilaian lengkap (semua item fisik diukur ulang).</p>
+
+<table>
+  <tr><th>Tahun</th><th>Parameter</th><th>Keterangan</th></tr>
+  <tr><td>2025</td><td>Parameter 1</td><td>Sesi pertama awal tahun</td></tr>
+  <tr><td>2025</td><td>Parameter 2</td><td>Sesi kedua pertengahan tahun</td></tr>
+  <tr><td>2025</td><td>Parameter 3</td><td>Sesi ketiga akhir tahun</td></tr>
+  <tr><td>2025</td><td>Parameter 4 (opsional)</td><td>Sesi keempat jika diperlukan</td></tr>
+</table>
+
+<h3>5.2 Manajemen Kelompok (Batch)</h3>
+<p>Setiap atlet tergabung dalam satu angkatan (Batch). Data penilaian dan laporan rekapitulasi dikelompokkan per-angkatan agar rekam data tidak bercampur antar generasi peserta.</p>
+
+<table>
+  <tr><th>Kolom Tabel <code>batches</code></th><th>Keterangan</th></tr>
+  <tr><td>name</td><td>Nama angkatan: 'Batch 1', 'Angkatan 2025-01'</td></tr>
+  <tr><td>year</td><td>Tahun aktif angkatan</td></tr>
+  <tr><td>institution_code</td><td>Instansi target angkatan (POLRI, TNI-AD, dll.)</td></tr>
+  <tr><td>max_parameters</td><td>Jumlah sesi tes maksimal dalam tahun ini (default: 4)</td></tr>
+  <tr><td>started_at / ended_at</td><td>Rentang waktu aktif angkatan</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  6. MODUL FITUR                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>6. MODUL FITUR SISTEM</h2>
+
+<h3>6.1 Modul Penilaian Samapta Kedinasan</h3>
+<ul>
+  <li>Input nilai 6 item tes: Lari, Push-Up, Sit-Up, Pull-Up/Chin-Up, Shuttle Run, Renang</li>
+  <li>Kalkulasi otomatis sesuai formula POLRI (Jasmani A, B, Total, Final)</li>
+  <li>Filter rekap penilaian berdasarkan Batch dan Grade</li>
+  <li>Riwayat lengkap semua sesi tes per atlet</li>
+  <li>Form validation ketat (tipe data, batas nilai, otorisasi Coach)</li>
+</ul>
+
+<h3>6.2 Modul Kebugaran Umum (General Fitness)</h3>
+<ul>
+  <li>Input Berat Badan (kg) dan Tinggi Badan (cm)</li>
+  <li>Kalkulasi otomatis BMI: <code>BMI = BB ÷ TB² (meter)</code></li>
+  <li>Status otomatis: <strong>Kurang</strong> (BMI &lt;17), <strong>Normal</strong> (17–24,9), <strong>Gemuk</strong> (25–29,9), <strong>Obesitas</strong> (≥30)</li>
+  <li>Riwayat rekam BMI tersimpan per tanggal pengukuran</li>
+</ul>
+
+<h3>6.3 Modul Riwayat Cedera (Injury Track)</h3>
+<ul>
+  <li>Coach menginput catatan cedera secara manual (teks bebas)</li>
+  <li>Data yang dicatat: jenis cedera, tanggal, catatan pemulihan, status pulih/aktif</li>
+  <li>Ditampilkan sebagai informasi medis di dashboard atlet</li>
+  <li><strong>Penting:</strong> Fitur ini 100% tidak mempengaruhi kalkulasi nilai akhir Samapta</li>
+</ul>
+
+<h3>6.4 Modul Laporan PDF</h3>
+<ul>
+  <li>Generate laporan resmi PDF berlogo dan identitas "Star Jasmani"</li>
+  <li>Format landscape A4, font DejaVu Sans</li>
+  <li>Tersedia untuk: Admin (generate semua atlet), Member (download laporan pribadi)</li>
+  <li>Nama file otomatis: <code>Laporan-Samapta-[Nama Atlet]-[Tanggal].pdf</code></li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  7. VISUALISASI DASHBOARD                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>7. SPESIFIKASI VISUALISASI DASHBOARD</h2>
+
+<h3>7.1 Dashboard Admin (Macro Performance Chart)</h3>
+<p>Dashboard Admin menggunakan pendekatan <em>"Group &amp; Macro Performance Analytics"</em> untuk membantu Coach menganalisis tren perkembangan fisik seluruh atlet secara kolektif.</p>
+
+<table>
+  <tr><th>No.</th><th>Grafik</th><th>Tipe</th><th>Deskripsi</th></tr>
+  <tr>
+    <td>1</td>
+    <td>Komparasi Putra vs Putri</td>
+    <td>Grouped Bar Chart</td>
+    <td>X-axis: Parameter 1, 2, 3, dst. | 2 batang berdampingan per parameter: Crimson (Putra) dan Maroon Tua (Putri) | Y-axis: Rata-rata skor 0–100</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Distribusi Nilai per Item Fisik</td>
+    <td>Stacked/Grouped Bar Chart</td>
+    <td>Rata-rata skor seluruh atlet per komponen tes (Lari, Push-Up, Sit-Up, Pull-Up, Shuttle, Renang) per parameter. Berguna untuk mendeteksi item yang paling lemah di batch tersebut.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Trend Kelulusan Samapta</td>
+    <td>Line / Bar Chart</td>
+    <td>Persentase atlet yang melewati batas passing grade dari sesi ke sesi. Terdapat garis putus-putus (Dashed Line) berwarna abu-abu terang sebagai penanda batas kelulusan.</td>
+  </tr>
+</table>
+
+<p>Dashboard Admin juga dilengkapi <strong>Filter Interaktif</strong> (dropdown) berdasarkan Tahun Sesi dan Nama Batch/Angkatan.</p>
+
+<h3>7.2 Dashboard Member (Individual Performance Chart)</h3>
+<p>Dashboard Member menggunakan pendekatan <em>"Item-Specific Performance Tracking"</em> agar atlet dapat melihat titik kelemahan dan kekuatan fisiknya secara spesifik.</p>
+
+<table>
+  <tr><th>No.</th><th>Grafik</th><th>Kelompok</th></tr>
+  <tr><td>1</td><td>Tren Performa Lari 12 Menit</td><td>Jasmani A</td></tr>
+  <tr><td>2</td><td>Tren Performa Push-Up</td><td>Jasmani B</td></tr>
+  <tr><td>3</td><td>Tren Performa Sit-Up</td><td>Jasmani B</td></tr>
+  <tr><td>4</td><td>Tren Performa Pull-Up (Putra) / Chin-Up (Putri)</td><td>Jasmani B</td></tr>
+  <tr><td>5</td><td>Tren Performa Shuttle Run</td><td>Jasmani B</td></tr>
+  <tr><td>6</td><td>Tren Performa Renang</td><td>Renang</td></tr>
+</table>
+
+<p>X-axis: Parameter 1 → Parameter 4 | Y-axis: Skor 0–100 | Layout: 6 kotak bar chart terpisah, grid Tailwind CSS (mobile-responsive)</p>
+
+<h3>7.3 Panduan Warna Tema Visual (Star Jasmani Branding)</h3>
+<table>
+  <tr><th>Elemen</th><th>Warna</th><th>Kode Hex</th><th>Tailwind CSS</th></tr>
+  <tr><td>Latar kanvas grafik</td><td>Hitam Pekat</td><td>#000000</td><td>bg-black</td></tr>
+  <tr><td>Batang utama / Putra</td><td>Merah Crimson</td><td>#991b1b</td><td>bg-red-800</td></tr>
+  <tr><td>Batang sekunder / Putri</td><td>Merah Maroon Tua</td><td>#450a0a</td><td>bg-red-950</td></tr>
+  <tr><td>Efek hover batang</td><td>Merah Maroon</td><td>#450a0a</td><td>bg-red-950</td></tr>
+  <tr><td>Garis passing grade</td><td>Abu-abu Putih Terang</td><td>#f3f4f6</td><td>text-gray-100 (dashed)</td></tr>
+  <tr><td>Grid &amp; label sumbu</td><td>Abu-abu Terang</td><td>#9ca3af</td><td>text-gray-400</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  8. KEAMANAN                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>8. KEAMANAN SISTEM</h2>
+
+<table>
+  <tr><th>Aspek</th><th>Implementasi</th></tr>
+  <tr><td>SQL Injection</td><td>100% menggunakan Eloquent ORM / Query Builder Laravel — tidak ada raw SQL langsung dari input pengguna</td></tr>
+  <tr><td>Autentikasi</td><td>Laravel session-based auth dengan bcrypt hashing (12 rounds) untuk password</td></tr>
+  <tr><td>Rate Limiting</td><td>Maksimal 5 percobaan login per menit per IP + email. Lockout otomatis dengan countdown.</td></tr>
+  <tr><td>Akses Kontrol</td><td>RoleMiddleware memvalidasi role setiap request. Member yang mencoba akses rute Admin mendapat HTTP 403.</td></tr>
+  <tr><td>Data Privasi</td><td>Member hanya bisa query data dengan <code>where('user_id', Auth::id())</code> — tidak bisa akses data atlet lain</td></tr>
+  <tr><td>Session Security</td><td>Session regenerate setelah login sukses untuk mencegah session fixation</td></tr>
+  <tr><td>Soft Delete</td><td>Data users/athletes/scores tidak benar-benar terhapus — tercatat di kolom <code>deleted_at</code> untuk audit trail</td></tr>
+  <tr><td>Form Validation</td><td>Semua input divalidasi via FormRequest (StoreSamaptaRequest) sebelum masuk ke database</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  9. CATATAN IMPLEMENTASI                              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>9. CATATAN IMPLEMENTASI &amp; STATUS PENGEMBANGAN</h2>
+
+<h3>9.1 Status Tahap 1 (Database &amp; Model) — SELESAI</h3>
+<table>
+  <tr><th>Item</th><th>Status</th></tr>
+  <tr><td>12 file migration (semua tabel)</td><td>✅ Selesai &amp; Terverifikasi</td></tr>
+  <tr><td>7 Eloquent Model dengan relasi lengkap</td><td>✅ Selesai</td></tr>
+  <tr><td>RoleMiddleware (admin/member)</td><td>✅ Selesai</td></tr>
+  <tr><td>FormRequest validation (StoreSamaptaRequest)</td><td>✅ Selesai</td></tr>
+  <tr><td>Formula skor POLRI (Jasmani A, B, Total, Final)</td><td>✅ Selesai &amp; Diverifikasi</td></tr>
+  <tr><td>Seeder: 4 Instansi, 2 Batch, 1 Admin, 3 Atlet</td><td>✅ Selesai</td></tr>
+  <tr><td>Controller Admin (Dashboard, Athlete, Samapta, BMI, Report)</td><td>✅ Selesai</td></tr>
+  <tr><td>Controller Member (Dashboard, Download PDF)</td><td>✅ Selesai</td></tr>
+  <tr><td>Routes web.php (guest, admin, member)</td><td>✅ Selesai</td></tr>
+</table>
+
+<h3>9.2 Tahap Berikutnya (Blade Views &amp; Frontend)</h3>
+<ul>
+  <li>Blade template: Landing Page dengan tombol "LOGIN MEMBER / COACH"</li>
+  <li>Halaman login dengan dark theme Star Jasmani</li>
+  <li>Dashboard Admin: 3 Macro Chart + filter interaktif</li>
+  <li>Dashboard Member: 6 individual bar chart (mobile-first)</li>
+  <li>Form input nilai Samapta (real-time di lapangan)</li>
+  <li>Template PDF laporan resmi dengan logo Star Jasmani</li>
+  <li>Controller &amp; Route untuk InjuryRecord (Riwayat Cedera)</li>
+</ul>
+
+<br><br>
+<p class="center" style="color:#888; font-size: 10pt;">— Dokumen ini adalah blueprint resmi sebagai acuan pengembangan sistem Star Jasmani Digital Assessment —<br>Dibuat: 18 Mei 2026 | Status: Finalized &amp; Locked</p>
+
+</body>
+</html>
