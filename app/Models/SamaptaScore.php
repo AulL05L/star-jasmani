@@ -155,7 +155,7 @@ class SamaptaScore extends Model
     {
         return match ($this->grade) {
             'A' => 'Sangat Baik', 'B' => 'Baik', 'C' => 'Cukup',
-            'D' => 'Kurang', 'E' => 'Tidak Lulus',
+            'D' => 'Kurang', 'E' => 'Sangat Kurang',
             default => 'Belum Dinilai',
         };
     }

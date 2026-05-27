@@ -63,7 +63,11 @@ class ReportController extends Controller
             'avg'       => round($scores->avg('score_final'), 1),
             'tertinggi' => round($scores->max('score_final'), 1),
             'terendah'  => round($scores->min('score_final'), 1),
-            'lulus'     => $scores->where('score_final', '>=', 70)->count(),
+            'grade_a'   => $scores->where('grade', 'A')->count(),
+            'grade_b'   => $scores->where('grade', 'B')->count(),
+            'grade_c'   => $scores->where('grade', 'C')->count(),
+            'grade_d'   => $scores->where('grade', 'D')->count(),
+            'grade_e'   => $scores->where('grade', 'E')->count(),
         ];
 
         $pdf = Pdf::loadView('admin.reports.rekap-parameter', compact(
@@ -104,7 +108,11 @@ class ReportController extends Controller
                 'avg'       => round($allScores->where('parameter_ke', $p)->avg('score_final'), 1),
                 'tertinggi' => round($allScores->where('parameter_ke', $p)->max('score_final'), 1),
                 'terendah'  => round($allScores->where('parameter_ke', $p)->min('score_final'), 1),
-                'lulus'     => $allScores->where('parameter_ke', $p)->where('score_final', '>=', 70)->count(),
+                'grade_a'   => $allScores->where('parameter_ke', $p)->where('grade', 'A')->count(),
+                'grade_b'   => $allScores->where('parameter_ke', $p)->where('grade', 'B')->count(),
+                'grade_c'   => $allScores->where('parameter_ke', $p)->where('grade', 'C')->count(),
+                'grade_d'   => $allScores->where('parameter_ke', $p)->where('grade', 'D')->count(),
+                'grade_e'   => $allScores->where('parameter_ke', $p)->where('grade', 'E')->count(),
             ]
         ]);
 
@@ -114,7 +122,11 @@ class ReportController extends Controller
             'avg'       => round($allScores->avg('score_final'), 1),
             'tertinggi' => round($allScores->max('score_final'), 1),
             'terendah'  => round($allScores->min('score_final'), 1),
-            'lulus'     => $allScores->where('score_final', '>=', 70)->count(),
+            'grade_a'   => $allScores->where('grade', 'A')->count(),
+            'grade_b'   => $allScores->where('grade', 'B')->count(),
+            'grade_c'   => $allScores->where('grade', 'C')->count(),
+            'grade_d'   => $allScores->where('grade', 'D')->count(),
+            'grade_e'   => $allScores->where('grade', 'E')->count(),
         ];
 
         $pdf = Pdf::loadView('admin.reports.rekap-tahun', compact(

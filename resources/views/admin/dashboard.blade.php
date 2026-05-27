@@ -206,15 +206,22 @@
             <canvas id="komparasiChart" height="160"></canvas>
         </div>
 
-        {{-- Grafik 3: Trend Kelulusan --}}
+        {{-- Grafik 3: Distribusi Grade per Parameter --}}
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <h2 class="text-white font-bold text-sm uppercase tracking-widest">Trend Kelulusan</h2>
-                    <p class="text-gray-600 text-xs mt-0.5">% atlet melewati passing grade ({{ $passingGrade }})</p>
+                    <h2 class="text-white font-bold text-sm uppercase tracking-widest">Distribusi Grade per Parameter</h2>
+                    <p class="text-gray-600 text-xs mt-0.5">Jumlah atlet per grade tiap parameter</p>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap text-[10px]">
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-green-400 inline-block"></span><span class="text-gray-400">A</span></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-blue-400 inline-block"></span><span class="text-gray-400">B</span></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-yellow-400 inline-block"></span><span class="text-gray-400">C</span></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-orange-400 inline-block"></span><span class="text-gray-400">D</span></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-400">E</span></span>
                 </div>
             </div>
-            <canvas id="kelulusanChart" height="160"></canvas>
+            <canvas id="gradeParamChart" height="160"></canvas>
         </div>
     </div>
 
@@ -523,51 +530,29 @@ new Chart(document.getElementById('komparasiChart'), {
     }
 });
 
-// ── 4. Trend Kelulusan ──
-@php
-    $kelulusanLabels = $trendKelulusan->map(fn($t) => "Parameter {$t->parameter_ke}");
-    $kelulusanData   = $trendKelulusan->pluck('persen_lulus');
-@endphp
-new Chart(document.getElementById('kelulusanChart'), {
+// ── 4. Distribusi Grade per Parameter ──
+new Chart(document.getElementById('gradeParamChart'), {
     type: 'bar',
     data: {
-        labels: @json($kelulusanLabels),
-        datasets: [
-            {
-                label: '% Lulus',
-                data: @json($kelulusanData),
-                backgroundColor: 'rgba(153,27,27,0.8)',
-                borderRadius: 4,
-                borderSkipped: false,
-            }
-        ]
+        labels: @json($gradeParamList->map(fn($p) => "Parameter {$p}")),
+        datasets: @json($gradeDatasets->map(fn($d) => array_merge($d, ['borderRadius' => 3, 'borderSkipped' => false])))
     },
     options: {
         ...chartDefaults,
+        scales: {
+            x: { ...(chartDefaults.scales?.x ?? {}), stacked: true },
+            y: { ...(chartDefaults.scales?.y ?? {}), stacked: true, max: undefined, min: 0 }
+        },
         plugins: {
             ...chartDefaults.plugins,
+            legend: {
+                display: true,
+                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12 }
+            },
             tooltip: {
                 ...chartDefaults.plugins.tooltip,
                 callbacks: {
-                    label: ctx => ` Lulus: ${ctx.parsed.y}%`
-                }
-            },
-            annotation: {
-                annotations: {
-                    passingLine: {
-                        type: 'line',
-                        yMin: {{ $passingGrade }},
-                        yMax: {{ $passingGrade }},
-                        borderColor: '#f3f4f6',
-                        borderWidth: 1.5,
-                        borderDash: [6, 4],
-                        label: {
-                            content: 'Passing Grade',
-                            enabled: true,
-                            color: '#f3f4f6',
-                            font: { size: 10 }
-                        }
-                    }
+                    label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} atlet`
                 }
             }
         }

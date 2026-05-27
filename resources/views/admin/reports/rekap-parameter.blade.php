@@ -96,13 +96,13 @@
                 <div class="stat-val dark">{{ $stats['terendah'] }}</div>
             </td>
             <td style="background:#f0fdf4">
-                <div class="stat-label">Jumlah Lulus</div>
-                <div class="stat-val green">{{ $stats['lulus'] }}</div>
+                <div class="stat-label">Grade A+B</div>
+                <div class="stat-val green">{{ ($stats['grade_a'] ?? 0) + ($stats['grade_b'] ?? 0) }}</div>
             </td>
-            <td style="background:#7f1d1d">
-                <div class="stat-label" style="color:#fca5a5">% Kelulusan</div>
-                <div class="stat-val" style="color:#fff; font-size:18px;">
-                    {{ $stats['total'] > 0 ? round($stats['lulus'] / $stats['total'] * 100) : 0 }}%
+            <td style="background:#fff7ed">
+                <div class="stat-label">Grade C/D/E</div>
+                <div class="stat-val" style="color:#9a3412; font-size:18px;">
+                    {{ ($stats['grade_c'] ?? 0) + ($stats['grade_d'] ?? 0) + ($stats['grade_e'] ?? 0) }}
                 </div>
             </td>
         </tr>

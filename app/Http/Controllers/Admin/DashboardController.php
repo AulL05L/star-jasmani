@@ -147,25 +147,30 @@ class DashboardController extends Controller
         $komponenPutra = $komponenData->where('gender', 'pria')->first();
         $komponenPutri = $komponenData->where('gender', 'wanita')->first();
 
-        // ── Grafik 3: Trend Kelulusan per Parameter ──
-        $passingGrade = 70;
-        $trendKelulusanQuery = SamaptaScore::query()
+        // ── Grafik 3: Distribusi Grade per Parameter ──
+        $gradePerParameterQuery = SamaptaScore::query()
             ->whereYear('assessment_date', $tahun)
             ->whereNotNull('parameter_ke')
-            ->groupBy('parameter_ke')
-            ->selectRaw("
-                parameter_ke,
-                COUNT(*) as total,
-                SUM(CASE WHEN score_final >= {$passingGrade} THEN 1 ELSE 0 END) as lulus,
-                ROUND(SUM(CASE WHEN score_final >= {$passingGrade} THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) as persen_lulus
-            ")
-            ->orderBy('parameter_ke');
+            ->whereNotNull('grade')
+            ->groupBy('parameter_ke', 'grade')
+            ->selectRaw('parameter_ke, grade, COUNT(*) as total')
+            ->orderBy('parameter_ke')
+            ->orderBy('grade');
 
         if ($batchId) {
-            $trendKelulusanQuery->where('batch_id', $batchId);
+            $gradePerParameterQuery->where('batch_id', $batchId);
         }
 
-        $trendKelulusan = $trendKelulusanQuery->get();
+        $gradePerParameterRaw = $gradePerParameterQuery->get();
+        $gradeParamList = $gradePerParameterRaw->pluck('parameter_ke')->unique()->sort()->values();
+        $gradeColors = ['A' => '#4ade80','B' => '#60a5fa','C' => '#facc15','D' => '#fb923c','E' => '#f87171'];
+        $gradeDatasets = collect(['A','B','C','D','E'])->map(fn($g) => [
+            'label'           => "Grade {$g}",
+            'data'            => $gradeParamList->map(fn($p) =>
+                $gradePerParameterRaw->where('parameter_ke', $p)->where('grade', $g)->first()?->total ?? 0
+            )->values(),
+            'backgroundColor' => $gradeColors[$g],
+        ]);
 
         // ── Member Terbaru ──
         $memberTerbaru = Athlete::with(['user', 'samaptaScores' => function($q) use ($tahun) {
@@ -222,7 +227,7 @@ class DashboardController extends Controller
             'gradeDistribution', 'totalGrade',
             'parameterLabels', 'avgPutraPerParameter', 'avgPutriPerParameter',
             'komponenPutra', 'komponenPutri',
-            'trendKelulusan', 'passingGrade',
+            'gradeParamList', 'gradeDatasets',
             'memberTerbaru', 'topPerformer', 'statusFisik',
             'batches', 'tahunList', 'tahun', 'batchId', 'genderFilter'
         ));

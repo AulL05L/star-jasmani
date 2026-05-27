@@ -87,10 +87,10 @@
             <td><span class="s-label">Rata-rata</span><span class="s-val dark">{{ $statsTotal['avg'] }}</span></td>
             <td><span class="s-label">Tertinggi</span><span class="s-val dark">{{ $statsTotal['tertinggi'] }}</span></td>
             <td><span class="s-label">Terendah</span><span class="s-val dark">{{ $statsTotal['terendah'] }}</span></td>
-            <td><span class="s-label">Lulus</span><span class="s-val green">{{ $statsTotal['lulus'] }}</span></td>
-            <td style="background:#fff7f7"><span class="s-label">% Lulus</span>
+            <td><span class="s-label">Grade A+B</span><span class="s-val green">{{ ($statsTotal['grade_a'] ?? 0) + ($statsTotal['grade_b'] ?? 0) }}</span></td>
+            <td style="background:#fff7f7"><span class="s-label">Grade C/D/E</span>
                 <span class="s-val" style="color:#7f1d1d;">
-                    {{ $statsTotal['total'] > 0 ? round($statsTotal['lulus'] / $statsTotal['total'] * 100) : 0 }}%
+                    {{ ($statsTotal['grade_c'] ?? 0) + ($statsTotal['grade_d'] ?? 0) + ($statsTotal['grade_e'] ?? 0) }}
                 </span>
             </td>
         </tr>
@@ -147,11 +147,11 @@
                 @php $ps = $statsPerParameter[$p]; @endphp
                 <tr style="background:#fff7f7;">
                     <td colspan="8" style="text-align:right; font-size:7px; color:#7f1d1d; font-weight:700; padding-right:8px;">
-                        Rata-rata: {{ $ps['avg'] }} | Tertinggi: {{ $ps['tertinggi'] }} | Terendah: {{ $ps['terendah'] }} | Lulus: {{ $ps['lulus'] }}/{{ $ps['total'] }}
+                        Rata-rata: {{ $ps['avg'] }} | Tertinggi: {{ $ps['tertinggi'] }} | Terendah: {{ $ps['terendah'] }} | A: {{ $ps['grade_a'] ?? 0 }} B: {{ $ps['grade_b'] ?? 0 }} C: {{ $ps['grade_c'] ?? 0 }} D: {{ $ps['grade_d'] ?? 0 }} E: {{ $ps['grade_e'] ?? 0 }}
                     </td>
                     <td style="font-weight:900; color:#7f1d1d;">{{ $ps['avg'] }}</td>
                     <td style="font-weight:700; color:#16a34a; font-size:7px;">
-                        {{ $ps['total'] > 0 ? round($ps['lulus'] / $ps['total'] * 100) : 0 }}%
+                        A:{{ $ps['grade_a'] ?? 0 }} B:{{ $ps['grade_b'] ?? 0 }}
                     </td>
                 </tr>
             </tbody>

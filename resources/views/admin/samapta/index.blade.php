@@ -36,10 +36,10 @@
             <p class="text-3xl font-black text-blue-400">{{ $stats->grade_b }}</p>
         </div>
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4 text-center">
-            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Lulus (≥70)</p>
-            <p class="text-3xl font-black text-white">{{ $stats->lulus }}</p>
-            @if($stats->total > 0)
-                <p class="text-gray-600 text-[10px]">{{ round($stats->lulus / $stats->total * 100) }}%</p>
+            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Grade C/D/E</p>
+            <p class="text-3xl font-black text-yellow-400">{{ ($stats->grade_c ?? 0) + ($stats->grade_d ?? 0) + ($stats->grade_e ?? 0) }}</p>
+            @if(($stats->total ?? 0) > 0)
+                <p class="text-gray-600 text-[10px]">dari {{ $stats->total }} peserta</p>
             @endif
         </div>
     </div>

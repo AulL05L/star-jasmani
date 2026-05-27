@@ -70,7 +70,9 @@ class SamaptaController extends Controller
                 ROUND(AVG(score_final), 1) as avg_nilai,
                 SUM(CASE WHEN grade = "A" THEN 1 ELSE 0 END) as grade_a,
                 SUM(CASE WHEN grade = "B" THEN 1 ELSE 0 END) as grade_b,
-                SUM(CASE WHEN score_final >= 70 THEN 1 ELSE 0 END) as lulus
+                SUM(CASE WHEN grade = "C" THEN 1 ELSE 0 END) as grade_c,
+                SUM(CASE WHEN grade = "D" THEN 1 ELSE 0 END) as grade_d,
+                SUM(CASE WHEN grade = "E" THEN 1 ELSE 0 END) as grade_e
             ')
             ->first();
 
