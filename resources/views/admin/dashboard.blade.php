@@ -24,26 +24,25 @@
 <div class="min-h-screen bg-black text-white p-3 lg:p-5">
 
     {{-- ── TOP BAR ── --}}
-    <div class="flex items-start justify-between mb-6">
+    <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-4">
         <div>
             <p class="text-gray-600 text-xs uppercase tracking-widest font-bold mb-1">Admin Panel · Coach Dashboard</p>
-            <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tighter">
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tighter">
                 Halo, <span class="text-red-500">{{ explode(' ', auth()->user()->name)[0] }}</span> 👋
             </h1>
-            <p class="text-gray-500 text-sm mt-1">{{ now()->isoFormat('dddd, D MMMM Y') }} · Coach Dashboard</p>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">{{ now()->isoFormat('dddd, D MMMM Y') }}</p>
         </div>
-        <div class="flex items-center gap-3">
-            {{-- Filter Tahun --}}
-            <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+            {{-- Filter --}}
+            <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-2 flex-wrap">
                 <select name="tahun" onchange="this.form.submit()"
                     class="bg-gray-950 border border-gray-800 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-800">
-                    @foreach($tahunList as $t)
+                    @foreach($tahunList->unique() as $t)
                         <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
                     @endforeach
-                    <option value="{{ now()->year }}" {{ $tahun == now()->year ? 'selected' : '' }}>{{ now()->year }}</option>
                 </select>
                 <select name="batch_id" onchange="this.form.submit()"
-                    class="bg-gray-950 border border-gray-800 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-800">
+                    class="bg-gray-950 border border-gray-800 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-800 max-w-30 md:max-w-none truncate">
                     <option value="">Semua Batch</option>
                     @foreach($batches as $batch)
                         <option value="{{ $batch->id }}" {{ $batchId == $batch->id ? 'selected' : '' }}>
@@ -53,14 +52,15 @@
                 </select>
             </form>
             <a href="{{ route('admin.samapta.create') }}"
-                class="flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white font-bold uppercase tracking-widest text-xs px-4 py-2.5 rounded-xl transition-all">
-                <i class="fa-solid fa-plus"></i> Input Nilai
+                class="flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white font-bold uppercase tracking-widest text-xs px-3 md:px-4 py-2 md:py-2.5 rounded-xl transition-all whitespace-nowrap">
+                <i class="fa-solid fa-plus"></i>
+                <span class="hidden sm:inline">Input Nilai</span>
             </a>
         </div>
     </div>
 
     {{-- ── STATS CARDS ── --}}
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
 
         <div class="stat-card rounded-2xl p-4">
             <div class="flex items-start justify-between mb-2">
@@ -141,10 +141,10 @@
     </div>
 
     {{-- ── ROW 2: TREND + DISTRIBUSI GRADE ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
 
         {{-- Trend Perkembangan Nilai --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+        <div class="md:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Trend Perkembangan Nilai</h2>
@@ -189,7 +189,7 @@
     </div>
 
     {{-- ── ROW 3: GRAFIK KOMPARASI + TREND KELULUSAN ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
 
         {{-- Grafik 1: Putra vs Putri per Parameter --}}
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
@@ -226,10 +226,10 @@
     </div>
 
     {{-- ── ROW 4: PERFORMA KOMPONEN + STATUS FISIK ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
 
         {{-- Grafik 2: Distribusi Komponen Tes --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+        <div class="md:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Performa Per Komponen</h2>
@@ -286,10 +286,10 @@
     </div>
 
     {{-- ── ROW 5: MEMBER TERBARU + TOP PERFORMER ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
         {{-- Member Terbaru --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl overflow-hidden">
+        <div class="md:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl overflow-hidden">
             <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Member Terbaru</h2>
@@ -306,6 +306,35 @@
                     <p class="text-gray-500 text-sm">Belum ada member.</p>
                 </div>
             @else
+                {{-- Card layout (mobile/tablet < lg) --}}
+                <div class="lg:hidden divide-y divide-gray-900">
+                    @foreach($memberTerbaru as $athlete)
+                    @php $latestScore = $athlete->samaptaScores->first(); @endphp
+                    <div class="px-4 py-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                                {{ strtoupper(substr($athlete->user->name, 0, 1)) }}
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-white font-bold text-sm truncate">{{ $athlete->user->name }}</p>
+                                <p class="text-gray-500 text-[11px]">{{ $athlete->target_institution ?? 'POLRI' }} · {{ $athlete->batch ?? '—' }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <div class="text-right">
+                                <p class="text-white font-black text-sm">{{ $latestScore ? number_format($latestScore->score_final, 1) : '—' }}</p>
+                                <p class="text-gray-600 text-[10px]">Nilai</p>
+                            </div>
+                            <a href="{{ route('admin.athletes.show', $athlete) }}"
+                                class="w-8 h-8 bg-gray-800 hover:bg-red-800 text-gray-400 hover:text-white rounded-xl inline-flex items-center justify-center transition-all shrink-0">
+                                <i class="fa-solid fa-eye text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                {{-- Table layout (desktop ≥ lg) --}}
+                <div class="hidden lg:block overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-800 text-gray-600 text-[11px] uppercase tracking-widest">
@@ -322,7 +351,7 @@
                         <tr class="hover:bg-gray-900/50 transition-colors">
                             <td class="px-5 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs flex-shrink-0">
+                                    <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs shrink-0">
                                         {{ strtoupper(substr($athlete->user->name, 0, 1)) }}
                                     </div>
                                     <div>
@@ -355,6 +384,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
             @endif
         </div>
 
@@ -375,11 +405,11 @@
                 <div class="space-y-4">
                     @foreach($topPerformer as $i => $score)
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm flex-shrink-0
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0
                             {{ $i === 0 ? 'bg-yellow-500 text-black' : ($i === 1 ? 'bg-gray-400 text-black' : 'bg-orange-700 text-white') }}">
                             {{ $i + 1 }}
                         </div>
-                        <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs shrink-0">
                             {{ strtoupper(substr($score->athlete?->user?->name ?? '?', 0, 1)) }}
                         </div>
                         <div class="flex-1 min-w-0">
