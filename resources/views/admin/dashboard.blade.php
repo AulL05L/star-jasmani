@@ -21,7 +21,7 @@
 @endpush
 
 @section('content')
-<div class="min-h-screen bg-black text-white p-4 lg:p-6">
+<div class="min-h-screen bg-black text-white p-3 lg:p-5">
 
     {{-- ── TOP BAR ── --}}
     <div class="flex items-start justify-between mb-6">
@@ -60,7 +60,7 @@
     </div>
 
     {{-- ── STATS CARDS ── --}}
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
 
         <div class="stat-card rounded-2xl p-4">
             <div class="flex items-start justify-between mb-2">
@@ -141,11 +141,11 @@
     </div>
 
     {{-- ── ROW 2: TREND + DISTRIBUSI GRADE ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
 
         {{-- Trend Perkembangan Nilai --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
+        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Trend Perkembangan Nilai</h2>
                     <p class="text-gray-600 text-xs mt-0.5">7 hari terakhir</p>
@@ -155,7 +155,7 @@
                     <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-gray-600 border-dashed border-t inline-block"></span> Rata-rata</span>
                 </div>
             </div>
-            <canvas id="trendChart" height="120"></canvas>
+            <canvas id="trendChart" height="100"></canvas>
         </div>
 
         {{-- Distribusi Grade --}}
@@ -189,11 +189,11 @@
     </div>
 
     {{-- ── ROW 3: GRAFIK KOMPARASI + TREND KELULUSAN ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
 
         {{-- Grafik 1: Putra vs Putri per Parameter --}}
-        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Komparasi Putra vs Putri</h2>
                     <p class="text-gray-600 text-xs mt-0.5">Rata-rata nilai akhir per parameter</p>
@@ -203,12 +203,12 @@
                     <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-950 rounded-sm inline-block"></span><span class="text-gray-400">Putri</span></span>
                 </div>
             </div>
-            <canvas id="komparasiChart" height="160"></canvas>
+            <canvas id="komparasiChart" height="130"></canvas>
         </div>
 
         {{-- Grafik 3: Distribusi Grade per Parameter --}}
-        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Distribusi Grade per Parameter</h2>
                     <p class="text-gray-600 text-xs mt-0.5">Jumlah atlet per grade tiap parameter</p>
@@ -221,16 +221,16 @@
                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-400">E</span></span>
                 </div>
             </div>
-            <canvas id="gradeParamChart" height="160"></canvas>
+            <canvas id="gradeParamChart" height="130"></canvas>
         </div>
     </div>
 
     {{-- ── ROW 4: PERFORMA KOMPONEN + STATUS FISIK ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
 
         {{-- Grafik 2: Distribusi Komponen Tes --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
+        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Performa Per Komponen</h2>
                     <p class="text-gray-600 text-xs mt-0.5">Rata-rata skor tiap item tes fisik</p>
@@ -246,7 +246,7 @@
                     </select>
                 </form>
             </div>
-            <canvas id="komponenChart" height="130"></canvas>
+            <canvas id="komponenChart" height="110"></canvas>
         </div>
 
         {{-- Status Fisik Rata-rata --}}
@@ -401,12 +401,17 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script>
+// Register plugin globally; disable by default — enable per-chart as needed
+Chart.register(ChartDataLabels);
+
 const chartDefaults = {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
         legend: { display: false },
+        datalabels: { display: false }, // off by default
         tooltip: {
             backgroundColor: '#111',
             borderColor: '#374151',
@@ -428,6 +433,9 @@ const chartDefaults = {
         }
     }
 };
+
+// Per-component color palette — matches benchmark view
+const komponenColors = ['#38bdf8','#fb923c','#34d399','#a78bfa','#fbbf24','#22d3ee'];
 
 // ── 1. Trend Nilai 7 Hari ──
 new Chart(document.getElementById('trendChart'), {
@@ -554,6 +562,12 @@ new Chart(document.getElementById('gradeParamChart'), {
                 callbacks: {
                     label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} atlet`
                 }
+            },
+            datalabels: {
+                display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+                color: '#fff',
+                font: { size: 8, weight: 'bold' },
+                formatter: val => val || '',
             }
         }
     }
@@ -579,23 +593,36 @@ new Chart(document.getElementById('komponenChart'), {
             {
                 label: 'Putra',
                 data: @json($komponenPutraData),
-                backgroundColor: '#991b1b',
+                backgroundColor: komponenColors,
                 borderRadius: 4,
                 borderSkipped: false,
             },
             {
                 label: 'Putri',
                 data: @json($komponenPutriData),
-                backgroundColor: '#450a0a',
+                backgroundColor: komponenColors.map(c => c + '99'), // 60% opacity
                 borderRadius: 4,
                 borderSkipped: false,
             }
         ]
     },
-    options: { ...chartDefaults,
+    options: {
+        ...chartDefaults,
         plugins: {
             ...chartDefaults.plugins,
-            legend: { display: false }
+            legend: {
+                display: true,
+                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 10 }
+            },
+            datalabels: {
+                display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+                color: '#fff',
+                font: { size: 9, weight: 'bold' },
+                anchor: 'end',
+                align: 'top',
+                offset: -2,
+                formatter: val => val ? Math.round(val) : '',
+            }
         }
     }
 });
