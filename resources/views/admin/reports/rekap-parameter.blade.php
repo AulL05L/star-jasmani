@@ -136,8 +136,8 @@
                 @endphp
                 <tr>
                     <td style="text-align:center; color:#9ca3af;">{{ $i + 1 }}</td>
-                    <td style="text-align:left; font-weight:700;">{{ $score->athlete->user->name ?? '—' }}</td>
-                    <td>{{ $score->athlete->gender === 'pria' ? 'Putra' : 'Putri' }}</td>
+                    <td style="text-align:left; font-weight:700;">{{ $score->athlete?->user?->name ?? '—' }}</td>
+                    <td>{{ ($score->athlete?->gender === 'pria') ? 'Putra' : 'Putri' }}</td>
                     <td style="font-weight:700;">{{ $score->nilai_jasmani_a ?? $score->score_lari ?? '—' }}</td>
                     <td style="font-weight:700;">{{ $score->nilai_jasmani_b ? number_format($score->nilai_jasmani_b, 1) : '—' }}</td>
                     <td style="font-weight:700; color:#7f1d1d;">{{ $score->nilai_total_jasmani ? number_format($score->nilai_total_jasmani, 1) : '—' }}</td>

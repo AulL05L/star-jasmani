@@ -373,11 +373,11 @@
                             {{ $i + 1 }}
                         </div>
                         <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs flex-shrink-0">
-                            {{ strtoupper(substr($score->athlete->user->name ?? '?', 0, 1)) }}
+                            {{ strtoupper(substr($score->athlete?->user?->name ?? '?', 0, 1)) }}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-white font-bold text-xs truncate">{{ $score->athlete->user->name ?? '—' }}</p>
-                            <p class="text-gray-600 text-[10px]">{{ $score->athlete->target_institution ?? 'POLRI' }}</p>
+                            <p class="text-white font-bold text-xs truncate">{{ $score->athlete?->user?->name ?? '—' }}</p>
+                            <p class="text-gray-600 text-[10px]">{{ $score->athlete?->target_institution ?? 'POLRI' }}</p>
                         </div>
                         <div class="text-right">
                             <p class="text-green-400 font-black text-sm">{{ number_format($score->score_final, 1) }}</p>

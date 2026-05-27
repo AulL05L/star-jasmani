@@ -179,12 +179,12 @@
                             <td class="px-5 py-3">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs flex-shrink-0">
-                                        {{ strtoupper(substr($score->athlete->user->name ?? '?', 0, 1)) }}
+                                        {{ strtoupper(substr($score->athlete?->user?->name ?? '?', 0, 1)) }}
                                     </div>
                                     <div>
-                                        <p class="text-white font-bold text-xs">{{ $score->athlete->user->name ?? '—' }}</p>
+                                        <p class="text-white font-bold text-xs">{{ $score->athlete?->user?->name ?? '—' }}</p>
                                         <p class="text-gray-600 text-[10px]">
-                                            {{ Str::ucfirst($score->athlete->gender) }} ·
+                                            {{ Str::ucfirst($score->athlete?->gender ?? '') }} ·
                                             {{ $score->institution ?? 'POLRI' }}
                                         </p>
                                     </div>
