@@ -25,6 +25,7 @@ class Athlete extends Model
         'batch',
         'batch_id',
         'photo_path',
+        'allowed_parameters',
     ];
 
     public function institution(): BelongsTo
@@ -40,9 +41,10 @@ class Athlete extends Model
     protected function casts(): array
     {
         return [
-            'birth_date' => 'date',
-            'height_cm'  => 'float',
-            'weight_kg'  => 'float',
+            'birth_date'         => 'date',
+            'height_cm'          => 'float',
+            'weight_kg'          => 'float',
+            'allowed_parameters' => 'array',
         ];
     }
 

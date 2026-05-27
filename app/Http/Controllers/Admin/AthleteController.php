@@ -123,15 +123,21 @@ class AthleteController extends Controller
             }
             $athlete->user->update($userData);
 
+            // allowed_parameters: null = semua, array jika dipilih spesifik
+            $allowedParams = $request->has('allowed_parameters')
+                ? array_map('intval', (array) $request->input('allowed_parameters'))
+                : null;
+
             $athlete->update([
-                'gender'             => $request->gender,
-                'nik'                => $request->nik,
-                'birth_date'         => $request->birth_date,
-                'phone'              => $request->phone,
-                'height_cm'          => $request->height_cm,
-                'weight_kg'          => $request->weight_kg,
-                'target_institution' => $request->target_institution,
-                'batch'              => $request->batch,
+                'gender'              => $request->gender,
+                'nik'                 => $request->nik,
+                'birth_date'          => $request->birth_date,
+                'phone'               => $request->phone,
+                'height_cm'           => $request->height_cm,
+                'weight_kg'           => $request->weight_kg,
+                'target_institution'  => $request->target_institution,
+                'batch'               => $request->batch,
+                'allowed_parameters'  => $allowedParams,
             ]);
         });
 

@@ -15,15 +15,29 @@ class DashboardController extends Controller
     {
         $user    = Auth::user();
         $athlete = $user->athlete;
-        $scores  = $athlete
+
+        $scores = $athlete
             ? $athlete->samaptaScores()->orderBy('parameter_ke')->get()
             : collect();
-        $latestBmi     = $athlete?->latestBmi;
-        $selectedScore = $scores->first();
-        $allScores     = $scores;
+
+        // Filter berdasarkan allowed_parameters jika admin sudah set
+        if ($athlete && !empty($athlete->allowed_parameters)) {
+            $allowed = $athlete->allowed_parameters;
+            $scores  = $scores->filter(fn($s) => in_array($s->parameter_ke, $allowed))->values();
+        }
+
+        $latestBmi      = $athlete?->latestBmi;
         $activeInjuries = $athlete
             ? $athlete->injuryTracks()->where('status', '!=', 'pulih')->get()
             : collect();
+
+        // Pilih sesi yang ditampilkan (dari query string score_id, atau yang pertama)
+        $scoreId       = request()->query('score_id');
+        $selectedScore = $scoreId
+            ? $scores->firstWhere('id', $scoreId)
+            : $scores->first();
+
+        $allScores = $scores;
 
         return view('member.dashboard', compact(
             'user', 'athlete', 'scores', 'latestBmi',

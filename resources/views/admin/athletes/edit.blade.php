@@ -123,6 +123,57 @@
             </div>
         </div>
 
+        {{-- Akses Parameter --}}
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-6 space-y-4">
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <h2 class="text-white font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                        <span class="w-5 h-5 bg-red-800 rounded-full flex items-center justify-center text-[9px]">4</span>
+                        Akses Parameter
+                    </h2>
+                    <p class="text-gray-600 text-xs mt-1 ml-7">Centang parameter yang boleh dilihat member. Kosongkan semua = semua parameter tampil.</p>
+                </div>
+                <button type="button" onclick="toggleAllParams()"
+                    class="text-gray-500 hover:text-white text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors">
+                    Pilih Semua
+                </button>
+            </div>
+            @php
+                $paramLabels = [
+                    1 => ['label' => 'Parameter 1', 'sub' => 'Tes Awal',    'icon' => 'fa-flag'],
+                    2 => ['label' => 'Parameter 2', 'sub' => 'Evaluasi 2',  'icon' => 'fa-chart-line'],
+                    3 => ['label' => 'Parameter 3', 'sub' => 'Evaluasi 3',  'icon' => 'fa-chart-line'],
+                    4 => ['label' => 'Parameter 4', 'sub' => 'Tes Akhir',   'icon' => 'fa-flag-checkered'],
+                ];
+                $currentAllowed = old('allowed_parameters', $athlete->allowed_parameters);
+            @endphp
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                @foreach($paramLabels as $pNum => $pInfo)
+                @php
+                    $isChecked = $currentAllowed === null || in_array($pNum, (array)$currentAllowed);
+                @endphp
+                <label class="param-check-card flex flex-col items-center gap-2 p-4 rounded-xl border cursor-pointer transition-all
+                    {{ $isChecked ? 'border-red-800 bg-red-900/20' : 'border-gray-800 bg-black hover:border-gray-700' }}">
+                    <input type="checkbox" name="allowed_parameters[]" value="{{ $pNum }}"
+                        class="param-checkbox sr-only" {{ $isChecked ? 'checked' : '' }}
+                        onchange="updateParamCard(this)">
+                    <i class="fa-solid {{ $pInfo['icon'] }} text-lg {{ $isChecked ? 'text-red-400' : 'text-gray-600' }}"></i>
+                    <div class="text-center">
+                        <p class="text-white font-black text-xs">{{ $pInfo['label'] }}</p>
+                        <p class="text-gray-500 text-[10px]">{{ $pInfo['sub'] }}</p>
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-widest {{ $isChecked ? 'text-red-400' : 'text-gray-700' }}">
+                        {{ $isChecked ? '✓ Aktif' : '✗ Tersembunyi' }}
+                    </span>
+                </label>
+                @endforeach
+            </div>
+            <p class="text-gray-700 text-[10px] mt-1">
+                <i class="fa-solid fa-circle-info mr-1"></i>
+                Parameter yang tidak dicentang tidak akan muncul di dashboard member, meski data skornya sudah ada.
+            </p>
+        </div>
+
         {{-- Submit --}}
         <div class="flex flex-col sm:flex-row gap-3 pb-10">
             <button type="submit"
@@ -137,3 +188,40 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function updateParamCard(checkbox) {
+    const card = checkbox.closest('label');
+    const icon = card.querySelector('i');
+    const statusSpan = card.querySelector('span');
+
+    if (checkbox.checked) {
+        card.classList.add('border-red-800', 'bg-red-900/20');
+        card.classList.remove('border-gray-800', 'bg-black', 'hover:border-gray-700');
+        icon.classList.add('text-red-400');
+        icon.classList.remove('text-gray-600');
+        statusSpan.textContent = '✓ Aktif';
+        statusSpan.classList.add('text-red-400');
+        statusSpan.classList.remove('text-gray-700');
+    } else {
+        card.classList.remove('border-red-800', 'bg-red-900/20');
+        card.classList.add('border-gray-800', 'bg-black', 'hover:border-gray-700');
+        icon.classList.remove('text-red-400');
+        icon.classList.add('text-gray-600');
+        statusSpan.textContent = '✗ Tersembunyi';
+        statusSpan.classList.remove('text-red-400');
+        statusSpan.classList.add('text-gray-700');
+    }
+}
+
+function toggleAllParams() {
+    const checkboxes = document.querySelectorAll('.param-checkbox');
+    const allChecked = Array.from(checkboxes).every(c => c.checked);
+    checkboxes.forEach(c => {
+        c.checked = !allChecked;
+        updateParamCard(c);
+    });
+}
+</script>
+@endpush
