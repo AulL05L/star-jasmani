@@ -47,6 +47,7 @@ Route::middleware(['auth', 'role:admin'])
 
         // ⚠️ Import HARUS di atas athletes/{athlete}
         Route::get('athletes/import', [AthleteImportController::class, 'create'])->name('athletes.import');
+        Route::get('athletes/import/template', [AthleteImportController::class, 'template'])->name('athletes.import.template');
         Route::post('athletes/import', [AthleteImportController::class, 'store'])->name('athletes.import.store');
 
         Route::get('athletes', [AthleteController::class, 'index'])->name('athletes.index');

@@ -9,10 +9,16 @@
             <h1 class="text-3xl font-extrabold tracking-tighter">Import <span class="text-red-800">Atlet Massal</span></h1>
             <p class="text-gray-500 text-sm mt-1">Upload file Excel atau CSV untuk menambahkan banyak atlet sekaligus</p>
         </div>
-        <a href="{{ route('admin.athletes.index') }}"
-            class="flex items-center gap-2 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Kembali
-        </a>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.athletes.import.template') }}"
+                class="flex items-center gap-2 bg-green-900/40 hover:bg-green-900/70 border border-green-800/60 text-green-400 hover:text-green-300 font-bold uppercase tracking-widest text-xs px-4 py-2.5 rounded-xl transition-all">
+                <i class="fa-solid fa-file-arrow-down text-xs"></i> Download Template
+            </a>
+            <a href="{{ route('admin.athletes.index') }}"
+                class="flex items-center gap-2 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors">
+                <i class="fa-solid fa-arrow-left text-xs"></i> Kembali
+            </a>
+        </div>
     </div>
 
     {{-- Hasil Import --}}
