@@ -9,3 +9,12 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Hide scrollbar — scroll tetap jalan, bar-nya ga kelihatan */
+* {
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE / Edge lama */
+}
+*::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari, Opera */
+}
