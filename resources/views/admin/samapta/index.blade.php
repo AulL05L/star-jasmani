@@ -45,9 +45,37 @@
     </div>
     @endif
 
-    {{-- Filter --}}
+    {{-- Tab Parameter (prominent) --}}
+    <div class="mb-4">
+        <p class="text-gray-600 text-[10px] uppercase tracking-widest font-bold mb-2">Filter Parameter</p>
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('admin.samapta.index', array_merge(request()->except('parameter_ke', 'page'), ['tahun' => $tahun, 'search' => $search, 'grade' => $grade, 'gender' => $gender])) }}"
+                class="px-5 py-2.5 rounded-xl font-black uppercase tracking-widest text-xs transition-all
+                    {{ !$parameterKe ? 'bg-red-800 text-white shadow-lg shadow-red-900/30' : 'bg-gray-950 border border-gray-800 text-gray-400 hover:border-red-800 hover:text-white' }}">
+                Semua Parameter
+            </a>
+            @foreach([1,2,3,4] as $p)
+            @php
+                $pLabels = [1=>'Tes Awal', 2=>'Parameter 2', 3=>'Parameter 3', 4=>'Tes Akhir'];
+                $hasData = $parameterList->contains($p);
+            @endphp
+            <a href="{{ route('admin.samapta.index', array_merge(request()->except('parameter_ke', 'page'), ['tahun' => $tahun, 'search' => $search, 'grade' => $grade, 'gender' => $gender, 'parameter_ke' => $p])) }}"
+                class="relative px-5 py-2.5 rounded-xl font-black uppercase tracking-widest text-xs transition-all
+                    {{ $parameterKe == $p ? 'bg-red-800 text-white shadow-lg shadow-red-900/30' : 'bg-gray-950 border border-gray-800 text-gray-400 hover:border-red-800 hover:text-white' }}
+                    {{ !$hasData ? 'opacity-40' : '' }}">
+                P{{ $p }} <span class="font-normal opacity-70 hidden sm:inline">· {{ $pLabels[$p] }}</span>
+                @if($hasData)
+                    <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-green-500"></span>
+                @endif
+            </a>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Filter Sekunder --}}
     <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5 mb-6">
-        <form method="GET" action="{{ route('admin.samapta.index') }}" class="grid grid-cols-2 lg:grid-cols-6 gap-3">
+        <form method="GET" action="{{ route('admin.samapta.index') }}" class="grid grid-cols-2 lg:grid-cols-5 gap-3" id="filter-form">
+            <input type="hidden" name="parameter_ke" value="{{ $parameterKe }}" />
 
             {{-- Search --}}
             <div class="col-span-2">
@@ -60,27 +88,10 @@
             {{-- Tahun --}}
             <div>
                 <label class="block text-gray-500 text-[10px] uppercase tracking-widest mb-1">Tahun</label>
-                <select name="tahun"
+                <select name="tahun" onchange="this.form.submit()"
                     class="w-full bg-black border border-gray-800 text-white text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-red-800 appearance-none">
                     @foreach($tahunList as $t)
                         <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Parameter --}}
-            <div>
-                <label class="block text-gray-500 text-[10px] uppercase tracking-widest mb-1">Parameter</label>
-                <select name="parameter_ke"
-                    class="w-full bg-black border border-gray-800 text-white text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-red-800 appearance-none">
-                    <option value="">Semua</option>
-                    @foreach($parameterList as $p)
-                        <option value="{{ $p }}" {{ $parameterKe == $p ? 'selected' : '' }}>Parameter {{ $p }}</option>
-                    @endforeach
-                    @foreach([1,2,3,4] as $p)
-                        @if(!$parameterList->contains($p))
-                            <option value="{{ $p }}" {{ $parameterKe == $p ? 'selected' : '' }}>Parameter {{ $p }}</option>
-                        @endif
                     @endforeach
                 </select>
             </div>
@@ -90,7 +101,7 @@
                 <label class="block text-gray-500 text-[10px] uppercase tracking-widest mb-1">Grade</label>
                 <select name="grade"
                     class="w-full bg-black border border-gray-800 text-white text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-red-800 appearance-none">
-                    <option value="">Semua</option>
+                    <option value="">Semua Grade</option>
                     @foreach(['A','B','C','D','E'] as $g)
                         <option value="{{ $g }}" {{ $grade === $g ? 'selected' : '' }}>Grade {{ $g }}</option>
                     @endforeach
@@ -109,7 +120,7 @@
             </div>
 
             {{-- Buttons --}}
-            <div class="col-span-2 lg:col-span-6 flex gap-2 justify-end">
+            <div class="col-span-2 lg:col-span-5 flex gap-2 justify-end">
                 <a href="{{ route('admin.samapta.index') }}"
                     class="px-4 py-2 rounded-xl border border-gray-800 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-wider transition-all">
                     Reset
@@ -134,10 +145,17 @@
                 </p>
 
                 <div class="flex items-center gap-2 py-2">
-                    <a href="{{ route('admin.reports.rekap.parameter', ['tahun' => $tahun, 'parameter_ke' => $parameterKe ?? 1]) }}"
-                        class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-900 border border-gray-800 hover:border-red-800 text-gray-400 hover:text-red-400 text-xs font-bold uppercase tracking-wider transition-all">
-                        <i class="fa-solid fa-file-pdf text-xs"></i> PDF Parameter
+                    @if($parameterKe)
+                    <a href="{{ route('admin.reports.rekap.parameter', ['tahun' => $tahun, 'parameter_ke' => $parameterKe]) }}"
+                        class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-900 border border-red-900/50 hover:border-red-700 text-red-400 hover:text-red-300 text-xs font-bold uppercase tracking-wider transition-all">
+                        <i class="fa-solid fa-file-pdf text-xs"></i> PDF Parameter {{ $parameterKe }}
                     </a>
+                    @else
+                    <span class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-900 border border-gray-800 text-gray-600 text-xs font-bold uppercase tracking-wider cursor-not-allowed"
+                        title="Pilih parameter terlebih dahulu">
+                        <i class="fa-solid fa-file-pdf text-xs"></i> PDF Parameter
+                    </span>
+                    @endif
                     <a href="{{ route('admin.reports.rekap.tahun', ['tahun' => $tahun]) }}"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-800 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all">
                         <i class="fa-solid fa-file-pdf text-xs"></i> PDF Tahunan
