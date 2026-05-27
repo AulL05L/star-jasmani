@@ -38,7 +38,7 @@ class AuthController extends Controller
         }
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
-            RateLimiter::hit($throttleKey, decay: 60);
+            RateLimiter::hit($throttleKey, 60);
             throw ValidationException::withMessages([
                 'email' => 'Email atau password tidak sesuai.',
             ]);
