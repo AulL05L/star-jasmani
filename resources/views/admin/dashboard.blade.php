@@ -60,7 +60,7 @@
     </div>
 
     {{-- ── STATS CARDS ── --}}
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
 
         <div class="stat-card rounded-2xl p-4">
             <div class="flex items-start justify-between mb-2">
@@ -141,10 +141,10 @@
     </div>
 
     {{-- ── ROW 2: TREND + DISTRIBUSI GRADE ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
 
         {{-- Trend Perkembangan Nilai --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+        <div class="md:col-span-1 lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Trend Perkembangan Nilai</h2>
@@ -189,7 +189,7 @@
     </div>
 
     {{-- ── ROW 3: GRAFIK KOMPARASI + TREND KELULUSAN ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
 
         {{-- Grafik 1: Putra vs Putri per Parameter --}}
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
@@ -226,10 +226,10 @@
     </div>
 
     {{-- ── ROW 4: PERFORMA KOMPONEN + STATUS FISIK ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
 
         {{-- Grafik 2: Distribusi Komponen Tes --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+        <div class="md:col-span-1 lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Performa Per Komponen</h2>
@@ -286,10 +286,10 @@
     </div>
 
     {{-- ── ROW 5: MEMBER TERBARU + TOP PERFORMER ── --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
         {{-- Member Terbaru --}}
-        <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl overflow-hidden">
+        <div class="md:col-span-1 lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl overflow-hidden">
             <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Member Terbaru</h2>

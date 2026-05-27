@@ -20,7 +20,7 @@
 
     {{-- Stats Cards --}}
     @if($stats)
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4 text-center">
             <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Total Penilaian</p>
             <p class="text-3xl font-black text-white">{{ $stats->total }}</p>
