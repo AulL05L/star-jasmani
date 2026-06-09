@@ -276,30 +276,55 @@
             <p class="mt-4 text-gray-500 max-w-2xl mx-auto italic">"Perencanaan latihan dilakukan agar proses latihan memiliki arah yang jelas untuk mencapai tujuan."</p>
         </div>
         <div class="grid md:grid-cols-2 gap-16 items-start">
-            <div class="space-y-10">
-                <div class="relative pl-8 border-l-2 border-gray-200">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-800"></div>
-                    <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide mb-3">01. Analisis Latihan</h4>
-                    <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg">
-                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Pengukuran BMI:</strong> Mengetahui indeks massa tubuh.</span></li>
-                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis Postur:</strong> Menggunakan aplikasi APECS secara presisi.</span></li>
-                    </ul>
-                </div>
-                <div class="relative pl-8 border-l-2 border-gray-200">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400"></div>
-                    <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide mb-3">02. Proses Latihan</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Strength Training</span>
-                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Endurance</span>
-                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Speed</span>
-                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Renang</span>
+            <div class="border-l-2 border-gray-200">
+
+                {{-- Item 01 --}}
+                <div class="relative pl-8 pb-2 group" id="method-item-0">
+                    <div class="method-dot-0 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-800 transition-all duration-300"></div>
+                    <button onclick="toggleMethod(0)"
+                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">01. Analisis Latihan</h4>
+                        <span id="method-icon-0" class="text-red-800 font-black text-2xl leading-none transition-transform duration-300 rotate-0">+</span>
+                    </button>
+                    <div id="method-content-0" class="overflow-hidden transition-all duration-500 ease-in-out max-h-96 pb-8">
+                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg">
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Pengukuran BMI:</strong> Mengetahui indeks massa tubuh.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis Postur:</strong> Menggunakan aplikasi APECS secara presisi.</span></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="relative pl-8 border-l-2 border-gray-200">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400"></div>
-                    <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide mb-3">03. Hasil Terukur</h4>
-                    <p class="text-gray-600">Capaian proses latihan diberikan secara berkala melalui Sport Analysis.</p>
+
+                {{-- Item 02 --}}
+                <div class="relative pl-8 pb-2 group" id="method-item-1">
+                    <div class="method-dot-1 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
+                    <button onclick="toggleMethod(1)"
+                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">02. Proses Latihan</h4>
+                        <span id="method-icon-1" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
+                    </button>
+                    <div id="method-content-1" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
+                        <div class="flex flex-wrap gap-2 pb-8">
+                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Strength Training</span>
+                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Endurance</span>
+                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Speed</span>
+                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Renang</span>
+                        </div>
+                    </div>
                 </div>
+
+                {{-- Item 03 --}}
+                <div class="relative pl-8 pb-2 group" id="method-item-2">
+                    <div class="method-dot-2 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
+                    <button onclick="toggleMethod(2)"
+                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">03. Hasil Terukur</h4>
+                        <span id="method-icon-2" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
+                    </button>
+                    <div id="method-content-2" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
+                        <p class="text-gray-600 pb-8">Capaian proses latihan diberikan secara berkala melalui Sport Analysis — laporan perkembangan fisik yang objektif dan berbasis data.</p>
+                    </div>
+                </div>
+
             </div>
             <div class="sticky top-24">
                 <div class="relative overflow-hidden rounded-3xl shadow-2xl bg-black aspect-[3/4]">
@@ -356,5 +381,36 @@
     const mobileLinks = document.querySelectorAll(".mobile-link");
     hamburger.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
     mobileLinks.forEach(link => link.addEventListener("click", () => mobileMenu.classList.add("hidden")));
+
+    // ── Method Accordion ──
+    const methodState = [true, false, false]; // item 0 terbuka by default
+
+    function toggleMethod(index) {
+        methodState[index] = !methodState[index];
+
+        for (let i = 0; i < 3; i++) {
+            const content = document.getElementById('method-content-' + i);
+            const icon    = document.getElementById('method-icon-' + i);
+            const dot     = document.querySelector('.method-dot-' + i);
+
+            if (methodState[i]) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.paddingBottom = '2rem';
+                icon.textContent = '−';
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-red-800');
+                dot.classList.remove('bg-gray-300');
+                dot.classList.add('bg-red-800');
+            } else {
+                content.style.maxHeight = '0';
+                content.style.paddingBottom = '0';
+                icon.textContent = '+';
+                icon.classList.remove('text-red-800');
+                icon.classList.add('text-gray-400');
+                dot.classList.remove('bg-red-800');
+                dot.classList.add('bg-gray-300');
+            }
+        }
+    }
 </script>
 @endpush
