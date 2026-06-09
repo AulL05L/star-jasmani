@@ -191,6 +191,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{-- PRESTASI UTAMA — nonaktif sementara, hapus tag komentar ini untuk munculkan lagi
                 <div class="overflow-hidden rounded-xl border border-red-100 bg-red-50/30 shadow-sm">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-red-800 text-white"><tr><th class="px-4 py-2 border-b text-[10px] uppercase font-bold"><i class="fa-solid fa-trophy mr-2"></i>Prestasi Utama S&C</th><th class="px-4 py-2 border-b text-right text-[10px] uppercase font-bold">Tahun</th></tr></thead>
@@ -201,6 +202,7 @@
                         </tbody>
                     </table>
                 </div>
+                --}}
             </div>
         </div>
     </div>
