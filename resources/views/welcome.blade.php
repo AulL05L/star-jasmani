@@ -118,7 +118,10 @@
                 EST. 2024 <br> <span class="text-gray-500">JAKARTA, INDONESIA</span>
             </h3>
             <p class="text-gray-400 text-lg md:text-xl leading-relaxed max-w-2xl">
-                Star Jasmani dibentuk oleh <span class="text-white font-bold">Fariz Fahrun, S.Or.</span> pada 28 Oktober 2024. Lahir dari visi untuk mengintegrasikan ilmu kepelatihan olahraga dengan pembentukan karakter yang tangguh.
+                Star Jasmani didirikan oleh <span class="text-white font-bold">Fariz Fahrun, S.Or.</span> pada 28 Oktober 2024. Berawal dari visi untuk membantu masyarakat, atlet, dan calon anggota institusi memaksimalkan kapasitas fisiknya melalui metode latihan berbasis <span class="text-white font-semibold">sport science</span> yang objektif, terukur, dan efektif.
+            </p>
+            <p class="text-gray-500 text-base md:text-lg leading-relaxed max-w-2xl mt-4">
+                Serta membantu mencapai potensi fisik terbaiknya dengan menggabungkan evaluasi, pelatihan, dan pengembangan performa secara komprehensif.
             </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24 border-y border-gray-800 py-16">
