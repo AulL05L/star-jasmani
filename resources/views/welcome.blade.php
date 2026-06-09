@@ -268,89 +268,107 @@
 </section>
 
 {{-- METHOD --}}
-<section id="method" class="py-16 lg:py-24 bg-white text-gray-900">
-    <div class="container mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-sm uppercase tracking-[0.4em] text-red-800 font-bold mb-3">Our Scientific Approach</h2>
-            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tighter">METODE <span class="text-red-800">STAR JASMANI</span></h3>
-            <p class="mt-4 text-gray-500 max-w-2xl mx-auto italic">"Perencanaan latihan dilakukan agar proses latihan memiliki arah yang jelas untuk mencapai tujuan."</p>
+<section id="method" class="bg-white text-gray-900 flex flex-col lg:flex-row min-h-screen">
+
+    {{-- KIRI: teks + accordion + CTA --}}
+    <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-14 lg:px-16 py-20 lg:py-24">
+
+        <p class="text-xs font-bold uppercase tracking-[0.35em] text-red-800 mb-4">Our Scientific Approach</p>
+        <h3 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-3 leading-tight">
+            METODE <span class="text-red-800">STAR JASMANI</span>
+        </h3>
+        <p class="text-gray-500 text-base mb-10 leading-relaxed max-w-md">
+            "Perencanaan latihan dilakukan agar proses latihan memiliki arah yang jelas untuk mencapai tujuan — berbasis data, bukan asumsi."
+        </p>
+
+        {{-- Accordion --}}
+        <div class="border-l-2 border-gray-200 mb-10">
+
+            {{-- Item 01 --}}
+            <div class="relative pl-8 pb-2" id="method-item-0">
+                <div class="method-dot-0 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-800 transition-all duration-300"></div>
+                <button onclick="toggleMethod(0)" class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                    <h4 class="text-lg font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">01. Analisis Latihan</h4>
+                    <span id="method-icon-0" class="text-red-800 font-black text-2xl leading-none">+</span>
+                </button>
+                <div id="method-content-0" class="overflow-hidden transition-all duration-500 ease-in-out max-h-96 pb-6">
+                    <p class="text-gray-500 text-sm mb-3">Sebelum program dimulai, kami lakukan pemetaan kondisi fisik secara menyeluruh — bukan tebakan, tapi data nyata.</p>
+                    <ul class="space-y-2 text-gray-600 text-sm p-4 bg-gray-50 rounded-lg">
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Pengukuran BMI & Komposisi Tubuh:</strong> Baseline fisik yang akurat sebagai fondasi program tepat sasaran.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Analisis Postur (APECS):</strong> Identifikasi ketidakseimbangan otot & risiko cedera sebelum beban latihan diberikan.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Asesmen Kemampuan Fisik Awal:</strong> Titik tolak untuk merancang program yang realistis dan progresif.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            {{-- Item 02 --}}
+            <div class="relative pl-8 pb-2" id="method-item-1">
+                <div class="method-dot-1 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
+                <button onclick="toggleMethod(1)" class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                    <h4 class="text-lg font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">02. Proses Latihan</h4>
+                    <span id="method-icon-1" class="text-gray-400 font-black text-2xl leading-none">+</span>
+                </button>
+                <div id="method-content-1" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
+                    <p class="text-gray-500 text-sm mb-3">Periodisasi individual — bukan program generik, tapi rancangan khusus yang menyesuaikan kondisi, target, dan waktu seleksi.</p>
+                    <ul class="space-y-2 text-gray-600 text-sm p-4 bg-gray-50 rounded-lg mb-3">
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Strength & Conditioning:</strong> Kekuatan fungsional progresif, siap menanggung beban intensitas tinggi tanpa cedera.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Endurance & Cardio:</strong> Kapasitas aerobik & daya tahan lari — penentu utama kelulusan tes samapta.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Speed & Agility:</strong> Kecepatan dan kelincahan untuk shuttle run dan tes lapangan lainnya.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Renang:</strong> Teknik dan stamina akuatik sesuai standar tes kedinasan.</span></li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 pb-4">
+                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Strength</span>
+                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Endurance</span>
+                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Speed</span>
+                        <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Renang</span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Item 03 --}}
+            <div class="relative pl-8 pb-2" id="method-item-2">
+                <div class="method-dot-2 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
+                <button onclick="toggleMethod(2)" class="w-full text-left flex items-center justify-between py-3 pr-2 group">
+                    <h4 class="text-lg font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">03. Hasil Terukur</h4>
+                    <span id="method-icon-2" class="text-gray-400 font-black text-2xl leading-none">+</span>
+                </button>
+                <div id="method-content-2" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
+                    <p class="text-gray-500 text-sm mb-3">Latihan tanpa evaluasi adalah latihan tanpa arah. Di Star Jasmani, setiap progres terdokumentasi secara ilmiah.</p>
+                    <ul class="space-y-2 text-gray-600 text-sm p-4 bg-gray-50 rounded-lg pb-6">
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Laporan Perkembangan Berkala:</strong> Data skor samapta yang bisa dipantau langsung — angka nyata, bukan asumsi.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Analisis per Komponen:</strong> Tahu persis di mana harus fokus dari setiap elemen tes fisik.</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-800 font-bold shrink-0">•</span><span><strong>Rekomendasi Lanjutan:</strong> Program selalu disesuaikan dengan kondisi fisik terkini.</span></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-        <div class="grid md:grid-cols-2 gap-16 items-start">
-            <div class="border-l-2 border-gray-200">
 
-                {{-- Item 01 --}}
-                <div class="relative pl-8 pb-2 group" id="method-item-0">
-                    <div class="method-dot-0 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-800 transition-all duration-300"></div>
-                    <button onclick="toggleMethod(0)"
-                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
-                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">01. Analisis Latihan</h4>
-                        <span id="method-icon-0" class="text-red-800 font-black text-2xl leading-none transition-transform duration-300 rotate-0">+</span>
-                    </button>
-                    <div id="method-content-0" class="overflow-hidden transition-all duration-500 ease-in-out max-h-96 pb-8">
-                        <p class="text-gray-500 text-sm mb-3">Sebelum program dimulai, kami lakukan pemetaan kondisi fisik secara menyeluruh — bukan tebakan, tapi data nyata.</p>
-                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg">
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Pengukuran BMI & Komposisi Tubuh:</strong> Memahami baseline fisik kamu secara akurat sebagai fondasi program latihan yang tepat sasaran.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis Postur (APECS):</strong> Identifikasi ketidakseimbangan otot dan risiko cedera menggunakan aplikasi sport science berbasis teknologi, sebelum beban latihan diberikan.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Asesmen Kemampuan Fisik Awal:</strong> Mengukur kapasitas lari, kekuatan, dan daya tahan sebagai titik tolak untuk merancang program yang realistis dan progresif.</span></li>
-                        </ul>
-                    </div>
-                </div>
+        {{-- CTA Buttons --}}
+        <div class="flex flex-col sm:flex-row gap-3">
+            <a href="{{ route('daftar') }}"
+                class="inline-flex items-center justify-center gap-2 bg-red-800 hover:bg-red-900 text-white font-bold uppercase tracking-widest text-xs py-4 px-8 transition-all duration-300">
+                DAFTAR SEKARANG
+            </a>
+            <a href="https://wa.me/6285603875675" target="_blank"
+                class="inline-flex items-center justify-center gap-2 border-2 border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 font-bold uppercase tracking-widest text-xs py-4 px-8 transition-all duration-300">
+                KONSULTASI GRATIS
+            </a>
+        </div>
 
-                {{-- Item 02 --}}
-                <div class="relative pl-8 pb-2 group" id="method-item-1">
-                    <div class="method-dot-1 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
-                    <button onclick="toggleMethod(1)"
-                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
-                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">02. Proses Latihan</h4>
-                        <span id="method-icon-1" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
-                    </button>
-                    <div id="method-content-1" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
-                        <p class="text-gray-500 text-sm mb-3">Program latihan dirancang secara individual — bukan program generik, tapi periodisasi khusus yang menyesuaikan kondisi, target, dan waktu seleksi kamu.</p>
-                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg mb-3">
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Strength & Conditioning:</strong> Membangun kekuatan fungsional otot secara progresif agar tubuh siap menanggung beban latihan intensitas tinggi tanpa risiko cedera.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Endurance & Cardio:</strong> Meningkatkan kapasitas aerobik dan daya tahan lari — komponen utama tes samapta yang sering menjadi penentu kelulusan.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Speed & Agility:</strong> Melatih kecepatan gerak dan kelincahan untuk memaksimalkan performa shuttle run dan tes lapangan lainnya.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Renang:</strong> Teknik dan stamina renang untuk memenuhi standar tes kedinasan yang mensyaratkan kemampuan akuatik terukur.</span></li>
-                        </ul>
-                        <div class="flex flex-wrap gap-2 pb-4">
-                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Strength Training</span>
-                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Endurance</span>
-                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Speed</span>
-                            <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Renang</span>
-                        </div>
-                    </div>
-                </div>
+    </div>
 
-                {{-- Item 03 --}}
-                <div class="relative pl-8 pb-2 group" id="method-item-2">
-                    <div class="method-dot-2 absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 transition-all duration-300"></div>
-                    <button onclick="toggleMethod(2)"
-                        class="w-full text-left flex items-center justify-between py-3 pr-2 group">
-                        <h4 class="text-xl font-bold text-gray-900 uppercase tracking-wide group-hover:text-red-800 transition-colors">03. Hasil Terukur</h4>
-                        <span id="method-icon-2" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
-                    </button>
-                    <div id="method-content-2" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
-                        <p class="text-gray-500 text-sm mb-3">Latihan tanpa evaluasi adalah latihan tanpa arah. Di Star Jasmani, setiap progres kamu terdokumentasi dan terukur secara ilmiah.</p>
-                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg pb-8">
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Laporan Perkembangan Fisik Berkala:</strong> Setiap sesi evaluasi menghasilkan data skor samapta yang bisa kamu pantau langsung — bukan asumsi, tapi angka nyata.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis per Komponen:</strong> Lari, push-up, sit-up, pull-up, shuttle run, dan renang dievaluasi secara terpisah sehingga kamu tahu persis di mana harus fokus.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Rekomendasi Program Lanjutan:</strong> Hasil evaluasi menjadi dasar penyesuaian program — sehingga setiap fase latihan selalu relevan dengan kondisi fisik kamu saat ini.</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-            <div class="sticky top-24">
-                <div class="relative overflow-hidden rounded-3xl shadow-2xl bg-black aspect-[3/4]">
-                    <img src="{{ asset('pict/method-visual.png') }}" alt="Star Jasmani Method" class="w-full h-full object-cover opacity-80" />
-                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent">
-                        <p class="text-red-500 font-bold text-sm uppercase tracking-widest mb-1">Target Achievement</p>
-                        <h5 class="text-2xl font-bold text-white">Membentuk Fisik & Mental Juara</h5>
-                    </div>
-                </div>
-            </div>
+    {{-- KANAN: gambar edge-to-edge --}}
+    <div class="w-full lg:w-1/2 h-72 sm:h-96 lg:h-auto relative">
+        <img src="{{ asset('pict/method-visual.png') }}" alt="Star Jasmani Method"
+            class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-8">
+            <p class="text-red-400 font-bold text-xs uppercase tracking-widest mb-2">Target Achievement</p>
+            <h5 class="text-2xl font-bold text-white leading-tight">Membentuk Fisik &<br>Mental Juara</h5>
         </div>
     </div>
+
 </section>
 
 {{-- FOOTER --}}
