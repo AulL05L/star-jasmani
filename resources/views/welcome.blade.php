@@ -287,9 +287,11 @@
                         <span id="method-icon-0" class="text-red-800 font-black text-2xl leading-none transition-transform duration-300 rotate-0">+</span>
                     </button>
                     <div id="method-content-0" class="overflow-hidden transition-all duration-500 ease-in-out max-h-96 pb-8">
+                        <p class="text-gray-500 text-sm mb-3">Sebelum program dimulai, kami lakukan pemetaan kondisi fisik secara menyeluruh — bukan tebakan, tapi data nyata.</p>
                         <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg">
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Pengukuran BMI:</strong> Mengetahui indeks massa tubuh.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis Postur:</strong> Menggunakan aplikasi APECS secara presisi.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Pengukuran BMI & Komposisi Tubuh:</strong> Memahami baseline fisik kamu secara akurat sebagai fondasi program latihan yang tepat sasaran.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis Postur (APECS):</strong> Identifikasi ketidakseimbangan otot dan risiko cedera menggunakan aplikasi sport science berbasis teknologi, sebelum beban latihan diberikan.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Asesmen Kemampuan Fisik Awal:</strong> Mengukur kapasitas lari, kekuatan, dan daya tahan sebagai titik tolak untuk merancang program yang realistis dan progresif.</span></li>
                         </ul>
                     </div>
                 </div>
@@ -303,7 +305,14 @@
                         <span id="method-icon-1" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
                     </button>
                     <div id="method-content-1" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
-                        <div class="flex flex-wrap gap-2 pb-8">
+                        <p class="text-gray-500 text-sm mb-3">Program latihan dirancang secara individual — bukan program generik, tapi periodisasi khusus yang menyesuaikan kondisi, target, dan waktu seleksi kamu.</p>
+                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg mb-3">
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Strength & Conditioning:</strong> Membangun kekuatan fungsional otot secara progresif agar tubuh siap menanggung beban latihan intensitas tinggi tanpa risiko cedera.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Endurance & Cardio:</strong> Meningkatkan kapasitas aerobik dan daya tahan lari — komponen utama tes samapta yang sering menjadi penentu kelulusan.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Speed & Agility:</strong> Melatih kecepatan gerak dan kelincahan untuk memaksimalkan performa shuttle run dan tes lapangan lainnya.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Renang:</strong> Teknik dan stamina renang untuk memenuhi standar tes kedinasan yang mensyaratkan kemampuan akuatik terukur.</span></li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 pb-4">
                             <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Strength Training</span>
                             <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Endurance</span>
                             <span class="px-3 py-1 bg-black text-white text-xs font-bold rounded-full uppercase">Speed</span>
@@ -321,7 +330,12 @@
                         <span id="method-icon-2" class="text-gray-400 font-black text-2xl leading-none transition-transform duration-300">+</span>
                     </button>
                     <div id="method-content-2" class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pb-0">
-                        <p class="text-gray-600 pb-8">Capaian proses latihan diberikan secara berkala melalui Sport Analysis — laporan perkembangan fisik yang objektif dan berbasis data.</p>
+                        <p class="text-gray-500 text-sm mb-3">Latihan tanpa evaluasi adalah latihan tanpa arah. Di Star Jasmani, setiap progres kamu terdokumentasi dan terukur secara ilmiah.</p>
+                        <ul class="space-y-3 text-gray-600 shadow-sm p-4 bg-gray-50 rounded-lg pb-8">
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Laporan Perkembangan Fisik Berkala:</strong> Setiap sesi evaluasi menghasilkan data skor samapta yang bisa kamu pantau langsung — bukan asumsi, tapi angka nyata.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Analisis per Komponen:</strong> Lari, push-up, sit-up, pull-up, shuttle run, dan renang dievaluasi secara terpisah sehingga kamu tahu persis di mana harus fokus.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-red-800 font-bold">•</span><span><strong>Rekomendasi Program Lanjutan:</strong> Hasil evaluasi menjadi dasar penyesuaian program — sehingga setiap fase latihan selalu relevan dengan kondisi fisik kamu saat ini.</span></li>
+                        </ul>
                     </div>
                 </div>
 
