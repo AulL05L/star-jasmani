@@ -124,24 +124,92 @@
                 Serta membantu mencapai potensi fisik terbaiknya dengan menggabungkan evaluasi, pelatihan, dan pengembangan performa secara komprehensif.
             </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24 border-y border-gray-800 py-16">
-            <div class="text-center"><h4 class="text-red-800 font-bold uppercase text-xs tracking-widest mb-4">Core Value 01</h4><p class="text-2xl font-bold uppercase italic">Scientific</p></div>
-            <div class="text-center"><h4 class="text-red-800 font-bold uppercase text-xs tracking-widest mb-4">Core Value 02</h4><p class="text-2xl font-bold uppercase italic">Measured</p></div>
-            <div class="text-center"><h4 class="text-red-800 font-bold uppercase text-xs tracking-widest mb-4">Core Value 03</h4><p class="text-2xl font-bold uppercase italic">Mentality</p></div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-16">
-            <div>
-                <h4 class="text-gray-500 font-bold uppercase text-xs tracking-widest mb-6">Vision</h4>
-                <p class="text-2xl font-semibold leading-snug">"Memberikan pelatihan tepat guna untuk hasil optimal dalam membentuk fisik dan mental, serta menjadikan olahraga sebagai investasi kesehatan."</p>
+        {{-- CORE VALUES --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+            <div class="relative overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-red-800 transition-colors duration-300 group p-8">
+                <span class="absolute -top-4 -right-2 text-[7rem] font-black text-zinc-900 leading-none select-none group-hover:text-zinc-800 transition-colors duration-300">01</span>
+                <div class="relative z-10">
+                    <div class="w-10 h-10 rounded-full bg-red-800/20 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-flask text-red-500 text-sm"></i>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-3">Core Value 01</p>
+                    <h4 class="text-3xl font-black uppercase tracking-tight text-white mb-3">Scientific</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Setiap program dirancang berdasarkan prinsip sport science — bukan intuisi, tapi evidence-based training.</p>
+                </div>
+                <div class="absolute bottom-0 left-0 h-1 w-0 bg-red-700 group-hover:w-full transition-all duration-500"></div>
             </div>
-            <div>
-                <h4 class="text-gray-500 font-bold uppercase text-xs tracking-widest mb-6">Mission</h4>
-                <ul class="space-y-6 text-gray-400">
-                    <li class="flex items-baseline gap-4"><span class="text-red-800 font-black">/</span><p>Menyediakan program pelatihan sistematis sesuai kebutuhan individu.</p></li>
-                    <li class="flex items-baseline gap-4"><span class="text-red-800 font-black">/</span><p>Menerapkan metode latihan modern untuk performa fisik puncak.</p></li>
-                    <li class="flex items-baseline gap-4"><span class="text-red-800 font-black">/</span><p>Membentuk karakter dan mentalitas yang siap menghadapi seleksi.</p></li>
+
+            <div class="relative overflow-hidden bg-zinc-950 border border-red-800 group p-8">
+                <span class="absolute -top-4 -right-2 text-[7rem] font-black text-red-950 leading-none select-none">02</span>
+                <div class="relative z-10">
+                    <div class="w-10 h-10 rounded-full bg-red-800/30 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-chart-line text-red-500 text-sm"></i>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-3">Core Value 02</p>
+                    <h4 class="text-3xl font-black uppercase tracking-tight text-white mb-3">Measured</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Progres yang tidak terukur tidak bisa dimanage. Setiap sesi menghasilkan data yang bisa dipantau dan dievaluasi.</p>
+                </div>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-red-700"></div>
+            </div>
+
+            <div class="relative overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-red-800 transition-colors duration-300 group p-8">
+                <span class="absolute -top-4 -right-2 text-[7rem] font-black text-zinc-900 leading-none select-none group-hover:text-zinc-800 transition-colors duration-300">03</span>
+                <div class="relative z-10">
+                    <div class="w-10 h-10 rounded-full bg-red-800/20 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-brain text-red-500 text-sm"></i>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-3">Core Value 03</p>
+                    <h4 class="text-3xl font-black uppercase tracking-tight text-white mb-3">Mentality</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Fisik yang kuat dibangun di atas mental yang tangguh. Kami melatih keduanya secara bersamaan dan terstruktur.</p>
+                </div>
+                <div class="absolute bottom-0 left-0 h-1 w-0 bg-red-700 group-hover:w-full transition-all duration-500"></div>
+            </div>
+        </div>
+
+        {{-- VISI MISI --}}
+        <div class="grid md:grid-cols-2 gap-0 border border-zinc-800">
+
+            {{-- VISION --}}
+            <div class="p-10 lg:p-14 border-b md:border-b-0 md:border-r border-zinc-800">
+                <p class="text-xs font-bold uppercase tracking-[0.35em] text-red-500 mb-8">— Vision</p>
+                <div class="relative">
+                    <span class="absolute -top-6 -left-2 text-[8rem] leading-none font-black text-zinc-900 select-none">"</span>
+                    <p class="relative z-10 text-xl lg:text-2xl font-semibold text-white leading-snug">
+                        Memberikan pelatihan tepat guna untuk hasil optimal dalam membentuk
+                        <span class="text-red-500"> fisik dan mental</span>,
+                        serta menjadikan olahraga sebagai investasi kesehatan.
+                    </p>
+                    <span class="block text-right text-[4rem] leading-none font-black text-zinc-900 select-none -mt-4">"</span>
+                </div>
+            </div>
+
+            {{-- MISSION --}}
+            <div class="p-10 lg:p-14">
+                <p class="text-xs font-bold uppercase tracking-[0.35em] text-red-500 mb-8">— Mission</p>
+                <ul class="space-y-0">
+                    <li class="flex gap-6 py-6 border-b border-zinc-800 group">
+                        <div class="flex flex-col items-center">
+                            <span class="text-red-600 font-black text-lg leading-none">01</span>
+                            <div class="w-px flex-1 bg-zinc-800 mt-2 group-last:hidden"></div>
+                        </div>
+                        <p class="text-zinc-300 text-sm leading-relaxed pt-0.5 group-hover:text-white transition-colors">Menyediakan program pelatihan <strong class="text-white">sistematis dan personal</strong> sesuai kebutuhan masing-masing individu.</p>
+                    </li>
+                    <li class="flex gap-6 py-6 border-b border-zinc-800 group">
+                        <div class="flex flex-col items-center">
+                            <span class="text-red-600 font-black text-lg leading-none">02</span>
+                            <div class="w-px flex-1 bg-zinc-800 mt-2"></div>
+                        </div>
+                        <p class="text-zinc-300 text-sm leading-relaxed pt-0.5 group-hover:text-white transition-colors">Menerapkan metode latihan <strong class="text-white">modern berbasis sport science</strong> untuk mencapai performa fisik puncak.</p>
+                    </li>
+                    <li class="flex gap-6 py-6 group">
+                        <div class="flex flex-col items-center">
+                            <span class="text-red-600 font-black text-lg leading-none">03</span>
+                        </div>
+                        <p class="text-zinc-300 text-sm leading-relaxed pt-0.5 group-hover:text-white transition-colors">Membentuk <strong class="text-white">karakter dan mentalitas</strong> yang kuat, siap menghadapi tantangan seleksi dengan percaya diri.</p>
+                    </li>
                 </ul>
             </div>
+
         </div>
     </div>
 </section>
