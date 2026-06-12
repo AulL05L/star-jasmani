@@ -101,19 +101,30 @@
             </a>
 
         @else
+            @php $memberProgram = auth()->user()->athlete?->program ?? 'polri'; @endphp
             <p class="text-gray-700 text-[10px] uppercase tracking-widest font-bold px-3 py-2">Menu</p>
 
+            @if($memberProgram === 'polri')
             <a href="{{ route('member.dashboard') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
                 {{ request()->routeIs('member.dashboard') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
                 <i class="fa-solid fa-house w-4 text-center"></i> Dashboard Samapta
             </a>
+            @endif
 
+            @if($memberProgram === 'kebugaran')
             <a href="{{ route('member.kebugaran.dashboard') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
-                {{ request()->routeIs('member.kebugaran.dashboard') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                {{ request()->routeIs('member.kebugaran.*') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                <i class="fa-solid fa-house w-4 text-center"></i> Dashboard
+            </a>
+            @else
+            <a href="{{ route('member.kebugaran.dashboard') }}"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
+                {{ request()->routeIs('member.kebugaran.*') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
                 <i class="fa-solid fa-heart-pulse w-4 text-center"></i> Dashboard Kebugaran
             </a>
+            @endif
         @endif
     </nav>
 

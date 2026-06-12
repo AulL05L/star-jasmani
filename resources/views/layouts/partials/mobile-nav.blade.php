@@ -32,18 +32,40 @@
 
             <button onclick="toggleMoreMenu()"
                 class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all
-                {{ request()->routeIs('admin.benchmark', 'admin.athletes.create', 'admin.athletes.import*', 'admin.institutions.*', 'admin.batches.*') ? 'text-red-500' : 'text-gray-600 hover:text-gray-400' }}">
+                {{ request()->routeIs('admin.benchmark', 'admin.athletes.create', 'admin.athletes.import*', 'admin.institutions.*', 'admin.batches.*', 'admin.kebugaran.*') ? 'text-red-500' : 'text-gray-600 hover:text-gray-400' }}">
                 <i class="fa-solid fa-ellipsis text-lg"></i>
                 <span class="text-[10px] font-bold uppercase tracking-widest">Lainnya</span>
             </button>
 
         @else
+            @php $memberProgram = auth()->user()->athlete?->program ?? 'polri'; @endphp
+
+            {{-- Home: Samapta untuk polri, Dashboard untuk kebugaran --}}
+            @if($memberProgram === 'polri')
             <a href="{{ route('member.dashboard') }}"
                 class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all
                 {{ request()->routeIs('member.dashboard') ? 'text-red-500' : 'text-gray-600 hover:text-gray-400' }}">
                 <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Samapta</span>
+            </a>
+            @else
+            <a href="{{ route('member.kebugaran.dashboard') }}"
+                class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all
+                {{ request()->routeIs('member.kebugaran.*') ? 'text-red-500' : 'text-gray-600 hover:text-gray-400' }}">
+                <i class="fa-solid fa-house text-lg"></i>
                 <span class="text-[10px] font-bold uppercase tracking-widest">Home</span>
             </a>
+            @endif
+
+            {{-- Kebugaran tab: hanya untuk polri (supaya bisa lihat keduanya) --}}
+            @if($memberProgram === 'polri')
+            <a href="{{ route('member.kebugaran.dashboard') }}"
+                class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all
+                {{ request()->routeIs('member.kebugaran.*') ? 'text-red-500' : 'text-gray-600 hover:text-gray-400' }}">
+                <i class="fa-solid fa-heart-pulse text-lg"></i>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Kebugaran</span>
+            </a>
+            @endif
 
             <a href="https://wa.me/6285603875675" target="_blank"
                 class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-gray-600 hover:text-gray-400 transition-all">
@@ -66,20 +88,38 @@
 @if(auth()->user()->isAdmin())
 {{-- Overlay --}}
 <div id="more-overlay"
-    class="lg:hidden fixed inset-0 bg-black/60 z-[45] opacity-0 pointer-events-none transition-opacity duration-300"
+    class="lg:hidden fixed inset-0 bg-black/60 z-45 opacity-0 pointer-events-none transition-opacity duration-300"
     onclick="toggleMoreMenu()">
 </div>
 
 {{-- Slide-up Drawer --}}
 <div id="more-menu"
     class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-gray-950 border-t border-gray-800 rounded-t-2xl translate-y-full transition-transform duration-300 ease-out">
-    <div class="p-5">
+    <div class="p-5 overflow-y-auto max-h-[75vh]">
 
         {{-- Handle bar --}}
         <div class="w-10 h-1 bg-gray-700 rounded-full mx-auto mb-5"></div>
 
-        <p class="text-gray-600 text-[10px] uppercase tracking-widest font-bold px-2 mb-2">Menu Admin</p>
+        {{-- Kebugaran --}}
+        <p class="text-gray-600 text-[10px] uppercase tracking-widest font-bold px-2 mb-2">Kebugaran</p>
+        <div class="space-y-1 mb-3">
+            <a href="{{ route('admin.kebugaran.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                {{ request()->routeIs('admin.kebugaran.index', 'admin.kebugaran.period.show') ? 'bg-red-900/30 text-red-400' : 'text-gray-300 hover:bg-gray-800' }}">
+                <i class="fa-solid fa-heart-pulse w-5 text-center text-gray-500"></i>
+                <span class="text-sm font-bold">Data Kebugaran</span>
+            </a>
 
+            <a href="{{ route('admin.kebugaran.period.create') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                {{ request()->routeIs('admin.kebugaran.period.create') ? 'bg-red-900/30 text-red-400' : 'text-gray-300 hover:bg-gray-800' }}">
+                <i class="fa-solid fa-plus w-5 text-center text-gray-500"></i>
+                <span class="text-sm font-bold">Buat Periode</span>
+            </a>
+        </div>
+
+        {{-- Penilaian & Pengaturan --}}
+        <p class="text-gray-600 text-[10px] uppercase tracking-widest font-bold px-2 mb-2">Lainnya</p>
         <div class="space-y-1">
             <a href="{{ route('admin.benchmark') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all

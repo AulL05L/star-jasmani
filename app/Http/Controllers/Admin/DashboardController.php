@@ -16,10 +16,10 @@ class DashboardController extends Controller
     public function index(Request $request): View
     {
         // ── Filter ──
-        $tahun        = $request->get('tahun', now()->year);
-        $batchId      = $request->get('batch_id');
-        $genderFilter = $request->get('gender', 'all');
-        $program      = $request->get('program', 'polri'); // 'polri' | 'kebugaran'
+        $tahun        = $request->input('tahun', now()->year);
+        $batchId      = $request->input('batch_id');
+        $genderFilter = $request->input('gender', 'all');
+        $program      = $request->input('program', 'polri'); // 'polri' | 'kebugaran'
 
         // ── Stats Cards ──
         $totalMember  = User::where('role', 'member')->count();
@@ -66,13 +66,74 @@ class DashboardController extends Controller
             now()->endOfWeek(),
         ])->count();
 
-        // ── Kebugaran Stats (untuk program snapshot) ──
+        // ── Kebugaran Stats ──
         $kebugaranStats = [
             'total_athletes' => $totalKebugaran,
             'total_periods'  => KebugaranPeriod::count(),
             'total_sessions' => KebugaranSession::count(),
             'last_session'   => KebugaranSession::latest('date')->value('date'),
         ];
+
+        // ── Kebugaran: progress per atlet (untuk chart di tab kebugaran) ──
+        $kebugaranAthletes = \App\Models\Athlete::with([
+            'user',
+            'kebugaranPeriods.sessions.scores',
+        ])->where('program', 'kebugaran')->get();
+
+        $kebugaranChartData  = [];   // per atlet: latest score per parameter + progress vs sebelumnya
+        $kebugaranParamAvg   = [];   // rata-rata skor per parameter semua atlet (session terbaru)
+        $paramKeys = array_keys(\App\Services\KebugaranScoring::$parameters);
+
+        foreach ($kebugaranAthletes as $a) {
+            $gender   = $a->gender;
+            $allSessions = $a->kebugaranPeriods
+                ->flatMap(fn($p) => $p->sessions)
+                ->sortBy('date');
+
+            $lastSess = $allSessions->last();
+            $prevSess = $allSessions->count() >= 2 ? $allSessions->nth(2)->last() : null;
+
+            if (!$lastSess) continue;
+
+            $latestScores = [];
+            $prevScores   = [];
+            foreach ($paramKeys as $pk) {
+                $sv = $lastSess->scores->firstWhere('parameter', $pk);
+                $latestScores[$pk] = $sv ? (float) $sv->value : null;
+
+                if ($prevSess) {
+                    $pv = $prevSess->scores->firstWhere('parameter', $pk);
+                    $prevScores[$pk] = $pv ? (float) $pv->value : null;
+                }
+            }
+
+            $totalLatest = \App\Services\KebugaranScoring::totalScore(
+                array_filter($latestScores, fn($v) => $v !== null), $gender
+            );
+            $totalPrev = $prevSess
+                ? \App\Services\KebugaranScoring::totalScore(
+                    array_filter($prevScores, fn($v) => $v !== null), $gender
+                  )
+                : null;
+
+            $kebugaranChartData[] = [
+                'name'         => $a->user->name,
+                'gender'       => $gender,
+                'totalScore'   => $totalLatest['score'],
+                'totalPrev'    => $totalPrev ? $totalPrev['score'] : null,
+                'delta'        => $totalPrev ? ($totalLatest['score'] - $totalPrev['score']) : null,
+                'category'     => $totalLatest['category'],
+                'scores'       => $latestScores,
+                'prevScores'   => $prevScores,
+                'sessionCount' => $allSessions->count(),
+            ];
+        }
+
+        // Rata-rata per parameter (semua atlet kebugaran, session terbaru)
+        foreach ($paramKeys as $pk) {
+            $vals = collect($kebugaranChartData)->pluck("scores.{$pk}")->filter()->values();
+            $kebugaranParamAvg[$pk] = $vals->count() ? round($vals->avg(), 1) : null;
+        }
 
         // ── Distribusi Grade ──
         $gradeDistribution = SamaptaScore::whereYear('assessment_date', $tahun)
@@ -222,7 +283,7 @@ class DashboardController extends Controller
             'programBerjalan', 'parameterTerakhir',
             'rataRataNilai', 'trendRataRata',
             'evaluasiMingguIni',
-            'kebugaranStats',
+            'kebugaranStats', 'kebugaranChartData', 'kebugaranParamAvg',
             'gradeDistribution', 'totalGrade',
             'parameterLabels', 'avgPutraPerParameter', 'avgPutriPerParameter',
             'komponenPutra', 'komponenPutri',

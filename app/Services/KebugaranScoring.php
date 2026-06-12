@@ -8,13 +8,14 @@ class KebugaranScoring
      * Label & satuan per parameter
      */
     public static array $parameters = [
-        'bmi'             => ['label' => 'BMI',              'unit' => '',    'icon' => 'fa-weight-scale'],
-        'komposisi_otot'  => ['label' => 'Komposisi Otot',   'unit' => '%',   'icon' => 'fa-dumbbell'],
-        'komposisi_lemak' => ['label' => 'Komposisi Lemak',  'unit' => '%',   'icon' => 'fa-droplet'],
-        'push_up'         => ['label' => 'Push Up',          'unit' => 'rep', 'icon' => 'fa-hand-fist'],
-        'sit_up'          => ['label' => 'Sit Up',           'unit' => 'rep', 'icon' => 'fa-person'],
-        'squat'           => ['label' => 'Squat',            'unit' => 'rep', 'icon' => 'fa-person-walking'],
-        'sit_and_reach'   => ['label' => 'Sit & Reach',      'unit' => 'cm',  'icon' => 'fa-arrows-up-down'],
+        'bmi'             => ['label' => 'BMI',              'unit' => '',         'icon' => 'fa-weight-scale'],
+        'komposisi_otot'  => ['label' => 'Komposisi Otot',   'unit' => '%',        'icon' => 'fa-dumbbell'],
+        'komposisi_lemak' => ['label' => 'Komposisi Lemak',  'unit' => '%',        'icon' => 'fa-droplet'],
+        'push_up'         => ['label' => 'Push Up',          'unit' => 'rep',      'icon' => 'fa-hand-fist'],
+        'sit_up'          => ['label' => 'Sit Up',           'unit' => 'rep',      'icon' => 'fa-person'],
+        'squat'           => ['label' => 'Squat',            'unit' => 'rep',      'icon' => 'fa-person-walking'],
+        'sit_and_reach'   => ['label' => 'Sit & Reach',      'unit' => 'cm',       'icon' => 'fa-arrows-up-down'],
+        'balke'           => ['label' => 'Balke (VO₂max)',   'unit' => 'ml/kg/m',  'icon' => 'fa-lungs'],
     ];
 
     /**
@@ -52,17 +53,23 @@ class KebugaranScoring
             'pria'   => ['sangat_baik' => [40.0, null], 'baik' => [30.0, 39.9], 'cukup' => [20.0, 29.9]],
             'wanita' => ['sangat_baik' => [43.0, null], 'baik' => [33.0, 42.9], 'cukup' => [23.0, 32.9]],
         ],
+        // Balke VO₂max (ml/kg/min) — standar umum usia 20-29
+        'balke' => [
+            'pria'   => ['sangat_baik' => [51.6, null], 'baik' => [43.9, 51.5], 'cukup' => [36.2, 43.8]],
+            'wanita' => ['sangat_baik' => [44.2, null], 'baik' => [36.3, 44.1], 'cukup' => [28.6, 36.2]],
+        ],
     ];
 
     /** Rentang label yang ditampilkan di UI */
     public static array $rangeLabels = [
-        'bmi'             => ['pria' => '18.5 – 24.9',  'wanita' => '18.5 – 24.9'],
-        'komposisi_otot'  => ['pria' => '≥ 40%',        'wanita' => '≥ 35%'],
-        'komposisi_lemak' => ['pria' => '6 – 18%',      'wanita' => '14 – 25%'],
-        'push_up'         => ['pria' => '≥ 25 rep',     'wanita' => '≥ 15 rep'],
-        'sit_up'          => ['pria' => '≥ 30 rep',     'wanita' => '≥ 25 rep'],
-        'squat'           => ['pria' => '≥ 35 rep',     'wanita' => '≥ 25 rep'],
-        'sit_and_reach'   => ['pria' => '≥ 30 cm',      'wanita' => '≥ 33 cm'],
+        'bmi'             => ['pria' => '18.5 – 24.9',      'wanita' => '18.5 – 24.9'],
+        'komposisi_otot'  => ['pria' => '≥ 40%',            'wanita' => '≥ 35%'],
+        'komposisi_lemak' => ['pria' => '6 – 18%',          'wanita' => '14 – 25%'],
+        'push_up'         => ['pria' => '≥ 25 rep',         'wanita' => '≥ 15 rep'],
+        'sit_up'          => ['pria' => '≥ 30 rep',         'wanita' => '≥ 25 rep'],
+        'squat'           => ['pria' => '≥ 35 rep',         'wanita' => '≥ 25 rep'],
+        'sit_and_reach'   => ['pria' => '≥ 30 cm',          'wanita' => '≥ 33 cm'],
+        'balke'           => ['pria' => '≥ 43.9 ml/kg/m',   'wanita' => '≥ 36.3 ml/kg/m'],
     ];
 
     public static function category(string $parameter, float $value, string $gender): string
@@ -92,6 +99,13 @@ class KebugaranScoring
             $worst = $gender === 'pria' ? 35.0 : 42.0;
             $pct   = max(0, ($worst - $value) / ($worst - $ideal) * 100);
             return round(min($pct, 100), 1);
+        }
+
+        // Balke: linear dari worst (20) ke sangat baik
+        if ($parameter === 'balke') {
+            $best  = $gender === 'pria' ? 51.6 : 44.2;
+            $worst = $gender === 'pria' ? 20.0 : 18.0;
+            return round(min(max(($value - $worst) / ($best - $worst) * 100, 0), 100), 1);
         }
 
         // Untuk BMI: target tengah range ideal

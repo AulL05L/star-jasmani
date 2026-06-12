@@ -216,7 +216,8 @@
 
         </div>
 
-        {{-- Distribusi Grade --}}
+        {{-- Grade / Kategori — conditional per program --}}
+        @if($program === 'polri')
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
             <div class="mb-4">
                 <h2 class="text-white font-bold text-sm uppercase tracking-widest">Distribusi Grade</h2>
@@ -226,10 +227,7 @@
                 <canvas id="gradeChart" width="160" height="160"></canvas>
             </div>
             <div class="space-y-2">
-                @php
-                    $gradeColors = ['A'=>'#16a34a','B'=>'#2563eb','C'=>'#d97706','D'=>'#ea580c','E'=>'#dc2626'];
-                    $gradeLabels = ['A'=>'80-100','B'=>'70-79','C'=>'60-69','D'=>'50-59','E'=>'0-49'];
-                @endphp
+                @php $gradeColors=['A'=>'#16a34a','B'=>'#2563eb','C'=>'#d97706','D'=>'#ea580c','E'=>'#dc2626']; $gradeLabels=['A'=>'80-100','B'=>'70-79','C'=>'60-69','D'=>'50-59','E'=>'0-49']; @endphp
                 @foreach($gradeDistribution as $grade => $count)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -244,12 +242,46 @@
                 @endforeach
             </div>
         </div>
+        @else
+        {{-- Distribusi Kategori Kebugaran --}}
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
+            <div class="mb-4">
+                <h2 class="text-white font-bold text-sm uppercase tracking-widest">Distribusi Kategori</h2>
+                <p class="text-gray-600 text-xs mt-0.5">Berdasarkan skor total terbaru</p>
+            </div>
+            @php
+                $catCounts = ['sangat_baik'=>0,'baik'=>0,'cukup'=>0,'kurang'=>0];
+                foreach($kebugaranChartData as $d) $catCounts[$d['category']]++;
+                $catTotal = array_sum($catCounts);
+                $catDef = ['sangat_baik'=>['Sangat Baik','#10b981'],'baik'=>['Baik','#22c55e'],'cukup'=>['Cukup','#f59e0b'],'kurang'=>['Kurang','#ef4444']];
+            @endphp
+            <div class="space-y-3">
+                @foreach($catDef as $key => [$label, $color])
+                <div>
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-gray-400">{{ $label }}</span>
+                        <span class="text-white font-bold">{{ $catCounts[$key] }} atlet</span>
+                    </div>
+                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all" style="width:{{ $catTotal > 0 ? round($catCounts[$key]/$catTotal*100) : 0 }}%; background:{{ $color }}"></div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @if($kebugaranStats['last_session'])
+            <p class="text-gray-700 text-[10px] mt-4 pt-3 border-t border-gray-800">
+                Sesi terakhir: {{ \Carbon\Carbon::parse($kebugaranStats['last_session'])->isoFormat('D MMM Y') }}
+            </p>
+            @endif
+        </div>
+        @endif
     </div>
 
-    {{-- ── ROW 3: GRAFIK KOMPARASI + TREND KELULUSAN ── --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+    {{-- ── POLRI ROWS 3 & 4 ── --}}
+    @if($program === 'polri')
 
-        {{-- Grafik 1: Putra vs Putri per Parameter --}}
+    {{-- ROW 3: Komparasi + Grade per Parameter --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
@@ -263,8 +295,6 @@
             </div>
             <canvas id="komparasiChart" height="130"></canvas>
         </div>
-
-        {{-- Grafik 3: Distribusi Grade per Parameter --}}
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-3">
                 <div>
@@ -343,7 +373,149 @@
         </div>
     </div>
 
-    {{-- ── ROW 5: MEMBER TERBARU + TOP PERFORMER ── --}}
+    {{-- ── KEBUGARAN ROWS 3 & 4 ── --}}
+    @else
+
+    {{-- Kebugaran Row 3: Per-Atlet Progress Table --}}
+    <div class="bg-gray-950 border border-gray-800 rounded-2xl overflow-hidden mb-3">
+        <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+            <div>
+                <h2 class="text-white font-bold text-sm uppercase tracking-widest">Progress Per Atlet</h2>
+                <p class="text-gray-600 text-xs mt-0.5">Nilai sesi terakhir vs sesi sebelumnya — naik/turun per parameter</p>
+            </div>
+            <a href="{{ route('admin.kebugaran.index') }}"
+                class="text-emerald-500 hover:text-emerald-400 text-xs font-bold uppercase tracking-widest">
+                Lihat Detail →
+            </a>
+        </div>
+        @if(empty($kebugaranChartData))
+            <div class="text-center py-12">
+                <i class="fa-solid fa-dumbbell text-gray-700 text-3xl mb-3"></i>
+                <p class="text-gray-500 text-sm">Belum ada data kebugaran. Buat periode & sesi terlebih dahulu.</p>
+            </div>
+        @else
+        <div class="overflow-x-auto">
+        <table class="w-full text-sm min-w-[700px]">
+            <thead>
+                <tr class="border-b border-gray-800 text-gray-600 text-[10px] uppercase tracking-widest">
+                    <th class="text-left px-4 py-3 sticky left-0 bg-gray-950">Atlet</th>
+                    <th class="text-center px-3 py-3">Sesi</th>
+                    <th class="text-center px-3 py-3">Total Skor</th>
+                    <th class="text-center px-3 py-3">Kategori</th>
+                    @foreach(\App\Services\KebugaranScoring::$parameters as $pk => $pInfo)
+                    <th class="text-center px-2 py-3 whitespace-nowrap">{{ $pInfo['label'] }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-900">
+                @foreach($kebugaranChartData as $d)
+                @php
+                    $catColor = ['sangat_baik'=>'emerald','baik'=>'green','cukup'=>'amber','kurang'=>'red'][$d['category']] ?? 'gray';
+                    $deltaClass = ($d['delta'] ?? 0) > 0 ? 'text-emerald-400' : (($d['delta'] ?? 0) < 0 ? 'text-red-400' : 'text-gray-500');
+                    $deltaIcon  = ($d['delta'] ?? 0) > 0 ? 'fa-arrow-up' : (($d['delta'] ?? 0) < 0 ? 'fa-arrow-down' : 'fa-minus');
+                @endphp
+                <tr class="hover:bg-gray-900/50 transition-colors">
+                    <td class="px-4 py-3 sticky left-0 bg-gray-950">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                                {{ strtoupper(substr($d['name'], 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="text-white font-bold text-xs">{{ $d['name'] }}</p>
+                                <p class="text-gray-600 text-[10px]">{{ $d['gender'] === 'pria' ? 'Pria' : 'Wanita' }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-3 py-3 text-center text-gray-400 text-xs">{{ $d['sessionCount'] }}</td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="text-white font-black text-sm">{{ $d['totalScore'] }}</span>
+                        @if($d['delta'] !== null)
+                        <span class="{{ $deltaClass }} text-[10px] font-bold block leading-none mt-0.5">
+                            <i class="fa-solid {{ $deltaIcon }} text-[8px]"></i>
+                            {{ $d['delta'] > 0 ? '+' : '' }}{{ $d['delta'] }}
+                        </span>
+                        @endif
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-{{ $catColor }}-900/40 text-{{ $catColor }}-400">
+                            {{ \App\Services\KebugaranScoring::categoryLabel($d['category']) }}
+                        </span>
+                    </td>
+                    @foreach(\App\Services\KebugaranScoring::$parameters as $pk => $pInfo)
+                    @php
+                        $val     = $d['scores'][$pk] ?? null;
+                        $prevVal = $d['prevScores'][$pk] ?? null;
+                        $up = ($val !== null && $prevVal !== null && $val > $prevVal);
+                        $dn = ($val !== null && $prevVal !== null && $val < $prevVal);
+                    @endphp
+                    <td class="px-2 py-3 text-center whitespace-nowrap">
+                        @if($val !== null)
+                            <span class="text-white text-xs font-bold">{{ $val }}</span>
+                            @if($up)<i class="fa-solid fa-arrow-up text-emerald-400 text-[8px] ml-0.5"></i>
+                            @elseif($dn)<i class="fa-solid fa-arrow-down text-red-400 text-[8px] ml-0.5"></i>
+                            @else<i class="fa-solid fa-minus text-gray-600 text-[8px] ml-0.5"></i>@endif
+                        @else
+                            <span class="text-gray-700 text-xs">—</span>
+                        @endif
+                    </td>
+                    @endforeach
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        </div>
+        @endif
+    </div>
+
+    {{-- Kebugaran Row 4: Avg Per Parameter Chart + Ranking --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+        <div class="md:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
+            <div class="mb-3">
+                <h2 class="text-white font-bold text-sm uppercase tracking-widest">Rata-rata Per Parameter</h2>
+                <p class="text-gray-600 text-xs mt-0.5">Persentase pencapaian target — semua atlet kebugaran (sesi terakhir)</p>
+            </div>
+            <canvas id="kebugaranParamChart" height="120"></canvas>
+        </div>
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
+            <h2 class="text-white font-bold text-sm uppercase tracking-widest mb-4">Ranking Skor</h2>
+            @if(empty($kebugaranChartData))
+                <p class="text-gray-600 text-sm text-center py-8">Belum ada data.</p>
+            @else
+            @php $sortedKebugaran = collect($kebugaranChartData)->sortByDesc('totalScore')->values(); @endphp
+            <div class="space-y-3">
+                @foreach($sortedKebugaran as $i => $d)
+                @php $sc = $d['totalScore']; $scColor = $sc>=85?'emerald':($sc>=65?'green':($sc>=45?'amber':'red')); @endphp
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0
+                        {{ $i===0?'bg-yellow-500 text-black':($i===1?'bg-gray-400 text-black':'bg-orange-700 text-white') }}">
+                        {{ $i + 1 }}
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                        {{ strtoupper(substr($d['name'], 0, 1)) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-bold text-xs truncate">{{ $d['name'] }}</p>
+                        <p class="text-gray-600 text-[10px]">{{ $d['gender']==='pria'?'Pria':'Wanita' }} · {{ $d['sessionCount'] }} sesi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-{{ $scColor }}-400 font-black text-sm">{{ $sc }}</p>
+                        @if($d['delta'] !== null)
+                        <p class="{{ $d['delta']>=0?'text-emerald-400':'text-red-400' }} text-[10px]">
+                            {{ $d['delta']>=0?'+':'' }}{{ $d['delta'] }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+    </div>
+
+    @endif
+    {{-- ── END PROGRAM CONDITIONAL ── --}}
+
+    {{-- ── ROW LAST: MEMBER TERBARU + PROGRAM-SPECIFIC RIGHT COLUMN ── --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
         {{-- Member Terbaru --}}
@@ -372,21 +544,33 @@
                 {{-- Card layout (mobile/tablet < lg) --}}
                 <div class="lg:hidden divide-y divide-gray-900">
                     @foreach($memberTerbaru as $athlete)
-                    @php $latestScore = $athlete->samaptaScores->first(); @endphp
+                    @php $latestScore = $program === 'polri' ? $athlete->samaptaScores->first() : null; @endphp
                     <div class="px-4 py-3 flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-9 h-9 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                            <div class="w-9 h-9 rounded-full {{ $program==='polri'?'bg-red-800':'bg-emerald-800' }} flex items-center justify-center text-white font-black text-xs shrink-0">
                                 {{ strtoupper(substr($athlete->user->name, 0, 1)) }}
                             </div>
                             <div class="min-w-0">
                                 <p class="text-white font-bold text-sm truncate">{{ $athlete->user->name }}</p>
-                                <p class="text-gray-500 text-[11px]">{{ $athlete->target_institution ?? 'POLRI' }} · {{ $athlete->batch ?? '—' }}</p>
+                                <p class="text-gray-500 text-[11px]">
+                                    @if($program === 'polri')
+                                        {{ $athlete->target_institution ?? 'POLRI' }} · {{ $athlete->batch ?? '—' }}
+                                    @else
+                                        {{ $athlete->kebugaranPeriods->count() }} periode
+                                    @endif
+                                </p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3 shrink-0">
                             <div class="text-right">
-                                <p class="text-white font-black text-sm">{{ $latestScore ? number_format($latestScore->score_final, 1) : '—' }}</p>
-                                <p class="text-gray-600 text-[10px]">Nilai</p>
+                                <p class="text-white font-black text-sm">
+                                    @if($program === 'polri')
+                                        {{ $latestScore ? number_format($latestScore->score_final, 1) : '—' }}
+                                    @else
+                                        {{ $athlete->kebugaranPeriods->sum(fn($p)=>$p->sessions->count()) }} sesi
+                                    @endif
+                                </p>
+                                <p class="text-gray-600 text-[10px]">{{ $program === 'polri' ? 'Nilai' : 'Total' }}</p>
                             </div>
                             <a href="{{ route('admin.athletes.show', $athlete) }}"
                                 class="w-8 h-8 bg-gray-800 hover:bg-red-800 text-gray-400 hover:text-white rounded-xl inline-flex items-center justify-center transition-all shrink-0">
@@ -402,19 +586,19 @@
                     <thead>
                         <tr class="border-b border-gray-800 text-gray-600 text-[11px] uppercase tracking-widest">
                             <th class="text-left px-5 py-3">Nama</th>
-                            <th class="text-left px-5 py-3">Program</th>
-                            <th class="text-center px-5 py-3">Nilai Terakhir</th>
+                            <th class="text-left px-5 py-3">{{ $program === 'polri' ? 'Institusi' : 'Periode' }}</th>
+                            <th class="text-center px-5 py-3">{{ $program === 'polri' ? 'Nilai Terakhir' : 'Total Sesi' }}</th>
                             <th class="text-center px-5 py-3">Status</th>
                             <th class="text-center px-5 py-3">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-900">
                         @foreach($memberTerbaru as $athlete)
-                        @php $latestScore = $athlete->samaptaScores->first(); @endphp
+                        @php $latestScore = $program === 'polri' ? $athlete->samaptaScores->first() : null; @endphp
                         <tr class="hover:bg-gray-900/50 transition-colors">
                             <td class="px-5 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                                    <div class="w-8 h-8 rounded-full {{ $program==='polri'?'bg-red-800':'bg-emerald-800' }} flex items-center justify-center text-white font-black text-xs shrink-0">
                                         {{ strtoupper(substr($athlete->user->name, 0, 1)) }}
                                     </div>
                                     <div>
@@ -424,12 +608,17 @@
                                 </div>
                             </td>
                             <td class="px-5 py-3">
+                                @if($program === 'polri')
                                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-800 text-gray-300">
                                     {{ $athlete->target_institution ?? 'POLRI' }}
                                 </span>
+                                @else
+                                <span class="text-gray-400 text-xs">{{ $athlete->kebugaranPeriods->count() }} periode</span>
+                                @endif
                             </td>
                             <td class="px-5 py-3 text-center font-black text-white text-sm">
-                                {{ $latestScore ? number_format($latestScore->score_final, 1) : '—' }}
+                                @if($program === 'polri'){{ $latestScore ? number_format($latestScore->score_final, 1) : '—' }}
+                                @else{{ $athlete->kebugaranPeriods->sum(fn($p)=>$p->sessions->count()) }}@endif
                             </td>
                             <td class="px-5 py-3 text-center">
                                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold
@@ -451,7 +640,9 @@
             @endif
         </div>
 
-        {{-- Top Performer --}}
+        {{-- Right Column: conditional per program --}}
+        @if($program === 'polri')
+        {{-- Top Performer (POLRI) --}}
         <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
             <div class="flex items-center justify-between mb-5">
                 <div>
@@ -487,6 +678,51 @@
                 </div>
             @endif
         </div>
+        @else
+        {{-- Top Skor Kebugaran --}}
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <h2 class="text-white font-bold text-sm uppercase tracking-widest">Top Skor Kebugaran</h2>
+                    <p class="text-gray-600 text-xs mt-0.5">Skor total tertinggi saat ini</p>
+                </div>
+            </div>
+            @if(empty($kebugaranChartData))
+                <div class="text-center py-8">
+                    <i class="fa-solid fa-trophy text-gray-700 text-3xl mb-3"></i>
+                    <p class="text-gray-500 text-sm">Belum ada data.</p>
+                </div>
+            @else
+            @php $topKebugaran = collect($kebugaranChartData)->sortByDesc('totalScore')->values(); @endphp
+            <div class="space-y-4">
+                @foreach($topKebugaran as $i => $d)
+                @php $sc = $d['totalScore']; $scColor = $sc>=85?'emerald':($sc>=65?'green':($sc>=45?'amber':'red')); @endphp
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0
+                        {{ $i===0?'bg-yellow-500 text-black':($i===1?'bg-gray-400 text-black':'bg-orange-700 text-white') }}">
+                        {{ $i + 1 }}
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-emerald-800 flex items-center justify-center text-white font-black text-xs shrink-0">
+                        {{ strtoupper(substr($d['name'], 0, 1)) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-bold text-xs truncate">{{ $d['name'] }}</p>
+                        <p class="text-gray-600 text-[10px]">{{ $d['gender']==='pria'?'Pria':'Wanita' }} · {{ $d['sessionCount'] }} sesi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-{{ $scColor }}-400 font-black text-sm">{{ $sc }}</p>
+                        @if($d['delta'] !== null)
+                        <p class="{{ $d['delta']>=0?'text-emerald-400':'text-red-400' }} text-[10px]">
+                            {{ $d['delta']>=0?'+':'' }}{{ $d['delta'] }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+        @endif
     </div>
 
 </div>
@@ -496,7 +732,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script>
-// Register plugin globally; disable by default — enable per-chart as needed
 Chart.register(ChartDataLabels);
 
 const chartDefaults = {
@@ -504,7 +739,7 @@ const chartDefaults = {
     maintainAspectRatio: true,
     plugins: {
         legend: { display: false },
-        datalabels: { display: false }, // off by default
+        datalabels: { display: false },
         tooltip: {
             backgroundColor: '#111',
             borderColor: '#374151',
@@ -515,22 +750,16 @@ const chartDefaults = {
         }
     },
     scales: {
-        x: {
-            grid: { color: '#1f2937' },
-            ticks: { color: '#6b7280', font: { size: 10 } }
-        },
-        y: {
-            min: 0, max: 100,
-            grid: { color: '#1f2937' },
-            ticks: { color: '#6b7280', font: { size: 10 }, stepSize: 20 }
-        }
+        x: { grid: { color: '#1f2937' }, ticks: { color: '#6b7280', font: { size: 10 } } },
+        y: { min: 0, max: 100, grid: { color: '#1f2937' }, ticks: { color: '#6b7280', font: { size: 10 }, stepSize: 20 } }
     }
 };
 
-// Per-component color palette — matches benchmark view
 const komponenColors = ['#38bdf8','#fb923c','#34d399','#a78bfa','#fbbf24','#22d3ee'];
 
-// ── 1. Distribusi Grade Doughnut ──
+@if($program === 'polri')
+
+// ── POLRI: Grade Doughnut ──
 new Chart(document.getElementById('gradeChart'), {
     type: 'doughnut',
     data: {
@@ -538,152 +767,115 @@ new Chart(document.getElementById('gradeChart'), {
         datasets: [{
             data: @json(array_values($gradeDistribution->toArray())),
             backgroundColor: ['#16a34a','#2563eb','#d97706','#ea580c','#dc2626'],
-            borderColor: '#111',
-            borderWidth: 3,
-            hoverOffset: 6,
+            borderColor: '#111', borderWidth: 3, hoverOffset: 6,
         }]
     },
     options: {
-        responsive: false,
-        cutout: '68%',
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                backgroundColor: '#111',
-                borderColor: '#374151',
-                borderWidth: 1,
-                titleColor: '#fff',
-                bodyColor: '#9ca3af',
-            }
+        responsive: false, cutout: '68%',
+        plugins: { legend: { display: false }, datalabels: { display: false },
+            tooltip: { backgroundColor: '#111', borderColor: '#374151', borderWidth: 1, titleColor: '#fff', bodyColor: '#9ca3af' }
         }
     }
 });
 
-// ── 3. Komparasi Putra vs Putri ──
+// ── POLRI: Komparasi Putra vs Putri ──
 new Chart(document.getElementById('komparasiChart'), {
     type: 'bar',
     data: {
         labels: @json($parameterLabels),
         datasets: [
-            {
-                label: 'Putra',
-                data: @json($avgPutraPerParameter),
-                backgroundColor: '#991b1b',
-                borderRadius: 4,
-                borderSkipped: false,
-            },
-            {
-                label: 'Putri',
-                data: @json($avgPutriPerParameter),
-                backgroundColor: '#450a0a',
-                borderRadius: 4,
-                borderSkipped: false,
-            }
+            { label: 'Putra', data: @json($avgPutraPerParameter), backgroundColor: '#991b1b', borderRadius: 4, borderSkipped: false },
+            { label: 'Putri', data: @json($avgPutriPerParameter), backgroundColor: '#450a0a', borderRadius: 4, borderSkipped: false }
         ]
     },
-    options: { ...chartDefaults,
-        plugins: {
-            ...chartDefaults.plugins,
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                ...chartDefaults.plugins.tooltip,
-                callbacks: {
-                    label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}`
-                }
-            }
-        }
-    }
+    options: { ...chartDefaults, plugins: { ...chartDefaults.plugins,
+        tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}` } }
+    }}
 });
 
-// ── 4. Distribusi Grade per Parameter ──
+// ── POLRI: Grade per Parameter ──
 new Chart(document.getElementById('gradeParamChart'), {
     type: 'bar',
     data: {
         labels: @json($gradeParamList->map(fn($p) => "Parameter {$p}")),
         datasets: @json($gradeDatasets->map(fn($d) => array_merge($d, ['borderRadius' => 3, 'borderSkipped' => false])))
     },
-    options: {
-        ...chartDefaults,
+    options: { ...chartDefaults,
         scales: {
             x: { ...(chartDefaults.scales?.x ?? {}), stacked: true },
             y: { ...(chartDefaults.scales?.y ?? {}), stacked: true, max: undefined, min: 0 }
         },
-        plugins: {
-            ...chartDefaults.plugins,
-            legend: {
-                display: true,
-                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12 }
-            },
-            tooltip: {
-                ...chartDefaults.plugins.tooltip,
-                callbacks: {
-                    label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} atlet`
-                }
-            },
-            datalabels: {
-                display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
-                color: '#fff',
-                font: { size: 8, weight: 'bold' },
-                formatter: val => val || '',
-            }
+        plugins: { ...chartDefaults.plugins,
+            legend: { display: true, labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12 } },
+            tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} atlet` } },
+            datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0, color: '#fff', font: { size: 8, weight: 'bold' }, formatter: val => val || '' }
         }
     }
 });
 
-// ── 5. Performa Komponen ──
+// ── POLRI: Performa Komponen ──
 @php
     $komponenLabels = ['Lari', 'Push-Up', 'Sit-Up', 'Pull-Up', 'Shuttle', 'Renang'];
-    $komponenPutraData = $komponenPutra ? [
-        $komponenPutra->avg_lari, $komponenPutra->avg_pushup, $komponenPutra->avg_situp,
-        $komponenPutra->avg_pullup, $komponenPutra->avg_shuttle, $komponenPutra->avg_renang
-    ] : [0,0,0,0,0,0];
-    $komponenPutriData = $komponenPutri ? [
-        $komponenPutri->avg_lari, $komponenPutri->avg_pushup, $komponenPutri->avg_situp,
-        $komponenPutri->avg_pullup, $komponenPutri->avg_shuttle, $komponenPutri->avg_renang
-    ] : [0,0,0,0,0,0];
+    $komponenPutraData = $komponenPutra
+        ? [$komponenPutra->avg_lari,$komponenPutra->avg_pushup,$komponenPutra->avg_situp,$komponenPutra->avg_pullup,$komponenPutra->avg_shuttle,$komponenPutra->avg_renang]
+        : [0,0,0,0,0,0];
+    $komponenPutriData = $komponenPutri
+        ? [$komponenPutri->avg_lari,$komponenPutri->avg_pushup,$komponenPutri->avg_situp,$komponenPutri->avg_pullup,$komponenPutri->avg_shuttle,$komponenPutri->avg_renang]
+        : [0,0,0,0,0,0];
 @endphp
 new Chart(document.getElementById('komponenChart'), {
     type: 'bar',
     data: {
         labels: @json($komponenLabels),
         datasets: [
-            {
-                label: 'Putra',
-                data: @json($komponenPutraData),
-                backgroundColor: komponenColors,
-                borderRadius: 4,
-                borderSkipped: false,
-            },
-            {
-                label: 'Putri',
-                data: @json($komponenPutriData),
-                backgroundColor: komponenColors.map(c => c + '99'), // 60% opacity
-                borderRadius: 4,
-                borderSkipped: false,
-            }
+            { label: 'Putra', data: @json($komponenPutraData), backgroundColor: komponenColors, borderRadius: 4, borderSkipped: false },
+            { label: 'Putri', data: @json($komponenPutriData), backgroundColor: komponenColors.map(c => c + '99'), borderRadius: 4, borderSkipped: false }
         ]
     },
-    options: {
-        ...chartDefaults,
-        plugins: {
-            ...chartDefaults.plugins,
-            legend: {
-                display: true,
-                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 10 }
-            },
+    options: { ...chartDefaults, plugins: { ...chartDefaults.plugins,
+        legend: { display: true, labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 10 } },
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0, color: '#fff', font: { size: 9, weight: 'bold' }, anchor: 'end', align: 'top', offset: -2, formatter: val => val ? Math.round(val) : '' }
+    }}
+});
+
+@else
+
+// ── KEBUGARAN: Rata-rata per Parameter ──
+@php
+    $kebParamLabels = collect(\App\Services\KebugaranScoring::$parameters)->map(fn($p) => $p['label'])->values();
+    $kebParamAvgVals = collect(\App\Services\KebugaranScoring::$parameters)->keys()
+        ->map(fn($pk) => $kebugaranParamAvg[$pk] ?? 0)->values();
+    $kebParamColors = ['#10b981','#22c55e','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316'];
+@endphp
+new Chart(document.getElementById('kebugaranParamChart'), {
+    type: 'bar',
+    data: {
+        labels: @json($kebParamLabels),
+        datasets: [{
+            label: 'Rata-rata',
+            data: @json($kebParamAvgVals),
+            backgroundColor: @json($kebParamColors),
+            borderRadius: 5,
+            borderSkipped: false,
+        }]
+    },
+    options: { ...chartDefaults,
+        scales: {
+            x: { ...chartDefaults.scales.x },
+            y: { ...chartDefaults.scales.y, max: 100, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v + '%' } }
+        },
+        plugins: { ...chartDefaults.plugins,
+            tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: ctx => ` Rata-rata: ${ctx.parsed.y}%` } },
             datalabels: {
                 display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
-                color: '#fff',
-                font: { size: 9, weight: 'bold' },
-                anchor: 'end',
-                align: 'top',
-                offset: -2,
-                formatter: val => val ? Math.round(val) : '',
+                color: '#fff', font: { size: 9, weight: 'bold' },
+                anchor: 'end', align: 'top', offset: -2,
+                formatter: val => val ? Math.round(val) + '%' : '',
             }
         }
     }
 });
+
+@endif
 </script>
 @endpush
