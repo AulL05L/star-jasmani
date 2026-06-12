@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Athlete;
+use App\Models\KebugaranPeriod;
+use App\Models\KebugaranSession;
 use App\Models\SamaptaScore;
 use App\Models\User;
-use App\Models\Institution;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,12 +16,15 @@ class DashboardController extends Controller
     public function index(Request $request): View
     {
         // ── Filter ──
-        $tahun      = $request->get('tahun', now()->year);
-        $batchId    = $request->get('batch_id');
+        $tahun        = $request->get('tahun', now()->year);
+        $batchId      = $request->get('batch_id');
         $genderFilter = $request->get('gender', 'all');
+        $program      = $request->get('program', 'polri'); // 'polri' | 'kebugaran'
 
         // ── Stats Cards ──
         $totalMember  = User::where('role', 'member')->count();
+        $totalPolri   = Athlete::where('program', 'polri')->count();
+        $totalKebugaran = Athlete::where('program', 'kebugaran')->count();
         $totalPutra   = Athlete::where('gender', 'pria')->count();
         $totalPutri   = Athlete::where('gender', 'wanita')->count();
 
@@ -62,20 +66,13 @@ class DashboardController extends Controller
             now()->endOfWeek(),
         ])->count();
 
-        // ── Trend Perkembangan Nilai (7 hari terakhir) ──
-        $trendData = SamaptaScore::selectRaw('DATE(assessment_date) as tanggal, AVG(score_final) as avg_nilai')
-            ->where('assessment_date', '>=', now()->subDays(6)->startOfDay())
-            ->groupBy('tanggal')
-            ->orderBy('tanggal')
-            ->get();
-
-        $trendLabels = $trendData->pluck('tanggal')->map(fn($d) =>
-            \Carbon\Carbon::parse($d)->isoFormat('D MMM')
-        );
-        $trendNilai  = $trendData->pluck('avg_nilai')->map(fn($v) => round($v, 1));
-
-        // Rata-rata keseluruhan (garis putus-putus)
-        $trendAvgLine = $trendLabels->map(fn() => $rataRataNilai);
+        // ── Kebugaran Stats (untuk program snapshot) ──
+        $kebugaranStats = [
+            'total_athletes' => $totalKebugaran,
+            'total_periods'  => KebugaranPeriod::count(),
+            'total_sessions' => KebugaranSession::count(),
+            'last_session'   => KebugaranSession::latest('date')->value('date'),
+        ];
 
         // ── Distribusi Grade ──
         $gradeDistribution = SamaptaScore::whereYear('assessment_date', $tahun)
@@ -172,13 +169,15 @@ class DashboardController extends Controller
             'backgroundColor' => $gradeColors[$g],
         ]);
 
-        // ── Member Terbaru ──
-        $memberTerbaru = Athlete::with(['user', 'samaptaScores' => function($q) use ($tahun) {
+        // ── Member Terbaru (filtered by program) ──
+        $memberTerbaruQuery = Athlete::with(['user', 'samaptaScores' => function($q) use ($tahun) {
             $q->whereYear('assessment_date', $tahun)->orderBy('parameter_ke', 'desc');
-        }])
+        }, 'kebugaranPeriods'])
+        ->where('program', $program)
         ->orderBy('created_at', 'desc')
-        ->limit(5)
-        ->get();
+        ->limit(5);
+
+        $memberTerbaru = $memberTerbaruQuery->get();
 
         // ── Top Performer ──
         $topPerformer = SamaptaScore::with('athlete.user')
@@ -218,18 +217,18 @@ class DashboardController extends Controller
         }
 
         return view('admin.dashboard', compact(
-            'totalMember', 'totalPutra', 'totalPutri',
+            'totalMember', 'totalPutra', 'totalPutri', 'totalPolri', 'totalKebugaran',
             'memberBaruBulanIni', 'memberBaruBulanLalu',
             'programBerjalan', 'parameterTerakhir',
             'rataRataNilai', 'trendRataRata',
             'evaluasiMingguIni',
-            'trendLabels', 'trendNilai', 'trendAvgLine',
+            'kebugaranStats',
             'gradeDistribution', 'totalGrade',
             'parameterLabels', 'avgPutraPerParameter', 'avgPutriPerParameter',
             'komponenPutra', 'komponenPutri',
             'gradeParamList', 'gradeDatasets',
             'memberTerbaru', 'topPerformer', 'statusFisik',
-            'batches', 'tahunList', 'tahun', 'batchId', 'genderFilter'
+            'batches', 'tahunList', 'tahun', 'batchId', 'genderFilter', 'program'
         ));
     }
 }

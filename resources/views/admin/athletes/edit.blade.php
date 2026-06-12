@@ -102,12 +102,36 @@
                 <span class="w-5 h-5 bg-red-800 rounded-full flex items-center justify-center text-[9px]">3</span>
                 Target Kedinasan
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {{-- Program --}}
+                <div>
+                    <label class="block text-gray-400 text-[11px] uppercase tracking-widest font-bold mb-2">Program *</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="program" value="polri"
+                                {{ old('program', $athlete->program ?? 'polri') === 'polri' ? 'checked' : '' }}
+                                class="sr-only peer">
+                            <div class="w-full text-center py-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all
+                                border-gray-800 text-gray-500 peer-checked:border-red-800 peer-checked:bg-red-900/20 peer-checked:text-red-400">
+                                <i class="fa-solid fa-shield-halved block text-base mb-1"></i>POLRI
+                            </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="program" value="kebugaran"
+                                {{ old('program', $athlete->program ?? 'polri') === 'kebugaran' ? 'checked' : '' }}
+                                class="sr-only peer">
+                            <div class="w-full text-center py-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all
+                                border-gray-800 text-gray-500 peer-checked:border-emerald-700 peer-checked:bg-emerald-900/20 peer-checked:text-emerald-400">
+                                <i class="fa-solid fa-heart-pulse block text-base mb-1"></i>Kebugaran
+                            </div>
+                        </label>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-gray-400 text-[11px] uppercase tracking-widest font-bold mb-2">Target Institusi</label>
                     <select name="target_institution"
                         class="w-full bg-black border border-gray-800 text-white rounded-xl py-3.5 px-4 text-sm focus:outline-none focus:border-red-800 transition-all appearance-none">
-                        <option value="">— Pilih Institusi —</option>
+                        <option value="">— Pilih —</option>
                         <option value="POLRI" {{ old('target_institution', $athlete->target_institution) == 'POLRI' ? 'selected' : '' }}>POLRI</option>
                         <option value="TNI-AD" {{ old('target_institution', $athlete->target_institution) == 'TNI-AD' ? 'selected' : '' }}>TNI-AD</option>
                         <option value="TNI-AL" {{ old('target_institution', $athlete->target_institution) == 'TNI-AL' ? 'selected' : '' }}>TNI-AL</option>

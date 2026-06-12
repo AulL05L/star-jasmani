@@ -33,8 +33,24 @@
             <p class="text-gray-500 text-xs md:text-sm mt-1">{{ now()->isoFormat('dddd, D MMMM Y') }}</p>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
-            {{-- Filter --}}
-            <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-2 flex-wrap">
+            {{-- Program Tabs --}}
+            <div class="flex bg-gray-950 border border-gray-800 rounded-xl p-1 gap-1">
+                <a href="{{ route('admin.dashboard', array_merge(request()->query(), ['program' => 'polri'])) }}"
+                    class="px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
+                    {{ $program === 'polri' ? 'bg-red-800 text-white' : 'text-gray-500 hover:text-white' }}">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> POLRI
+                </a>
+                <a href="{{ route('admin.dashboard', array_merge(request()->query(), ['program' => 'kebugaran'])) }}"
+                    class="px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
+                    {{ $program === 'kebugaran' ? 'bg-red-800 text-white' : 'text-gray-500 hover:text-white' }}">
+                    <i class="fa-solid fa-heart-pulse mr-1"></i> Kebugaran
+                </a>
+            </div>
+
+            {{-- Filter tahun & batch (hanya relevan untuk POLRI) --}}
+            @if($program === 'polri')
+            <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
+                <input type="hidden" name="program" value="{{ $program }}">
                 <select name="tahun" onchange="this.form.submit()"
                     class="bg-gray-950 border border-gray-800 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-800">
                     @foreach($tahunList->unique() as $t)
@@ -45,16 +61,16 @@
                     class="bg-gray-950 border border-gray-800 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-800 max-w-30 md:max-w-none truncate">
                     <option value="">Semua Batch</option>
                     @foreach($batches as $batch)
-                        <option value="{{ $batch->id }}" {{ $batchId == $batch->id ? 'selected' : '' }}>
-                            {{ $batch->name }}
-                        </option>
+                        <option value="{{ $batch->id }}" {{ $batchId == $batch->id ? 'selected' : '' }}>{{ $batch->name }}</option>
                     @endforeach
                 </select>
             </form>
-            <a href="{{ route('admin.samapta.create') }}"
+            @endif
+
+            <a href="{{ $program === 'polri' ? route('admin.samapta.create') : route('admin.kebugaran.period.create') }}"
                 class="flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white font-bold uppercase tracking-widest text-xs px-3 md:px-4 py-2 md:py-2.5 rounded-xl transition-all whitespace-nowrap">
                 <i class="fa-solid fa-plus"></i>
-                <span class="hidden sm:inline">Input Nilai</span>
+                <span class="hidden sm:inline">{{ $program === 'polri' ? 'Input Nilai' : 'Buat Periode' }}</span>
             </a>
         </div>
     </div>
@@ -71,8 +87,8 @@
             </div>
             <p class="text-3xl font-black text-white mb-1">{{ $totalMember }}</p>
             <p class="text-gray-600 text-[10px]">
-                <span class="text-green-400">{{ $totalPutra }} Putra</span> ·
-                <span class="text-pink-400">{{ $totalPutri }} Putri</span>
+                <span class="text-red-400">{{ $totalPolri }} POLRI</span> ·
+                <span class="text-emerald-400">{{ $totalKebugaran }} Kebugaran</span>
             </p>
             <div class="progress-bar mt-2">
                 <div class="progress-fill bg-red-700" style="width: {{ min(100, $totalMember * 4) }}%"></div>
@@ -140,22 +156,64 @@
         </div>
     </div>
 
-    {{-- ── ROW 2: TREND + DISTRIBUSI GRADE ── --}}
+    {{-- ── ROW 2: PROGRAM SNAPSHOT + DISTRIBUSI GRADE ── --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
 
-        {{-- Trend Perkembangan Nilai --}}
-        <div class="md:col-span-1 lg:col-span-2 bg-gray-950 border border-gray-800 rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-3">
-                <div>
-                    <h2 class="text-white font-bold text-sm uppercase tracking-widest">Trend Perkembangan Nilai</h2>
-                    <p class="text-gray-600 text-xs mt-0.5">7 hari terakhir</p>
+        {{-- Program Snapshot --}}
+        <div class="md:col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            {{-- POLRI Card --}}
+            <a href="{{ route('admin.dashboard', ['program' => 'polri']) }}"
+                class="block bg-gray-950 border rounded-2xl p-5 transition-all hover:-translate-y-0.5
+                {{ $program === 'polri' ? 'border-red-800 shadow-lg shadow-red-900/20' : 'border-gray-800 hover:border-gray-700' }}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-red-900/30 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-red-500"></i>
+                    </div>
+                    @if($program === 'polri')
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-red-500 bg-red-900/20 px-2 py-1 rounded-full">Aktif</span>
+                    @endif
                 </div>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                    <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-red-600 inline-block"></span> Nilai Akhir</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-gray-600 border-dashed border-t inline-block"></span> Rata-rata</span>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Program POLRI</p>
+                <p class="text-4xl font-black text-white mb-3">{{ $totalPolri }}</p>
+                <div class="grid grid-cols-2 gap-2 text-center border-t border-gray-800 pt-3">
+                    <div>
+                        <p class="text-xl font-black text-red-400">{{ $rataRataNilai ?: '—' }}</p>
+                        <p class="text-[9px] text-gray-600 uppercase tracking-wide">Rata-rata Nilai</p>
+                    </div>
+                    <div>
+                        <p class="text-xl font-black text-white">{{ $evaluasiMingguIni }}</p>
+                        <p class="text-[9px] text-gray-600 uppercase tracking-wide">Evaluasi Minggu Ini</p>
+                    </div>
                 </div>
-            </div>
-            <canvas id="trendChart" height="100"></canvas>
+            </a>
+
+            {{-- Kebugaran Card --}}
+            <a href="{{ route('admin.dashboard', ['program' => 'kebugaran']) }}"
+                class="block bg-gray-950 border rounded-2xl p-5 transition-all hover:-translate-y-0.5
+                {{ $program === 'kebugaran' ? 'border-red-800 shadow-lg shadow-red-900/20' : 'border-gray-800 hover:border-gray-700' }}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-900/20 flex items-center justify-center">
+                        <i class="fa-solid fa-heart-pulse text-emerald-500"></i>
+                    </div>
+                    @if($program === 'kebugaran')
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-red-500 bg-red-900/20 px-2 py-1 rounded-full">Aktif</span>
+                    @endif
+                </div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Program Kebugaran</p>
+                <p class="text-4xl font-black text-white mb-3">{{ $totalKebugaran }}</p>
+                <div class="grid grid-cols-2 gap-2 text-center border-t border-gray-800 pt-3">
+                    <div>
+                        <p class="text-xl font-black text-emerald-400">{{ $kebugaranStats['total_periods'] }}</p>
+                        <p class="text-[9px] text-gray-600 uppercase tracking-wide">Total Periode</p>
+                    </div>
+                    <div>
+                        <p class="text-xl font-black text-white">{{ $kebugaranStats['total_sessions'] }}</p>
+                        <p class="text-[9px] text-gray-600 uppercase tracking-wide">Total Sesi</p>
+                    </div>
+                </div>
+            </a>
+
         </div>
 
         {{-- Distribusi Grade --}}
@@ -293,7 +351,12 @@
             <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
                 <div>
                     <h2 class="text-white font-bold text-sm uppercase tracking-widest">Member Terbaru</h2>
-                    <p class="text-gray-600 text-xs mt-0.5">5 atlet terakhir bergabung</p>
+                    <p class="text-gray-600 text-xs mt-0.5">
+                        5 terbaru ·
+                        <span class="{{ $program === 'polri' ? 'text-red-400' : 'text-emerald-400' }} font-bold">
+                            {{ $program === 'polri' ? 'POLRI' : 'Kebugaran' }}
+                        </span>
+                    </p>
                 </div>
                 <a href="{{ route('admin.athletes.index') }}"
                     class="text-red-500 hover:text-red-400 text-xs font-bold uppercase tracking-widest">
@@ -467,41 +530,7 @@ const chartDefaults = {
 // Per-component color palette — matches benchmark view
 const komponenColors = ['#38bdf8','#fb923c','#34d399','#a78bfa','#fbbf24','#22d3ee'];
 
-// ── 1. Trend Nilai 7 Hari ──
-new Chart(document.getElementById('trendChart'), {
-    type: 'line',
-    data: {
-        labels: @json($trendLabels),
-        datasets: [
-            {
-                label: 'Nilai Akhir',
-                data: @json($trendNilai),
-                borderColor: '#991b1b',
-                backgroundColor: 'rgba(153,27,27,0.1)',
-                borderWidth: 2,
-                pointBackgroundColor: '#991b1b',
-                pointRadius: 4,
-                fill: true,
-                tension: 0.4,
-            },
-            {
-                label: 'Rata-rata',
-                data: @json($trendAvgLine),
-                borderColor: '#374151',
-                borderWidth: 1.5,
-                borderDash: [5, 5],
-                pointRadius: 0,
-                fill: false,
-                tension: 0,
-            }
-        ]
-    },
-    options: { ...chartDefaults,
-        plugins: { ...chartDefaults.plugins, legend: { display: false } }
-    }
-});
-
-// ── 2. Distribusi Grade Doughnut ──
+// ── 1. Distribusi Grade Doughnut ──
 new Chart(document.getElementById('gradeChart'), {
     type: 'doughnut',
     data: {

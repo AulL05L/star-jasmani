@@ -25,6 +25,7 @@ class Athlete extends Model
         'target_institution',
         'batch',
         'batch_id',
+        'program',
         'photo_path',
         'allowed_parameters',
     ];
