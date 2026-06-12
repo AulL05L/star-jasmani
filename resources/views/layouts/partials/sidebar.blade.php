@@ -78,6 +78,20 @@
                 <i class="fa-solid fa-file-arrow-up w-4 text-center"></i> Import Atlet
             </a>
 
+            <p class="text-gray-700 text-[10px] uppercase tracking-widest font-bold px-3 py-2 mt-4">Kebugaran</p>
+
+            <a href="{{ route('admin.kebugaran.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
+                {{ request()->routeIs('admin.kebugaran.*') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                <i class="fa-solid fa-heart-pulse w-4 text-center"></i> Data Kebugaran
+            </a>
+
+            <a href="{{ route('admin.kebugaran.period.create') }}"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
+                {{ request()->routeIs('admin.kebugaran.period.create') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                <i class="fa-solid fa-plus w-4 text-center"></i> Buat Periode
+            </a>
+
             <p class="text-gray-700 text-[10px] uppercase tracking-widest font-bold px-3 py-2 mt-4">Pengaturan</p>
 
             <a href="{{ route('admin.institutions.index') }}"
@@ -92,7 +106,13 @@
             <a href="{{ route('member.dashboard') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
                 {{ request()->routeIs('member.dashboard') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
-                <i class="fa-solid fa-house w-4 text-center"></i> Dashboard
+                <i class="fa-solid fa-house w-4 text-center"></i> Dashboard Samapta
+            </a>
+
+            <a href="{{ route('member.kebugaran.dashboard') }}"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all
+                {{ request()->routeIs('member.kebugaran.dashboard') ? 'bg-red-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                <i class="fa-solid fa-heart-pulse w-4 text-center"></i> Dashboard Kebugaran
             </a>
         @endif
     </nav>

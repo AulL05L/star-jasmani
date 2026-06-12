@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
+  h1 { color: #1a56db; border-bottom: 2px solid #1a56db; padding-bottom: 8px; }
+  h2 { color: #1a56db; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+  th { background-color: #1a56db; color: white; }
+  tr:nth-child(even) { background-color: #f2f2f2; }
+  .warning { background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px; border-radius: 4px; }
+  .badge { background-color: #d4edda; color: #155724; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>📋 LAPORAN DEPLOY — DRAF DEVELOPER</h1>
+
+<p><strong>Project:</strong> Star Jasmani</p>
+<p><strong>Developer:</strong> Aulia Destiana Putri — Universitas Budi Luhur</p>
+<p><strong>Tanggal Deploy:</strong> 25 Mei 2026</p>
+
+<h2>✅ Status Deploy</h2>
+<p>Seluruh proses deployment telah <span class="badge">BERHASIL DISELESAIKAN</span> dan sistem dapat diakses secara publik.</p>
+
+<h2>🌐 Informasi Server</h2>
+<table>
+  <tr><th>Item</th><th>Detail</th></tr>
+  <tr><td>URL Production</td><td>https://starjasmani.id</td></tr>
+  <tr><td>VPS Provider</td><td>IDCloudHost</td></tr>
+  <tr><td>IP Server</td><td>103.183.74.184</td></tr>
+  <tr><td>OS</td><td>Ubuntu 24.04 LTS</td></tr>
+  <tr><td>Spesifikasi</td><td>2 vCPU, 2GB RAM, 20GB SSD</td></tr>
+  <tr><td>Web Server</td><td>Nginx</td></tr>
+  <tr><td>PHP</td><td>8.3.6</td></tr>
+  <tr><td>Database</td><td>MySQL 8.0</td></tr>
+  <tr><td>SSL</td><td>Let's Encrypt (valid 90 hari)</td></tr>
+</table>
+
+<h2>🔐 Kredensial Sistem</h2>
+<table>
+  <tr><th>Item</th><th>Detail</th></tr>
+  <tr><td>SSH User</td><td>starjasmani</td></tr>
+  <tr><td>SSH Password</td><td>StarJ@smani25!</td></tr>
+  <tr><td>DB User</td><td>sj_user</td></tr>
+  <tr><td>DB Password</td><td>DbP@ss!StarJ25</td></tr>
+  <tr><td>Admin Email</td><td>admin@starjasmani.id</td></tr>
+  <tr><td>Admin Password</td><td>Admin@StarJ25!</td></tr>
+</table>
+<div class="warning">⚠️ Simpan kredensial ini di tempat yang aman dan jangan dibagikan sembarangan!</div>
+
+<h2>🛠️ Tech Stack</h2>
+<table>
+  <tr><th>Layer</th><th>Teknologi</th></tr>
+  <tr><td>Backend</td><td>Laravel 13 + PHP 8.3</td></tr>
+  <tr><td>Database</td><td>MySQL 8.0</td></tr>
+  <tr><td>Web Server</td><td>Nginx</td></tr>
+  <tr><td>Frontend</td><td>Tailwind CSS + Chart.js</td></tr>
+  <tr><td>SSL</td><td>Let's Encrypt</td></tr>
+  <tr><td>PDF Export</td><td>barryvdh/laravel-dompdf</td></tr>
+  <tr><td>Excel Import</td><td>maatwebsite/excel</td></tr>
+</table>
+
+<h2>⚠️ Catatan Maintenance</h2>
+<table>
+  <tr><th>Item</th><th>Keterangan</th></tr>
+  <tr><td>SSL Renewal</td><td>Wajib diperbarui setiap 90 hari menggunakan certbot DNS manual</td></tr>
+  <tr><td>Google Index</td><td>Submitted ke Google Search Console, estimasi 1-7 hari</td></tr>
+  <tr><td>Backup DB</td><td>Lakukan backup rutin sebelum ada data penting masuk</td></tr>
+  <tr><td>Monitor Server</td><td>Cek penggunaan RAM & disk secara berkala di IDCloudHost dashboard</td></tr>
+</table>
+
+</body>
+</html>

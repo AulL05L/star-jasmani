@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\InjuryController;
 use App\Http\Controllers\Admin\InstitutionController;
 use App\Http\Controllers\Admin\AthletePerformanceController;
 use App\Http\Controllers\Admin\AthleteImportController;
+use App\Http\Controllers\Admin\KebugaranController;
+use App\Http\Controllers\Member\KebugaranDashboardController;
 
 
 // ── Public ──
@@ -77,6 +79,18 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('benchmark', fn() => view('admin.benchmark'))->name('benchmark');
 
+        // ── Kebugaran ──
+        Route::get('kebugaran', [KebugaranController::class, 'index'])->name('kebugaran.index');
+        Route::get('kebugaran/period/create', [KebugaranController::class, 'createPeriod'])->name('kebugaran.period.create');
+        Route::post('kebugaran/period', [KebugaranController::class, 'storePeriod'])->name('kebugaran.period.store');
+        Route::get('kebugaran/period/{period}', [KebugaranController::class, 'showPeriod'])->name('kebugaran.period.show');
+        Route::delete('kebugaran/period/{period}', [KebugaranController::class, 'destroyPeriod'])->name('kebugaran.period.destroy');
+        Route::get('kebugaran/period/{period}/session/create', [KebugaranController::class, 'createSession'])->name('kebugaran.session.create');
+        Route::post('kebugaran/period/{period}/session', [KebugaranController::class, 'storeSession'])->name('kebugaran.session.store');
+        Route::get('kebugaran/session/{session}/edit', [KebugaranController::class, 'editSession'])->name('kebugaran.session.edit');
+        Route::put('kebugaran/session/{session}', [KebugaranController::class, 'updateSession'])->name('kebugaran.session.update');
+        Route::delete('kebugaran/session/{session}', [KebugaranController::class, 'destroySession'])->name('kebugaran.session.destroy');
+
         Route::get('athletes/{athlete}/injury/create', [InjuryController::class, 'create'])->name('injury.create');
         Route::post('athletes/{athlete}/injury', [InjuryController::class, 'store'])->name('injury.store');
         Route::patch('injury/{injury}', [InjuryController::class, 'update'])->name('injury.update');
@@ -92,4 +106,5 @@ Route::middleware(['auth', 'role:member'])
         
         // Tambahkan route ini
         Route::get('/reports/{samaptaScore}/pdf', [MemberDashboard::class, 'downloadPdf'])->name('reports.pdf');
+        Route::get('/kebugaran', [KebugaranDashboardController::class, 'index'])->name('kebugaran.dashboard');
     });
