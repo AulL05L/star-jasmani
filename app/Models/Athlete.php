@@ -16,6 +16,7 @@ class Athlete extends Model
 
     protected $fillable = [
         'user_id',
+        'institution_id',
         'gender',
         'nik',
         'birth_date',
