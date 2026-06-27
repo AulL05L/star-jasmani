@@ -111,6 +111,7 @@ class AthleteController extends Controller
             'batch'              => ['nullable', 'string', 'max:50'],
             'nik'                => ['nullable', 'string', 'max:20', 'unique:athletes,nik,' . $athlete->id],
             'password'           => ['nullable', 'string', 'min:8'],
+            'program'            => ['required', 'in:polri,kebugaran'],
         ]);
 
         DB::transaction(function () use ($request, $athlete) {
@@ -137,6 +138,7 @@ class AthleteController extends Controller
                 'weight_kg'           => $request->weight_kg,
                 'target_institution'  => $request->target_institution,
                 'batch'               => $request->batch,
+                'program'             => $request->program,
                 'allowed_parameters'  => $allowedParams,
             ]);
         });
