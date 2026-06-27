@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\PublicScoreResult;
 use App\Models\SamaptaScore;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -91,6 +93,34 @@ class KalkulatorController extends Controller
         ]);
 
         return redirect()->route('kalkulator.polri.hasil', $result->token);
+    }
+
+    public function pdf(string $token): Response|RedirectResponse
+    {
+        $result = PublicScoreResult::where('token', $token)->first();
+
+        if (! $result) {
+            return redirect()->route('kalkulator.polri')
+                ->with('error', 'Hasil tidak ditemukan. Silakan isi form kalkulator terlebih dahulu.');
+        }
+
+        if ($result->expires_at?->isPast()) {
+            return redirect()->route('kalkulator.polri')
+                ->with('error', 'Hasil kalkulator sudah kedaluwarsa. Silakan hitung ulang.');
+        }
+
+        $gender = $result->gender === 'pria' ? 'Pria' : 'Wanita';
+
+        $pdf = Pdf::loadView('kalkulator.laporan-polri', compact('result'))
+                  ->setPaper('A4', 'portrait')
+                  ->set_option('defaultFont', 'dejavu sans')
+                  ->set_option('isHtml5ParserEnabled', true)
+                  ->set_option('isRemoteEnabled', false)
+                  ->set_option('dpi', 96);
+
+        $filename = 'Laporan-POLRI-' . $gender . '-' . number_format($result->score_final, 1) . '-' . now()->format('d-m-Y') . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     public function hasil(string $token): View|RedirectResponse
