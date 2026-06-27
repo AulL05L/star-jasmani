@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PublicScoreResult extends Model
 {
@@ -54,4 +55,9 @@ class PublicScoreResult extends Model
         'ukg_weight'          => 'float',
         'renang_weight'       => 'float',
     ];
+
+    public function pdfOrders(): HasMany
+    {
+        return $this->hasMany(PdfOrder::class, 'public_score_result_id');
+    }
 }

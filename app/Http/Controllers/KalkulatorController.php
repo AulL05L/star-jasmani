@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PdfOrder;
 use App\Models\PublicScoreResult;
 use App\Models\SamaptaScore;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -138,5 +139,47 @@ class KalkulatorController extends Controller
         }
 
         return view('kalkulator.hasil', compact('result'));
+    }
+
+    public function bayar(string $token): View|RedirectResponse
+    {
+        $result = PublicScoreResult::where('token', $token)->first();
+
+        if (! $result) {
+            return redirect()->route('kalkulator.polri')
+                ->with('error', 'Hasil tidak ditemukan. Silakan isi form kalkulator terlebih dahulu.');
+        }
+
+        if ($result->expires_at?->isPast()) {
+            return redirect()->route('kalkulator.polri')
+                ->with('error', 'Hasil kalkulator sudah kedaluwarsa. Silakan hitung ulang.');
+        }
+
+        if ($result->pdfOrders()->where('payment_status', 'paid')->exists()) {
+            return redirect()->route('kalkulator.polri.pdf', $token);
+        }
+
+        // Find an active (non-terminal) order, or create a new pending one.
+        // Gateway fields (payment_url, qris_url, etc.) will be populated once
+        // Midtrans integration is wired up. For now the row is created bare.
+        $order = $result->pdfOrders()
+            ->whereIn('payment_status', ['pending', 'expired', 'failed'])
+            ->latest()
+            ->first();
+
+        if (! $order || $order->payment_status !== 'pending') {
+            $order = $result->pdfOrders()->create([
+                'order_number'   => $this->generateOrderNumber(),
+                'amount'         => 5000,
+                'payment_status' => 'pending',
+            ]);
+        }
+
+        return view('kalkulator.bayar', compact('result', 'order'));
+    }
+
+    private function generateOrderNumber(): string
+    {
+        return 'PDF-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
     }
 }
