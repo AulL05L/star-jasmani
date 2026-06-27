@@ -55,6 +55,7 @@
             <li><a href="#about" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">About<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
             <li><a href="#training" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Training<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
             <li><a href="#method" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Our Method<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
+            <li><a href="{{ route('kalkulator.polri') }}" class="relative px-6 py-2 font-bold text-red-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Kalkulator<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
             <li><a href="{{ route('login') }}" class="relative px-6 py-2 font-bold text-red-500 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Login<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
         </ul>
     </nav>
@@ -73,6 +74,7 @@
         <li><a href="#about" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">About</a></li>
         <li><a href="#training" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Training</a></li>
         <li><a href="#method" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Our Method</a></li>
+        <li><a href="{{ route('kalkulator.polri') }}" class="mobile-link font-bold text-red-400 hover:text-red-600 uppercase tracking-widest text-sm block"><i class="fa-solid fa-calculator mr-1 text-xs"></i> Kalkulator</a></li>
         <li class="pt-2 border-t border-gray-800">
             <a href="{{ route('login') }}" class="mobile-link inline-block bg-red-800 hover:bg-red-950 text-white font-bold uppercase tracking-widest text-sm px-8 py-3 rounded-full transition-all duration-300">
                 <i class="fa-solid fa-shield-halved mr-2"></i> Login Member / Coach
@@ -104,6 +106,10 @@
             <a href="{{ route('login') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 text-red-500 hover:text-white hover:bg-red-800 font-bold py-4 px-10 rounded-full border-2 border-red-800 transition duration-300">
                 <i class="fa-solid fa-shield-halved"></i>
                 LOGIN MEMBER / COACH
+            </a>
+            <a href="{{ route('kalkulator.polri') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 text-white hover:text-red-400 font-bold py-4 px-10 rounded-full border-2 border-white/30 hover:border-red-800 transition duration-300">
+                <i class="fa-solid fa-calculator"></i>
+                CEK NILAI JASMANI POLRI
             </a>
         </div>
     </div>
@@ -299,6 +305,14 @@
                         <li>• Periodisasi Latihan Menjelang Seleksi</li>
                         <li>• Simulasi Penilaian Poin Maksimal</li>
                     </ul>
+                    <div class="pt-5">
+                        <a href="{{ route('kalkulator.polri') }}"
+                            class="inline-flex items-center gap-2 text-red-500 hover:text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 group">
+                            <i class="fa-solid fa-calculator text-xs group-hover:scale-110 transition-transform"></i>
+                            Hitung Nilai POLRI Kamu
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row-reverse items-center gap-12 group">

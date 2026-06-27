@@ -15,11 +15,19 @@ use App\Http\Controllers\Admin\AthletePerformanceController;
 use App\Http\Controllers\Admin\AthleteImportController;
 use App\Http\Controllers\Admin\KebugaranController;
 use App\Http\Controllers\Member\KebugaranDashboardController;
+use App\Http\Controllers\KalkulatorController;
 
 
 // ── Public ──
 Route::get('/', fn() => view('welcome'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('daftar');
+
+// ── Kalkulator Publik ──
+Route::prefix('kalkulator')->name('kalkulator.')->group(function () {
+    Route::get('polri',       [KalkulatorController::class, 'form'])   ->name('polri');
+    Route::post('polri',      [KalkulatorController::class, 'hitung']) ->name('polri.hitung');
+    Route::get('polri/hasil', [KalkulatorController::class, 'hasil'])  ->name('polri.hasil');
+});
 
 // ── Auth ──
 Route::middleware('guest')->group(function () {
