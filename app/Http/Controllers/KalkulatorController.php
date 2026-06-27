@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PublicScoreResult;
 use App\Models\SamaptaScore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class KalkulatorController extends Controller
@@ -49,6 +51,7 @@ class KalkulatorController extends Controller
             'raw_renang_seconds.max'       => 'Waktu renang maksimal 999 detik.',
         ]);
 
+        // In-memory scoring — never touches samapta_scores
         $score = new SamaptaScore();
         $score->raw_lari_meter      = $data['raw_lari_meter'];
         $score->raw_pullup_reps     = $data['raw_pullup_reps'];
@@ -60,7 +63,9 @@ class KalkulatorController extends Controller
         // null institution = POLRI default: 80% UKG + 20% Renang
         $score->calculateAndFill($data['gender']);
 
-        session(['kalkulator_hasil' => [
+        $result = PublicScoreResult::create([
+            'token'               => (string) Str::uuid(),
+            'calculator_type'     => 'polri',
             'gender'              => $data['gender'],
             'raw_lari_meter'      => $data['raw_lari_meter'],
             'raw_pullup_reps'     => $data['raw_pullup_reps'],
@@ -73,27 +78,35 @@ class KalkulatorController extends Controller
             'score_situp'         => $score->score_situp,
             'score_pushup'        => $score->score_pushup,
             'score_shuttle'       => $score->score_shuttle,
-            'score_renang'        => $score->score_renang,
             'score_jasmani_b'     => $score->score_jasmani_b,
+            'score_renang'        => $score->score_renang,
             'score_ukg_avg'       => $score->score_ukg_avg,
             'score_final'         => $score->score_final,
             'grade'               => $score->grade,
             'grade_label'         => $score->grade_label,
             'is_lulus'            => $score->is_lulus,
-        ]]);
+            'ukg_weight'          => 80.00,
+            'renang_weight'       => 20.00,
+            'expires_at'          => now()->addDays(7),
+        ]);
 
-        return redirect()->route('kalkulator.polri.hasil');
+        return redirect()->route('kalkulator.polri.hasil', $result->token);
     }
 
-    public function hasil(): View|RedirectResponse
+    public function hasil(string $token): View|RedirectResponse
     {
-        $hasil = session('kalkulator_hasil');
+        $result = PublicScoreResult::where('token', $token)->first();
 
-        if (! $hasil) {
+        if (! $result) {
             return redirect()->route('kalkulator.polri')
-                ->with('error', 'Silakan isi form kalkulator terlebih dahulu.');
+                ->with('error', 'Hasil tidak ditemukan. Silakan isi form kalkulator terlebih dahulu.');
         }
 
-        return view('kalkulator.hasil', compact('hasil'));
+        if ($result->expires_at?->isPast()) {
+            return redirect()->route('kalkulator.polri')
+                ->with('error', 'Hasil kalkulator sudah kedaluwarsa. Silakan hitung ulang.');
+        }
+
+        return view('kalkulator.hasil', compact('result'));
     }
 }

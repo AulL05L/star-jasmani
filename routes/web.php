@@ -26,7 +26,7 @@ Route::get('/daftar', fn() => view('daftar'))->name('daftar');
 Route::prefix('kalkulator')->name('kalkulator.')->group(function () {
     Route::get('polri',       [KalkulatorController::class, 'form'])   ->name('polri');
     Route::post('polri',      [KalkulatorController::class, 'hitung']) ->name('polri.hitung');
-    Route::get('polri/hasil', [KalkulatorController::class, 'hasil'])  ->name('polri.hasil');
+    Route::get('polri/hasil/{token}', [KalkulatorController::class, 'hasil'])  ->name('polri.hasil');
 });
 
 // ── Auth ──

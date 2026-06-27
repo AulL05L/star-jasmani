@@ -27,7 +27,7 @@
 </header>
 
 @php
-    $grade = $hasil['grade'] ?? 'E';
+    $grade       = $result->grade ?? 'E';
     $gradeColors = match($grade) {
         'A'     => ['text' => 'text-green-400',  'bg' => 'bg-green-950/60',   'border' => 'border-green-800',  'badge_bg' => 'bg-green-900/30',  'badge_border' => 'border-green-700'],
         'B'     => ['text' => 'text-blue-400',   'bg' => 'bg-blue-950/60',    'border' => 'border-blue-800',   'badge_bg' => 'bg-blue-900/30',   'badge_border' => 'border-blue-700'],
@@ -35,8 +35,8 @@
         'D'     => ['text' => 'text-orange-400', 'bg' => 'bg-orange-950/40',  'border' => 'border-orange-800', 'badge_bg' => 'bg-orange-900/30', 'badge_border' => 'border-orange-700'],
         default => ['text' => 'text-red-400',    'bg' => 'bg-red-950/40',     'border' => 'border-red-800',    'badge_bg' => 'bg-red-900/30',    'badge_border' => 'border-red-700'],
     };
-    $isLulus     = $hasil['is_lulus'] ?? false;
-    $gender      = $hasil['gender'] ?? 'pria';
+    $isLulus     = $result->is_lulus ?? false;
+    $gender      = $result->gender ?? 'pria';
     $pullupLabel = $gender === 'wanita' ? 'Chin Up' : 'Pull Up';
     $pullupUnit  = $gender === 'wanita' ? 'dtk'     : 'reps';
 
@@ -56,7 +56,7 @@
             <div class="text-center md:border-r {{ $gradeColors['border'] }} md:pr-8 lg:pr-12">
                 <p class="text-gray-500 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Nilai Akhir</p>
                 <p class="{{ $gradeColors['text'] }} text-7xl md:text-8xl font-black tracking-tighter leading-none">
-                    {{ number_format($hasil['score_final'] ?? 0, 1) }}
+                    {{ number_format($result->score_final ?? 0, 1) }}
                 </p>
                 <p class="text-gray-600 text-xs mt-2 font-mono">/ 100</p>
             </div>
@@ -68,7 +68,7 @@
                     {{ $grade }}
                 </p>
                 <p class="{{ $gradeColors['text'] }} text-sm font-bold uppercase tracking-wider mt-2">
-                    {{ $hasil['grade_label'] ?? '—' }}
+                    {{ $result->grade_label ?? '—' }}
                 </p>
             </div>
 
@@ -124,12 +124,12 @@
 
             @php
                 $components = [
-                    ['Lari 12 Menit',  'fa-person-running',   number_format($hasil['raw_lari_meter']) . ' m',            $hasil['score_lari']],
-                    [$pullupLabel,     'fa-dumbbell',          $hasil['raw_pullup_reps'] . ' ' . $pullupUnit,             $hasil['score_pullup']],
-                    ['Sit Up',         'fa-person',            $hasil['raw_situp_reps'] . ' reps',                        $hasil['score_situp']],
-                    ['Push Up',        'fa-hand-fist',         $hasil['raw_pushup_reps'] . ' reps',                       $hasil['score_pushup']],
-                    ['Shuttle Run',    'fa-stopwatch',         $hasil['raw_shuttle_seconds'] . ' dtk',                    $hasil['score_shuttle']],
-                    ['Renang 50m',     'fa-water',             $hasil['raw_renang_seconds'] . ' dtk',                     $hasil['score_renang']],
+                    ['Lari 12 Menit',  'fa-person-running',  number_format($result->raw_lari_meter) . ' m',        $result->score_lari],
+                    [$pullupLabel,     'fa-dumbbell',         $result->raw_pullup_reps . ' ' . $pullupUnit,         $result->score_pullup],
+                    ['Sit Up',         'fa-person',           $result->raw_situp_reps . ' reps',                    $result->score_situp],
+                    ['Push Up',        'fa-hand-fist',        $result->raw_pushup_reps . ' reps',                   $result->score_pushup],
+                    ['Shuttle Run',    'fa-stopwatch',        $result->raw_shuttle_seconds . ' dtk',                $result->score_shuttle],
+                    ['Renang 50m',     'fa-water',            $result->raw_renang_seconds . ' dtk',                 $result->score_renang],
                 ];
             @endphp
 
@@ -172,7 +172,7 @@
                         <p class="text-gray-300 text-sm font-semibold">Jasmani A</p>
                         <p class="text-gray-600 text-xs mt-0.5">Nilai Lari</p>
                     </div>
-                    <p class="text-white font-black text-xl">{{ number_format($hasil['score_lari'], 1) }}</p>
+                    <p class="text-white font-black text-xl">{{ number_format($result->score_lari, 1) }}</p>
                 </div>
 
                 <div class="flex items-start justify-between py-2.5 border-b border-gray-900">
@@ -180,7 +180,7 @@
                         <p class="text-gray-300 text-sm font-semibold">Jasmani B</p>
                         <p class="text-gray-600 text-xs mt-0.5">avg({{ $pullupLabel }}, Sit Up, Push Up, Shuttle)</p>
                     </div>
-                    <p class="text-white font-black text-xl">{{ number_format($hasil['score_jasmani_b'], 1) }}</p>
+                    <p class="text-white font-black text-xl">{{ number_format($result->score_jasmani_b, 1) }}</p>
                 </div>
 
                 <div class="flex items-start justify-between py-2.5 border-b border-gray-900">
@@ -188,7 +188,7 @@
                         <p class="text-gray-300 text-sm font-semibold">Nilai UKG</p>
                         <p class="text-gray-600 text-xs mt-0.5">(Jasmani A + Jasmani B) ÷ 2</p>
                     </div>
-                    <p class="text-white font-black text-xl">{{ number_format($hasil['score_ukg_avg'], 1) }}</p>
+                    <p class="text-white font-black text-xl">{{ number_format($result->score_ukg_avg, 1) }}</p>
                 </div>
 
                 <div class="flex items-start justify-between py-2.5 border-b border-gray-900">
@@ -196,23 +196,23 @@
                         <p class="text-gray-300 text-sm font-semibold">Renang</p>
                         <p class="text-gray-600 text-xs mt-0.5">Bobot 20% dari nilai akhir</p>
                     </div>
-                    <p class="text-blue-400 font-black text-xl">{{ number_format($hasil['score_renang'], 1) }}</p>
+                    <p class="text-blue-400 font-black text-xl">{{ number_format($result->score_renang, 1) }}</p>
                 </div>
 
                 {{-- Final formula box --}}
                 <div class="{{ $gradeColors['badge_bg'] }} border {{ $gradeColors['badge_border'] }} rounded-xl p-4 mt-auto">
                     <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Formula</p>
                     <p class="text-gray-400 text-xs mb-3 font-mono">
-                        (<span class="text-red-400">{{ number_format($hasil['score_ukg_avg'], 1) }}</span> × 0.80)
-                        + (<span class="text-blue-400">{{ number_format($hasil['score_renang'], 1) }}</span> × 0.20)
+                        (<span class="text-red-400">{{ number_format($result->score_ukg_avg, 1) }}</span> × 0.80)
+                        + (<span class="text-blue-400">{{ number_format($result->score_renang, 1) }}</span> × 0.20)
                     </p>
                     <div class="flex items-baseline gap-3">
                         <p class="{{ $gradeColors['text'] }} font-black text-4xl leading-none">
-                            {{ number_format($hasil['score_final'], 1) }}
+                            {{ number_format($result->score_final, 1) }}
                         </p>
                         <div>
                             <p class="text-gray-500 text-xs">/ 100</p>
-                            <p class="{{ $gradeColors['text'] }} text-xs font-bold">Grade {{ $grade }} · {{ $hasil['grade_label'] }}</p>
+                            <p class="{{ $gradeColors['text'] }} text-xs font-bold">Grade {{ $grade }} · {{ $result->grade_label }}</p>
                         </div>
                     </div>
                 </div>
