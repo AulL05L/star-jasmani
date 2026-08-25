@@ -477,6 +477,51 @@
 
 </section>
 
+{{-- PORTAL STAR PERFORMANCE --}}
+@php($portalPerformance = config('portal.performance_url'))
+@if ($portalPerformance)
+<section id="portal" class="py-20 lg:py-28 bg-black text-gray-100 border-t border-zinc-900">
+    <div class="container mx-auto px-6">
+        <div class="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-red-900/20 blur-3xl"></div>
+            <div class="relative flex flex-col lg:flex-row items-center gap-10 p-8 lg:p-14">
+
+                <div class="w-full lg:w-2/3 space-y-5">
+                    <span class="inline-flex items-center gap-2 text-red-500 font-bold tracking-[0.2em] text-xs uppercase">
+                        <i class="fa-solid fa-chart-line"></i> Portal Pelatih
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter">STAR <span class="text-red-800">PERFORMANCE</span></h2>
+                    <div class="w-24 h-1 bg-red-800"></div>
+                    <p class="text-gray-400 leading-relaxed max-w-2xl">
+                        Sistem monitoring dan evaluasi kondisi fisik atlet lintas cabang olahraga. Menghitung
+                        Performance % terhadap benchmark, meringkasnya menjadi skor berbobot, lalu memeringkat atlet.
+                    </p>
+                    <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-500 pt-2">
+                        <li>&bull; Tes Biomotor &amp; Antropometri</li>
+                        <li>&bull; Bleep Test, RAST, dan 1RM</li>
+                        <li>&bull; Readiness Harian Atlet</li>
+                        <li>&bull; Peringkat &amp; Laporan Sesi</li>
+                    </ul>
+                    <p class="text-xs text-zinc-600 pt-2">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        Akun Star Performance terpisah dari akun Star Jasmani.
+                    </p>
+                </div>
+
+                <div class="w-full lg:w-1/3 flex lg:justify-end">
+                    <a href="{{ $portalPerformance }}" target="_blank" rel="noopener"
+                        class="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-red-800 hover:bg-red-950 text-white font-bold uppercase tracking-widest text-xs py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105">
+                        Masuk Portal
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
 {{-- FOOTER --}}
 <footer class="bg-black text-gray-400 py-12 border-t border-gray-900">
     <div class="container mx-auto px-6">
