@@ -123,4 +123,25 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Akun Admin Pertama
+    |--------------------------------------------------------------------------
+    |
+    | Dibaca AdminSeeder saat penyemaian pertama, dan WAJIB lewat berkas config
+    | ini alih-alih env() langsung di seeder. Sesudah `php artisan config:cache`
+    | Laravel berhenti memuat .env, sehingga setiap env() di luar config/
+    | mengembalikan nilai bawaannya. Versi sebelumnya jatuh ke sandi bawaan yang
+    | tertulis di repo ini, dan itu terjadi tanpa satu pun tanda di layar.
+    |
+    | ADMIN_PASSWORD sengaja TIDAK punya nilai bawaan: di produksi penyemaian
+    | lebih baik berhenti daripada memasang akun admin bersandi yang dapat
+    | dibaca siapa pun yang membuka repo.
+    |
+    */
+
+    'admin_email' => env('ADMIN_EMAIL', 'admin@starjasmani.com'),
+
+    'admin_password' => env('ADMIN_PASSWORD'),
+
 ];

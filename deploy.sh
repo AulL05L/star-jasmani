@@ -77,6 +77,17 @@ echo "[ 6/7 ] Fix permissions..."
 sudo chown -R www-data:www-data storage bootstrap/cache
 sudo chmod -R 775 storage bootstrap/cache
 
+# SETGID pada direktori, dan ini bukan pemanis.
+#
+# Tanpa bit setgid, berkas yang LAHIR SESUDAH deploy — log hari berikutnya, cache
+# view, berkas sesi — mengambil grup utama pengguna yang membuatnya, bukan grup
+# direktori induknya. Jadi chmod di atas hanya membetulkan yang sudah ada, dan
+# besok paginya masalahnya kembali sendiri: php-fpm tidak dapat menulis berkas
+# yang baru dibuat cron, atau sebaliknya, dan gejalanya muncul jauh dari sebabnya.
+#
+# Dengan setgid, tiap berkas baru mewarisi grup www-data selamanya.
+sudo find storage bootstrap/cache -type d -exec chmod 2775 {} \;
+
 echo "[ 7/7 ] Reload Nginx..."
 sudo systemctl reload nginx
 

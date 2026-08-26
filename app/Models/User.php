@@ -11,6 +11,15 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    /**
+     * Panjang minimum kata sandi.
+     *
+     * Satu sumber untuk aturan DAN pesan galatnya. Sebelumnya angka 8 ditulis
+     * langsung di dua tempat pada AthleteController beserta pesannya, sehingga
+     * menaikkan ambang di satu tempat saja akan lolos tanpa galat apa pun.
+     */
+    public const MIN_PASSWORD_LENGTH = 8;
+
     use HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [

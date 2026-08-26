@@ -33,7 +33,7 @@ class AthleteController extends Controller
         $request->validate([
             'name'               => ['required', 'string', 'max:255'],
             'email'              => ['required', 'email', 'unique:users,email'],
-            'password'           => ['required', 'string', 'min:8'],
+            'password'           => ['required', 'string', 'min:' . User::MIN_PASSWORD_LENGTH],
             'gender'             => ['required', 'in:pria,wanita'],
             'birth_date'         => ['nullable', 'date'],
             'phone'              => ['nullable', 'string', 'max:20'],
@@ -45,7 +45,7 @@ class AthleteController extends Controller
         ], [
             'email.unique'    => 'Email sudah terdaftar.',
             'nik.unique'      => 'NIK sudah terdaftar.',
-            'password.min'    => 'Password minimal 8 karakter.',
+            'password.min'    => 'Password minimal ' . User::MIN_PASSWORD_LENGTH . ' karakter.',
             'height_cm.min'   => 'Tinggi badan tidak valid.',
             'weight_kg.min'   => 'Berat badan tidak valid.',
         ]);
@@ -110,7 +110,7 @@ class AthleteController extends Controller
             'target_institution' => ['nullable', 'string'],
             'batch'              => ['nullable', 'string', 'max:50'],
             'nik'                => ['nullable', 'string', 'max:20', 'unique:athletes,nik,' . $athlete->id],
-            'password'           => ['nullable', 'string', 'min:8'],
+            'password'           => ['nullable', 'string', 'min:' . User::MIN_PASSWORD_LENGTH],
             'program'            => ['required', 'in:polri,kebugaran'],
         ]);
 
