@@ -28,7 +28,13 @@
         <p class="text-red-800 font-bold uppercase tracking-[0.3em] text-[10px] mb-3">
             <i class="fa-solid fa-calculator mr-1.5"></i> Tools Gratis · Standar Resmi POLRI
         </p>
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter mb-3 leading-none">
+        {{--
+            `text-white` WAJIB disebut di sini. Body memakai `bg-black` tanpa menyetel
+            warna teks bawaan, jadi judul yang tidak menyebut warnanya sendiri mewarisi
+            bawaan peramban yang mendekati hitam — dan lenyap di atas latar hitam.
+            "SAMAPTA" selama ini terlihat hanya karena ia menyebut `text-red-800`.
+        --}}
+        <h1 class="text-white text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter mb-3 leading-none">
             KALKULATOR NILAI <span class="text-red-800">SAMAPTA</span>
         </h1>
         <p class="text-gray-500 text-sm md:text-base max-w-md mx-auto leading-relaxed">
