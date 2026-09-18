@@ -252,7 +252,7 @@
             class="flex-1 flex items-center justify-center gap-2 bg-red-800 hover:bg-red-700 active:scale-[0.98] text-white font-black uppercase tracking-widest text-sm py-5 rounded-2xl transition-all shadow-lg shadow-red-900/20">
             <i class="fa-solid fa-rotate-left"></i> Hitung Ulang
         </a>
-        <a href="{{ route('kalkulator.polri.pdf', $result->token) }}"
+        <a href="{{ route('kalkulator.polri.bayar', $result->token) }}"
             class="flex-1 flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 active:scale-[0.98] border border-gray-600 hover:border-gray-500 text-white font-black uppercase tracking-widest text-sm py-5 rounded-2xl transition-all">
             <i class="fa-solid fa-file-pdf text-red-400"></i> Download PDF Laporan
         </a>

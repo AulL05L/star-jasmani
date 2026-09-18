@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AthleteImportController;
 use App\Http\Controllers\Admin\KebugaranController;
 use App\Http\Controllers\Member\KebugaranDashboardController;
 use App\Http\Controllers\KalkulatorController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\SitemapController;
 
 
@@ -39,6 +40,12 @@ Route::prefix('kalkulator')->name('kalkulator.')->group(function () {
     Route::get('polri/hasil/{token}/pdf',  [KalkulatorController::class, 'pdf'])         ->name('polri.pdf');
     Route::get('polri/hasil/{token}/bayar',  [KalkulatorController::class, 'bayar'])     ->name('polri.bayar');
 });
+
+// ── Webhook Pembayaran ──
+// Dipanggil server Midtrans, bukan peramban. Dikecualikan dari CSRF di
+// bootstrap/app.php; keasliannya dibuktikan lewat signature_key.
+Route::post('/midtrans/notification', MidtransWebhookController::class)
+    ->name('midtrans.notification');
 
 // ── Auth ──
 Route::middleware('guest')->group(function () {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PdfOrder;
 use App\Models\PublicScoreResult;
 use App\Models\SamaptaScore;
+use App\Services\MidtransPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -110,6 +111,14 @@ class KalkulatorController extends Controller
                 ->with('error', 'Hasil kalkulator sudah kedaluwarsa. Silakan hitung ulang.');
         }
 
+        // Gerbang bayar. Tanpa ini token hasil — yang muncul apa adanya di bilah
+        // alamat dan gampang dibagikan — sudah cukup untuk mengunduh PDF gratis,
+        // sehingga seluruh alur pembayaran tidak ada artinya.
+        if (! $result->pdfOrders()->where('payment_status', 'paid')->exists()) {
+            return redirect()->route('kalkulator.polri.bayar', $token)
+                ->with('error', 'Selesaikan pembayaran terlebih dahulu untuk mengunduh PDF laporan.');
+        }
+
         $gender = $result->gender === 'pria' ? 'Pria' : 'Wanita';
 
         $pdf = Pdf::loadView('kalkulator.laporan-polri', compact('result'))
@@ -141,7 +150,7 @@ class KalkulatorController extends Controller
         return view('kalkulator.hasil', compact('result'));
     }
 
-    public function bayar(string $token): View|RedirectResponse
+    public function bayar(string $token, MidtransPayment $midtrans): View|RedirectResponse
     {
         $result = PublicScoreResult::where('token', $token)->first();
 
@@ -159,23 +168,122 @@ class KalkulatorController extends Controller
             return redirect()->route('kalkulator.polri.pdf', $token);
         }
 
-        // Find an active (non-terminal) order, or create a new pending one.
-        // Gateway fields (payment_url, qris_url, etc.) will be populated once
-        // Midtrans integration is wired up. For now the row is created bare.
-        $order = $result->pdfOrders()
-            ->whereIn('payment_status', ['pending', 'expired', 'failed'])
-            ->latest()
-            ->first();
+        $midtransError = null;
 
-        if (! $order || $order->payment_status !== 'pending') {
+        // Find the most recent pending order
+        $order = $result->pdfOrders()->where('payment_status', 'pending')->latest()->first();
+
+        // Midtrans mengarahkan pengguna kembali ke halaman ini setelah membayar,
+        // dan webhook belum tentu sudah tiba — di localhost malah tidak akan
+        // pernah tiba. Jadi begitu ada order yang sudah sempat dibuka di Snap,
+        // status sebenarnya ditanyakan langsung ke Midtrans.
+        if ($order && $order->payment_url) {
+            if ($payload = $midtrans->fetchStatus($order)) {
+                $midtrans->applyPayload($order, $payload);
+                $order->refresh();
+
+                if ($order->payment_status === 'paid') {
+                    return redirect()->route('kalkulator.polri.pdf', $token)
+                        ->with('success', 'Pembayaran berhasil. Laporan PDF Anda sedang diunduh.');
+                }
+
+                if ($order->payment_status !== 'pending') {
+                    $order = null;
+                }
+            }
+        }
+
+        // If the Snap session has expired on our end, close it and start fresh
+        if ($order && $order->expired_at?->isPast()) {
+            $order->update(['payment_status' => 'expired']);
+            $order = null;
+        }
+
+        // No usable pending order — create one
+        if (! $order) {
             $order = $result->pdfOrders()->create([
                 'order_number'   => $this->generateOrderNumber(),
-                'amount'         => 5000,
+                'amount'         => (int) config('midtrans.pdf_price', 5000),
                 'payment_status' => 'pending',
             ]);
         }
 
-        return view('kalkulator.bayar', compact('result', 'order'));
+        // Pending order exists but no payment_url yet — call Midtrans Snap
+        if (! $order->payment_url) {
+            [$order, $midtransError] = $this->createMidtransSnapUrl($result, $order);
+        }
+
+        return view('kalkulator.bayar', compact('result', 'order', 'midtransError'));
+    }
+
+    /**
+     * Call Midtrans Snap::createTransaction and store the redirect URL.
+     * Returns [$order, $errorMessage|null]. Never throws — errors are returned as string.
+     *
+     * @return array{0: PdfOrder, 1: string|null}
+     */
+    private function createMidtransSnapUrl(PublicScoreResult $result, PdfOrder $order): array
+    {
+        $midtrans = app(MidtransPayment::class);
+
+        if (! $midtrans->isConfigured()) {
+            return [$order, 'MIDTRANS_SERVER_KEY belum diisi di .env'];
+        }
+
+        try {
+            $midtrans->configure();
+
+            $snapParams = [
+                'transaction_details' => [
+                    'order_id'     => $order->order_number,
+                    'gross_amount' => $order->amount,
+                ],
+                'item_details' => [
+                    [
+                        'id'       => 'PDF_POLRI',
+                        'price'    => $order->amount,
+                        'quantity' => 1,
+                        'name'     => 'PDF Laporan Nilai POLRI Samapta',
+                    ],
+                ],
+                'customer_details' => [
+                    // Anonymous calculator — no PII collected.
+                    'first_name' => 'Pengguna',
+                    'last_name'  => 'Kalkulator',
+                    'email'      => 'noreply@star-jasmani.test',
+                ],
+                'expiry' => [
+                    'start_time' => now()->format('Y-m-d H:i:s O'),
+                    'unit'       => 'hours',
+                    'duration'   => 24,
+                ],
+                'callbacks' => [
+                    // Midtrans redirects the user's browser here after payment.
+                    // Must match APP_URL — see .env if redirect lands on wrong host.
+                    'finish' => route('kalkulator.polri.bayar', $result->token),
+                ],
+            ];
+
+            $snap = \Midtrans\Snap::createTransaction($snapParams);
+
+            $order->update([
+                'external_order_id' => $order->order_number,
+                'payment_url'       => $snap->redirect_url,
+                'expired_at'        => now()->addHours(24),
+            ]);
+
+            $order->refresh();
+
+            return [$order, null];
+
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Midtrans Snap createTransaction failed', [
+                'order_number' => $order->order_number,
+                'error'        => $e->getMessage(),
+            ]);
+
+            return [$order, $e->getMessage()];
+        }
     }
 
     private function generateOrderNumber(): string

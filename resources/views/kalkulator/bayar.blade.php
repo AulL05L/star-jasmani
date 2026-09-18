@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Pembayaran PDF Laporan — Star Jasmani')
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -228,15 +229,22 @@
             </div>
         @endif
 
-        {{-- Placeholder: gateway not integrated yet --}}
+        {{-- Placeholder: gateway not integrated or call failed --}}
         @if(! $hasPaymentUrl && ! $hasQrisUrl)
             <div class="bg-gray-950 border border-dashed border-gray-700 rounded-2xl px-6 py-10 text-center space-y-3">
                 <i class="fa-solid fa-plug-circle-xmark text-gray-700 text-4xl"></i>
                 <p class="text-gray-500 font-semibold text-sm">Payment Gateway Belum Terhubung</p>
                 <p class="text-gray-600 text-xs max-w-xs mx-auto leading-relaxed">
                     Integrasi pembayaran otomatis sedang dalam pengembangan.
-                    Halaman ini akan menampilkan QRIS atau tombol bayar setelah gateway aktif.
+                    Halaman ini akan menampilkan tombol bayar setelah gateway aktif.
                 </p>
+                {{-- Debug-only error detail: only shown when APP_DEBUG=true --}}
+                @if(config('app.debug') && ! empty($midtransError))
+                    <div class="bg-orange-950/40 border border-orange-800 rounded-lg px-4 py-3 text-left max-w-sm mx-auto mt-1">
+                        <p class="text-orange-400 text-[10px] font-mono uppercase tracking-widest mb-1">Debug — Midtrans error</p>
+                        <p class="text-orange-300 text-xs font-mono break-all">{{ $midtransError }}</p>
+                    </div>
+                @endif
                 <div class="pt-2">
                     <span class="bg-gray-900 border border-gray-700 text-gray-600 text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-bold">
                         Order #{{ $order->order_number }} · Rp {{ number_format($order->amount, 0, ',', '.') }}
