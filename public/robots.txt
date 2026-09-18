@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Area privat — jangan diindeks
+Disallow: /admin
+Disallow: /member
+Disallow: /login
+Disallow: /kalkulator/polri/hasil/
+
+Sitemap: https://starjasmani.id/sitemap.xml

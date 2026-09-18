@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Hasil Nilai POLRI Samapta — Star Jasmani')
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 

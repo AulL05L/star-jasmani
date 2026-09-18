@@ -49,6 +49,16 @@ cd "$PROJECT_DIR"
 echo "[ 1/7 ] Git pull..."
 $JADI_WWW git pull origin main
 
+# Nginx menyajikan berkas nyata di public/ SEBELUM meneruskan ke Laravel
+# (try_files $uri ... /index.php). Dulu pernah ada public/sitemap.xml statis
+# yang ditaruh manual di server dan tidak pernah masuk repo; selama berkas itu
+# ada, route /sitemap.xml yang dinamis tidak akan pernah terpakai — dan
+# kegagalannya senyap: Google tetap menerima sitemap, hanya isinya basi.
+if [ -f "$PROJECT_DIR/public/sitemap.xml" ]; then
+    echo "        -> menghapus public/sitemap.xml statis yang membayangi route dinamis"
+    $JADI_WWW rm -f "$PROJECT_DIR/public/sitemap.xml"
+fi
+
 # composer install ikut menyusun ulang peta autoload. Itu WAJIB sesudah pull yang
 # membawa kelas PHP baru: peta dari --optimize-autoloader bersifat statis, dan
 # kelas yang belum terdaftar membuat SELURUH situs balas HTTP 500 — bukan hanya

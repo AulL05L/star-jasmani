@@ -16,11 +16,20 @@ use App\Http\Controllers\Admin\AthleteImportController;
 use App\Http\Controllers\Admin\KebugaranController;
 use App\Http\Controllers\Member\KebugaranDashboardController;
 use App\Http\Controllers\KalkulatorController;
+use App\Http\Controllers\SitemapController;
 
 
 // ── Public ──
 Route::get('/', fn() => view('welcome'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('daftar');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// ── Halaman Program (satu URL per segmen pasar) ──
+// Dipisah supaya tiap segmen punya halaman sendiri untuk diperingkat mesin
+// pencari; satu URL hanya bisa bersaing untuk satu maksud pencarian.
+Route::get('/pelatihan-kedinasan-tni-polri', fn() => view('program.kedinasan'))->name('program.kedinasan');
+Route::get('/pelatih-kebugaran-jakarta',     fn() => view('program.kebugaran'))->name('program.kebugaran');
+Route::get('/monitoring-performa-atlet',     fn() => view('program.atlet'))->name('program.atlet');
 
 // ── Kalkulator Publik ──
 Route::prefix('kalkulator')->name('kalkulator.')->group(function () {

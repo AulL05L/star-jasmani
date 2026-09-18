@@ -1,6 +1,54 @@
 @extends('layouts.app')
 
-@section('title', 'Star Jasmani — Training With Mentality')
+@section('title', 'Pelatihan Fisik Persiapan Kedinasan TNI & POLRI | Star Jasmani')
+@section('meta_description', 'Star Jasmani: pelatihan fisik bersertifikasi ICCA untuk persiapan seleksi kedinasan TNI/POLRI, kebugaran umum & strength conditioning, serta pemulihan pasca cedera. Coba kalkulator nilai Samapta POLRI gratis.')
+@section('meta_image', asset('pict/bg-home.jpg'))
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph'   => [
+        [
+            '@type'       => 'SportsActivityLocation',
+            '@id'         => url('/') . '#organization',
+            'name'        => 'Star Jasmani',
+            'url'         => url('/'),
+            'logo'        => asset('pict/logo-removebg.png'),
+            'image'       => asset('pict/bg-home.jpg'),
+            'description' => 'Penyedia program pelatihan fisik berbasis sport science untuk persiapan kedinasan TNI/POLRI, kebugaran umum, dan pendampingan performa atlet.',
+            'telephone'   => '+62 856-0387-5675',
+            'areaServed'  => ['@type' => 'AdministrativeArea', 'name' => 'DKI Jakarta, Indonesia'],
+            'sameAs'      => ['https://wa.me/6285603875675'],
+            'employee'    => [
+                '@type'      => 'Person',
+                'name'       => 'Fariz Fahrun, S.Or.',
+                'jobTitle'   => 'Strength & Conditioning Coach',
+                'alumniOf'   => 'Universitas Negeri Jakarta',
+                'hasCredential' => 'Pelatih Fisik Level 2 Nasional (ICCA)',
+            ],
+            'hasOfferCatalog' => [
+                '@type' => 'OfferCatalog',
+                'name'  => 'Program Pelatihan Star Jasmani',
+                'itemListElement' => [
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Persiapan Kedinasan TNI & POLRI', 'description' => 'Standardisasi tes Samapta A & B, periodisasi latihan menjelang seleksi, dan simulasi penilaian poin maksimal.']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Kebugaran Umum & Strength Conditioning', 'description' => 'Weight management, body shaping, dan functional strength training berbasis sport science.']],
+                    ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Pemulihan Pasca Cedera', 'description' => 'Latihan stability & mobility serta protokol return to sport.']],
+                ],
+            ],
+        ],
+        [
+            '@type'     => 'WebSite',
+            '@id'       => url('/') . '#website',
+            'url'       => url('/'),
+            'name'      => 'Star Jasmani',
+            'inLanguage'=> 'id-ID',
+            'publisher' => ['@id' => url('/') . '#organization'],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
 @push('styles')
 <style>
@@ -16,7 +64,13 @@
     .animate-shimmer {
         background: linear-gradient(90deg, #d1d5db 0%, #ffffff 50%, #d1d5db 100%);
         background-size: 200% auto;
-        background-repeat: no-repeat;
+        /*
+            `no-repeat` membuat teks lenyap sepenuhnya di sebagian siklus animasi:
+            saat background-position bergeser ke ±200%, gradiennya keluar dari area
+            teks dan tidak ada lagi yang mengisi -webkit-text-fill-color: transparent.
+            Dengan `repeat`, gradien ubin sehingga teks selalu terwarnai.
+        */
+        background-repeat: repeat;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -33,55 +87,7 @@
 
 @section('content')
 
-{{-- HEADER --}}
-<header class="sticky top-0 z-50 bg-black/90 backdrop-blur-md p-4 lg:p-3 flex items-center justify-between border-b border-gray-900">
-    <div class="flex items-center gap-3">
-        <div class="w-10 h-10 overflow-hidden rounded-lg border border-red-800">
-            <img src="{{ asset('pict/logo-removebg.png') }}" alt="logo" class="w-full h-full object-cover" />
-        </div>
-        <span class="text-white font-black tracking-tighter text-xl hidden sm:block">
-            STAR <span class="text-red-800">JASMANI</span>
-        </span>
-    </div>
-
-    <div class="cursor-pointer text-red-800 lg:hidden text-2xl" id="hamburger">
-        <i class="fa-solid fa-bars"></i>
-    </div>
-
-    <nav class="nav-items hidden lg:block">
-        <ul class="flex space-x-2">
-            <li><a href="#home" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Home<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="#profile" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Profile<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="#about" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">About<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="#training" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Training<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="#method" class="relative px-6 py-2 font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Our Method<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="{{ route('kalkulator.polri') }}" class="relative px-6 py-2 font-bold text-red-400 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Kalkulator<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-            <li><a href="{{ route('login') }}" class="relative px-6 py-2 font-bold text-red-500 hover:text-white uppercase tracking-widest transition-all duration-300 text-xs group">Login<span class="absolute left-1/2 bottom-0 w-0 h-0.5 bg-red-800 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span></a></li>
-        </ul>
-    </nav>
-
-    <a href="{{ route('login') }}" class="btn-login-pulse hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-red-800 text-red-500 hover:bg-red-800 hover:text-white transition-all duration-300 text-xs font-bold uppercase tracking-wider">
-        <i class="fa-solid fa-shield-halved text-sm"></i>
-        <span>Member / Coach</span>
-    </a>
-</header>
-
-{{-- MOBILE MENU --}}
-<nav class="bg-black/95 border-b border-gray-900 p-6 hidden fixed w-full z-40 top-0 mt-16" id="mobile-menu">
-    <ul class="flex flex-col space-y-6 text-center">
-        <li><a href="#home" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Home</a></li>
-        <li><a href="#profile" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Profile</a></li>
-        <li><a href="#about" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">About</a></li>
-        <li><a href="#training" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Training</a></li>
-        <li><a href="#method" class="mobile-link font-bold text-gray-400 hover:text-red-800 uppercase tracking-widest text-sm block">Our Method</a></li>
-        <li><a href="{{ route('kalkulator.polri') }}" class="mobile-link font-bold text-red-400 hover:text-red-600 uppercase tracking-widest text-sm block"><i class="fa-solid fa-calculator mr-1 text-xs"></i> Kalkulator</a></li>
-        <li class="pt-2 border-t border-gray-800">
-            <a href="{{ route('login') }}" class="mobile-link inline-block bg-red-800 hover:bg-red-950 text-white font-bold uppercase tracking-widest text-sm px-8 py-3 rounded-full transition-all duration-300">
-                <i class="fa-solid fa-shield-halved mr-2"></i> Login Member / Coach
-            </a>
-        </li>
-    </ul>
-</nav>
+@include('layouts.partials.public-header')
 
 {{-- HOME --}}
 <section id="home" class="text-gray-100 py-48 lg:py-32" style="background-image: url('{{ asset('pict/bg-home.jpg') }}'); background-size: cover; background-position: center;">
@@ -98,6 +104,11 @@
         </h1>
         <p class="text-lg md:text-xl font-light text-gray-100 mb-10 max-w-3xl mx-auto leading-relaxed">
             <strong class="font-semibold text-gray-300 animate-shimmer">Program Didukung Pelatih Bersertifikasi Nasional</strong>
+            <span class="block mt-3 text-base md:text-lg text-gray-300 font-light">
+                Pelatihan fisik persiapan kedinasan <strong class="font-semibold text-white">TNI &amp; POLRI</strong>,
+                kebugaran umum &amp; <strong class="font-semibold text-white">strength conditioning</strong>,
+                serta pendampingan performa atlet PPLM dan cabang olahraga prestasi.
+            </span>
         </p>
         <div class="flex flex-col sm:flex-row gap-4 items-center justify-center pb-6">
             <a href="{{ route('daftar') }}" class="w-full sm:w-auto inline-block bg-red-800 hover:bg-red-950 text-white font-bold py-4 px-10 rounded-full transition duration-300 shadow-lg transform hover:scale-105">
@@ -306,6 +317,13 @@
                         <li>• Simulasi Penilaian Poin Maksimal</li>
                     </ul>
                     <div class="pt-5">
+                        <a href="{{ route('program.kedinasan') }}"
+                            class="inline-flex items-center gap-2 text-red-500 hover:text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 group">
+                            Lihat Program Kedinasan
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                    <div class="pt-5">
                         <a href="{{ route('kalkulator.polri') }}"
                             class="inline-flex items-center gap-2 text-red-500 hover:text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 group">
                             <i class="fa-solid fa-calculator text-xs group-hover:scale-110 transition-transform"></i>
@@ -329,6 +347,13 @@
                         <li>• Functional Strength Training</li>
                         <li>• Program Latihan Berbasis Sport Science</li>
                     </ul>
+                    <div class="pt-5">
+                        <a href="{{ route('program.kebugaran') }}"
+                            class="inline-flex items-center gap-2 text-red-500 hover:text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 group">
+                            Lihat Program Kebugaran
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row items-center gap-12 group">
@@ -343,6 +368,13 @@
                         <li>• Latihan Penguatan Otot Pendukung (Stability & Mobility)</li>
                         <li>• Program Kembali ke Olahraga (Return to Sport Protocol)</li>
                     </ul>
+                    <div class="pt-5">
+                        <a href="{{ route('program.kebugaran') }}"
+                            class="inline-flex items-center gap-2 text-red-500 hover:text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 group">
+                            Lihat Program Pemulihan
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -479,7 +511,6 @@
 
 {{-- PORTAL STAR PERFORMANCE --}}
 @php($portalPerformance = config('portal.performance_url'))
-@if ($portalPerformance)
 <section id="portal" class="py-20 lg:py-28 bg-black text-gray-100 border-t border-zinc-900">
     <div class="container mx-auto px-6">
         <div class="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
@@ -508,62 +539,32 @@
                     </p>
                 </div>
 
-                <div class="w-full lg:w-1/3 flex lg:justify-end">
-                    <a href="{{ $portalPerformance }}" target="_blank" rel="noopener"
+                <div class="w-full lg:w-1/3 flex flex-col gap-3 lg:items-end">
+                    <a href="{{ route('program.atlet') }}"
                         class="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-red-800 hover:bg-red-950 text-white font-bold uppercase tracking-widest text-xs py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105">
-                        Masuk Portal
-                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        Pelajari Selengkapnya
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
+                    @if ($portalPerformance)
+                        <a href="{{ $portalPerformance }}" target="_blank" rel="noopener"
+                            class="w-full lg:w-auto inline-flex items-center justify-center gap-3 border-2 border-zinc-700 hover:border-red-800 text-white font-bold uppercase tracking-widest text-xs py-4 px-10 rounded-full transition-all duration-300">
+                            Masuk Portal
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    @endif
                 </div>
 
             </div>
         </div>
     </div>
 </section>
-@endif
 
-{{-- FOOTER --}}
-<footer class="bg-black text-gray-400 py-12 border-t border-gray-900">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div class="space-y-4">
-                <h4 class="text-white font-black text-2xl tracking-tighter">STAR <span class="text-red-800">JASMANI</span></h4>
-                <p class="text-sm leading-relaxed max-w-xs">Penyedia layanan program latihan jasmani profesional.</p>
-            </div>
-            <div class="space-y-4">
-                <h5 class="text-white font-bold uppercase text-xs tracking-widest">Contact Info</h5>
-                <ul class="text-sm space-y-2">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-red-800"></i><a href="mailto:starjasmani@gmail.com" class="hover:text-white transition">starjasmani@gmail.com</a></li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-red-800"></i><a href="https://wa.me/6285603875675" class="hover:text-white transition">+62 856 0387 5675</a></li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-red-800"></i><span>Jakarta, Indonesia</span></li>
-                </ul>
-            </div>
-            <div class="space-y-4 md:text-right">
-                <h5 class="text-white font-bold uppercase text-xs tracking-widest">Connect With Us</h5>
-                <div class="flex md:justify-end space-x-6">
-                    <a href="https://www.instagram.com/star_jasmani/" target="_blank" class="text-gray-400 hover:text-red-800 transition text-xl"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@star.jasmani" target="_blank" class="text-gray-400 hover:text-red-800 transition text-xl"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="https://wa.me/6285603875675" target="_blank" class="text-gray-400 hover:text-red-800 transition text-xl"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="mailto:starjasmani@gmail.com" class="text-gray-400 hover:text-red-800 transition text-xl"><i class="fa-solid fa-envelope"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="pt-8 border-t border-gray-900 text-center md:flex md:justify-between md:text-left items-center">
-            <p class="text-xs tracking-wide">&copy; 2024 <span class="text-white font-bold">STAR JASMANI</span>. All Rights Reserved.</p>
-            <p class="text-[10px] uppercase tracking-[0.2em] mt-4 md:mt-0 opacity-50">Professional S&C Coaching by Fariz Fahrun, S.Or.</p>
-        </div>
-    </div>
-</footer>
+@include('layouts.partials.public-footer')
 
 @endsection
 
 @push('scripts')
 <script>
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const mobileLinks = document.querySelectorAll(".mobile-link");
-    hamburger.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
-    mobileLinks.forEach(link => link.addEventListener("click", () => mobileMenu.classList.add("hidden")));
 
     // ── Method Accordion ──
     const methodState = [true, false, false]; // item 0 terbuka by default

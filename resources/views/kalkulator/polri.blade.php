@@ -1,5 +1,51 @@
 @extends('layouts.app')
-@section('title', 'Kalkulator Nilai POLRI Samapta — Star Jasmani')
+@section('title', 'Kalkulator Nilai Samapta POLRI — Hitung Nilai Tes Jasmani Online Gratis')
+@section('meta_description', 'Kalkulator nilai Samapta POLRI gratis. Masukkan hasil lari 12 menit, pull up, sit up, push up, shuttle run, dan renang 50m — nilai Jasmani A, B, dan nilai akhir UKG dihitung otomatis dengan tabel konversi resmi POLRI untuk pria dan wanita.')
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph'   => [
+        [
+            '@type'               => 'WebApplication',
+            'name'                => 'Kalkulator Nilai Samapta POLRI',
+            'url'                 => route('kalkulator.polri'),
+            'applicationCategory' => 'HealthApplication',
+            'operatingSystem'     => 'Web',
+            'inLanguage'          => 'id-ID',
+            'description'         => 'Alat hitung nilai tes kesamaptaan jasmani POLRI berdasarkan tabel konversi resmi Samapta A dan B.',
+            'offers'              => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'IDR'],
+            'publisher'           => ['@type' => 'Organization', 'name' => 'Star Jasmani', 'url' => url('/')],
+        ],
+        [
+            '@type' => 'HowTo',
+            'name'  => 'Cara menghitung nilai Samapta POLRI',
+            'step'  => [
+                ['@type' => 'HowToStep', 'position' => 1, 'name' => 'Isi hasil Samapta A', 'text' => 'Masukkan jarak tempuh lari 12 menit (Cooper Test) dalam satuan meter.'],
+                ['@type' => 'HowToStep', 'position' => 2, 'name' => 'Isi hasil Samapta B', 'text' => 'Masukkan jumlah repetisi pull up/chin up, sit up 60 detik, push up 60 detik, serta catatan waktu shuttle run 6x10 meter.'],
+                ['@type' => 'HowToStep', 'position' => 3, 'name' => 'Isi hasil renang', 'text' => 'Masukkan catatan waktu renang 50 meter dalam satuan detik.'],
+                ['@type' => 'HowToStep', 'position' => 4, 'name' => 'Lihat nilai akhir', 'text' => 'Sistem mengonversi tiap komponen ke tabel nilai POLRI sesuai jenis kelamin, lalu menghitung nilai Jasmani A, Jasmani B, nilai UKG, dan nilai akhir.'],
+            ],
+        ],
+        [
+            '@type'      => 'FAQPage',
+            'mainEntity' => collect([
+                ['Apa saja komponen tes Samapta POLRI?', 'Terdapat enam komponen: lari 12 menit (Cooper Test), pull up atau chin up, sit up 60 detik, push up 60 detik, shuttle run 6x10 meter, dan renang 50 meter.'],
+                ['Bagaimana cara menghitung nilai Samapta POLRI?', 'Nilai Jasmani A diambil dari nilai lari 12 menit. Nilai Jasmani B adalah rata-rata empat komponen Samapta B. Nilai UKG adalah rata-rata nilai A dan B. Nilai akhir dihitung dari nilai UKG dikali 80 persen ditambah nilai renang dikali 20 persen.'],
+                ['Berapa nilai minimal untuk lulus tes jasmani POLRI?', 'Pada kalkulator ini batas kelulusan yang dipakai adalah nilai akhir minimal 70. Ambang resmi dapat berbeda mengikuti ketentuan tiap gelombang seleksi.'],
+                ['Apakah tabel nilai pria dan wanita berbeda?', 'Ya. Kalkulator memakai tabel konversi skor yang terpisah untuk peserta pria dan wanita.'],
+                ['Apakah kalkulator nilai Samapta POLRI ini gratis?', 'Ya, perhitungan nilai dapat digunakan gratis tanpa perlu membuat akun, dan hasilnya keluar seketika.'],
+            ])->map(fn ($qa) => [
+                '@type'          => 'Question',
+                'name'           => $qa[0],
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
+            ])->all(),
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
 @section('content')
 
@@ -319,6 +365,60 @@
 
     </div>
 </div>
+
+{{-- LANGKAH BERIKUTNYA --}}
+{{--
+    Halaman ini yang paling banyak menerima trafik pencarian, tapi pengunjungnya
+    datang untuk memakai alat, bukan untuk membeli. Blok ini yang mengubah
+    kunjungan tersebut menjadi jalan masuk ke program dan ke halaman lain.
+--}}
+<section class="bg-zinc-950 border-t border-zinc-900 py-16">
+    <div class="container mx-auto px-6 max-w-4xl">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tighter mb-3">Nilai Anda Belum Cukup? Ini Langkah Berikutnya</h2>
+        <div class="w-16 h-1 bg-red-800 mb-8"></div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+            <a href="{{ route('program.kedinasan') }}"
+                class="block bg-black border border-zinc-900 hover:border-red-900 rounded-2xl p-6 transition-colors group">
+                <i class="fa-solid fa-shield-halved text-red-700 text-xl mb-4"></i>
+                <h3 class="text-white font-bold text-lg mb-2">Program Persiapan Kedinasan</h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                    Periodisasi latihan yang disusun mundur dari tanggal seleksi Anda, dengan asesmen awal
+                    untuk menentukan komponen mana yang paling perlu dikejar.
+                </p>
+                <span class="inline-flex items-center gap-2 text-red-400 group-hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
+                    Lihat Program <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </span>
+            </a>
+
+            <a href="{{ route('program.kebugaran') }}"
+                class="block bg-black border border-zinc-900 hover:border-red-900 rounded-2xl p-6 transition-colors group">
+                <i class="fa-solid fa-dumbbell text-red-700 text-xl mb-4"></i>
+                <h3 class="text-white font-bold text-lg mb-2">Kebugaran &amp; Strength Conditioning</h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                    Membangun dasar kekuatan dan daya tahan lebih dulu, termasuk program pemulihan bila
+                    Anda sedang menangani cedera.
+                </p>
+                <span class="inline-flex items-center gap-2 text-red-400 group-hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
+                    Lihat Program <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </span>
+            </a>
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-4">
+            <a href="{{ route('daftar') }}"
+                class="inline-flex items-center justify-center gap-2 bg-red-800 hover:bg-red-950 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-user-plus"></i> Daftar Program
+            </a>
+            <a href="https://wa.me/6285603875675" target="_blank" rel="noopener"
+                class="inline-flex items-center justify-center gap-2 border-2 border-zinc-700 hover:border-red-800 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Konsultasi Gratis
+            </a>
+        </div>
+    </div>
+</section>
+
+@include('layouts.partials.public-footer')
 
 @endsection
 

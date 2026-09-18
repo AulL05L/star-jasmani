@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Pendaftaran | Star Jasmani')
+@section('title', 'Daftar Program Pelatihan Fisik Kedinasan & Kebugaran | Star Jasmani')
+@section('meta_description', 'Formulir pendaftaran program Star Jasmani: persiapan kedinasan TNI/POLRI, kebugaran umum dan strength conditioning, serta program pemulihan pasca cedera bersama pelatih bersertifikasi ICCA.')
 
 @push('styles')
 <style>
@@ -37,11 +38,14 @@
         {{-- Header --}}
         <div class="text-center mb-16">
             <p class="text-red-800 font-bold uppercase tracking-[0.4em] text-xs mb-4">Informasi Pendaftaran</p>
-            <h1 class="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none mb-2">
-                Frequently
-            </h1>
+            {{--
+                Sebelumnya judul ini dipecah menjadi dua tag <h1> hanya demi patahan
+                baris. Satu halaman hanya boleh punya satu <h1>, dan isinya harus
+                menyebut topik halaman — bukan label generik berbahasa Inggris.
+            --}}
             <h1 class="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none">
-                Asked <span class="text-red-800">Questions</span>
+                Pendaftaran &amp;<br>
+                <span class="text-red-800">Pertanyaan Umum</span>
             </h1>
             <div class="w-16 h-1 bg-red-800 mx-auto mt-8"></div>
         </div>
@@ -123,6 +127,7 @@
     </div>
 </section>
 
+@include('layouts.partials.public-footer')
 @endsection
 
 @push('scripts')

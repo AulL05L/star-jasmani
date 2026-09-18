@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Login — Star Jasmani')
+@section('meta_robots', 'noindex, follow')
 
 @push('styles')
 <style>
