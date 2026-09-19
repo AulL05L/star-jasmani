@@ -18,3 +18,28 @@
 *::-webkit-scrollbar {
     display: none;               /* Chrome, Safari, Opera */
 }
+
+/*
+    Akordeon FAQ.
+
+    Ikonnya TIDAK boleh diatur dengan utilitas `hidden` atau varian
+    `group-open:` milik Tailwind. Tailwind v4 menaruh seluruh utilitasnya di
+    dalam @layer, sedangkan CSS Font Awesome dari CDN tidak berlapis — dan
+    dalam cascade layers, aturan tanpa lapisan selalu menang atas aturan
+    berlapis, berapa pun urutan pemuatannya. Akibatnya `hidden` tidak pernah
+    berhasil menyembunyikan ikon Font Awesome, dan tanda plus serta minus
+    tampil berbarengan.
+
+    Aturan di bawah ditulis di luar lapisan mana pun, jadi ia menang.
+*/
+/* Diberi konteks `details > summary` supaya spesifisitasnya (0,1,2) mengalahkan
+   `.fa-solid` (0,1,0) milik Font Awesome, yang dimuat belakangan di <head>. */
+details > summary .faq-ico-tutup {
+    display: none;
+}
+details[open] > summary .faq-ico-buka {
+    display: none;
+}
+details[open] > summary .faq-ico-tutup {
+    display: inline-block;
+}

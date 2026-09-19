@@ -186,11 +186,11 @@
                 ['Apakah saya bisa mengukur nilai samapta saya sendiri?', 'Bisa. Gunakan kalkulator nilai Samapta POLRI kami secara gratis untuk menghitung nilai Jasmani A, Jasmani B, dan nilai akhir dari hasil tes mandiri Anda.'],
                 ['Siapa yang melatih?', 'Fariz Fahrun, S.Or., lulusan Ilmu Keolahragaan Universitas Negeri Jakarta dengan lisensi Pelatih Fisik Level 2 Nasional dari ICCA.'],
             ] as $faq)
-                <details class="group bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden">
+                <details class="bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden">
                     <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
-                        <h3 class="text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
-                        <i class="fa-solid fa-plus text-red-700 text-sm shrink-0 group-open:hidden"></i>
-                        <i class="fa-solid fa-minus text-red-500 text-sm shrink-0 hidden group-open:block"></i>
+                        <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
+                        <i class="fa-solid fa-plus faq-ico-buka text-red-700 text-sm shrink-0"></i>
+                        <i class="fa-solid fa-minus faq-ico-tutup text-red-500 text-sm shrink-0"></i>
                     </summary>
                     <p class="px-6 pb-6 text-gray-500 text-sm leading-relaxed">{{ $faq[1] }}</p>
                 </details>

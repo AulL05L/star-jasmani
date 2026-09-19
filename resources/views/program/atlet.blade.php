@@ -499,11 +499,11 @@
                 ['Apakah akunnya sama dengan akun Star Jasmani?', 'Tidak. Akun Star Performance terpisah dari akun member Star Jasmani, termasuk datanya.'],
                 ['Bagaimana cara mulai memakainya?', 'Mulai dari sesi konsultasi dan demo. Ceritakan cabang olahraga dan jumlah atlet binaan Anda, lalu kami tunjukkan bagaimana benchmark serta peringkatnya akan terbentuk untuk kasus Anda.'],
             ] as $faq)
-                <details class="group bg-black border border-zinc-900 rounded-2xl overflow-hidden">
+                <details class="bg-black border border-zinc-900 rounded-2xl overflow-hidden">
                     <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
-                        <h3 class="text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
-                        <i class="fa-solid fa-plus text-red-700 text-sm shrink-0 group-open:hidden"></i>
-                        <i class="fa-solid fa-minus text-red-500 text-sm shrink-0 hidden group-open:block"></i>
+                        <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
+                        <i class="fa-solid fa-plus faq-ico-buka text-red-700 text-sm shrink-0"></i>
+                        <i class="fa-solid fa-minus faq-ico-tutup text-red-500 text-sm shrink-0"></i>
                     </summary>
                     <p class="px-6 pb-6 text-gray-500 text-sm leading-relaxed">{{ $faq[1] }}</p>
                 </details>
