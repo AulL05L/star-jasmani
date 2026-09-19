@@ -107,7 +107,7 @@
             <span class="block mt-3 text-base md:text-lg text-gray-300 font-light">
                 Pelatihan fisik persiapan kedinasan <strong class="font-semibold text-white">TNI &amp; POLRI</strong>,
                 kebugaran umum &amp; <strong class="font-semibold text-white">strength conditioning</strong>,
-                serta pendampingan performa atlet PPLM dan cabang olahraga prestasi.
+                serta pendampingan performa atlet untuk instansi olahraga dan cabang olahraga prestasi.
             </span>
         </p>
         <div class="flex flex-col sm:flex-row gap-4 items-center justify-center pb-6">

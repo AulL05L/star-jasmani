@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Star Performance — Sistem Monitoring Performa Atlet untuk Pelatih, Klub & PPLM')
-@section('meta_description', 'Star Performance: sistem monitoring dan evaluasi kondisi fisik atlet lintas cabang olahraga. Tes biomotor dan antropometri, Bleep Test, RAST, 1RM, readiness harian, Performance % terhadap benchmark, peringkat atlet, dan laporan sesi — untuk pelatih fisik, klub, PPLM, dan PPLP.')
+@section('title', 'Star Performance — Sistem Monitoring Performa Atlet untuk Pelatih, Klub & Instansi Olahraga')
+@section('meta_description', 'Star Performance: sistem monitoring dan evaluasi kondisi fisik atlet lintas cabang olahraga. Tes biomotor dan antropometri, Bleep Test, RAST, 1RM, readiness harian, Performance % terhadap benchmark, peringkat atlet, dan laporan sesi — untuk pelatih fisik, klub, dan instansi olahraga.')
 
 @push('schema')
 <script type="application/ld+json">
@@ -24,7 +24,7 @@
                 'Peringkat atlet dan laporan sesi',
                 'Benchmark dan parameter per angkatan',
             ],
-            'audience'  => ['@type' => 'Audience', 'audienceType' => 'Pelatih fisik, pelatih cabang olahraga, klub, PPLM dan PPLP'],
+            'audience'  => ['@type' => 'Audience', 'audienceType' => 'Pelatih fisik, pelatih cabang olahraga, klub, dan instansi olahraga'],
             'publisher' => ['@type' => 'Organization', 'name' => 'Star Jasmani', 'url' => url('/')],
         ],
         [
@@ -37,7 +37,7 @@
         [
             '@type'      => 'FAQPage',
             'mainEntity' => collect([
-                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola PPLM dan PPLP, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
+                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola instansi olahraga, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
                 ['Tes apa saja yang bisa dicatat?', 'Tes biomotor dan antropometri, Bleep Test untuk kapasitas aerobik, RAST untuk tenaga anaerobik, serta 1RM untuk kekuatan maksimal. Readiness harian atlet juga dapat dicatat.'],
                 ['Apa maksud Performance % terhadap benchmark?', 'Hasil tes tiap atlet dibandingkan dengan nilai benchmark yang ditetapkan, lalu dinyatakan sebagai persentase. Persentase tiap parameter kemudian diringkas menjadi satu skor berbobot sehingga atlet dapat diperingkat secara adil meski satuan tiap tesnya berbeda.'],
                 ['Apakah bisa dipakai untuk lebih dari satu cabang olahraga?', 'Bisa. Benchmark dan parameter tes dapat diatur per angkatan, sehingga cabang olahraga dengan tuntutan fisik berbeda tetap dinilai memakai standarnya masing-masing.'],
@@ -285,121 +285,6 @@
     </div>
 </section>
 
-{{-- ══════════ CONTOH PERHITUNGAN ══════════ --}}
-{{--
-    Bagian paling abstrak dari penawaran ini adalah "Performance % terhadap
-    benchmark". Diagram ini menelusurkannya dengan satu contoh utuh.
-
-    Angkanya sengaja fiktif dan diberi label demikian — ini ilustrasi konsep,
-    BUKAN tangkapan layar produk. Gambar yang dibuat-buat tapi dipajang seolah
-    tampilan asli akan menyesatkan calon pembeli.
---}}
-<section class="bg-zinc-950 border-b border-zinc-900 py-16 lg:py-20">
-    <div class="container mx-auto px-6 max-w-4xl">
-        <h2 class="text-2xl md:text-4xl font-extrabold text-white tracking-tighter mb-3">Contoh Perhitungan</h2>
-        <div class="w-16 h-1 bg-red-800 mb-4"></div>
-        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 max-w-3xl">
-            Satu atlet, empat parameter dengan satuan yang sama sekali berbeda — level, watt, kilogram,
-            sentimeter. Beginilah keempatnya disetarakan sampai jadi satu angka dan satu peringkat.
-        </p>
-        <span class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-amber-500/80 border border-amber-900/50 bg-amber-950/20 rounded-full px-3 py-1.5 mb-8">
-            <i class="fa-solid fa-circle-info"></i> Ilustrasi — angka contoh, bukan data atlet sungguhan
-        </span>
-
-        {{-- LANGKAH 1 --}}
-        <div class="bg-black border border-zinc-900 rounded-2xl p-6 md:p-7">
-            <div class="flex items-center gap-3 mb-5">
-                <span class="text-red-800 font-black text-lg leading-none">01</span>
-                <h3 class="text-white font-bold text-base">Hasil tes dibandingkan dengan benchmark</h3>
-            </div>
-
-            @foreach([
-                ['Bleep Test', '11,5', '13,0', 'level', 88, 30],
-                ['RAST — Peak Power', '620', '700', 'watt', 89, 25],
-                ['1RM Back Squat', '95', '120', 'kg', 79, 25],
-                ['Biomotor — Vertical Jump', '52', '60', 'cm', 87, 20],
-            ] as $r)
-                <div class="py-3.5 border-b border-zinc-900 last:border-b-0">
-                    <div class="flex items-baseline justify-between gap-3 mb-2.5">
-                        <span class="text-white font-bold text-sm">{{ $r[0] }}</span>
-                        <span class="text-gray-500 text-xs shrink-0">
-                            <span class="text-gray-300 font-semibold">{{ $r[1] }}</span> dari {{ $r[2] }} {{ $r[3] }}
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-800 rounded-full" style="width: {{ $r[4] }}%"></div>
-                        </div>
-                        <span class="text-white font-bold text-sm w-11 text-right shrink-0">{{ $r[4] }}%</span>
-                        <span class="hidden sm:block text-gray-600 text-[10px] uppercase tracking-widest w-20 text-right shrink-0">bobot {{ $r[5] }}%</span>
-                    </div>
-                    <div class="sm:hidden text-gray-600 text-[10px] uppercase tracking-widest mt-1.5">bobot {{ $r[5] }}%</div>
-                </div>
-            @endforeach
-        </div>
-
-        <div class="flex justify-center py-3">
-            <i class="fa-solid fa-arrow-down text-zinc-700"></i>
-        </div>
-
-        {{-- LANGKAH 2 --}}
-        <div class="bg-black border border-zinc-900 rounded-2xl p-6 md:p-7">
-            <div class="flex items-center gap-3 mb-5">
-                <span class="text-red-800 font-black text-lg leading-none">02</span>
-                <h3 class="text-white font-bold text-base">Persentase diringkas jadi satu skor berbobot</h3>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6 items-center">
-                <div class="md:col-span-2">
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed font-mono">
-                        (88 &times; 30%) + (89 &times; 25%) + (79 &times; 25%) + (87 &times; 20%)
-                    </p>
-                    <p class="text-gray-600 text-xs mt-2 leading-relaxed">
-                        Bobot ditentukan oleh Anda sesuai tuntutan cabang olahraga — daya tahan bisa lebih
-                        berat daripada kekuatan, atau sebaliknya.
-                    </p>
-                </div>
-                <div class="md:text-right">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-1">Skor Akhir</p>
-                    <p class="text-4xl md:text-5xl font-extrabold text-red-700 tracking-tighter leading-none">85,8</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-center py-3">
-            <i class="fa-solid fa-arrow-down text-zinc-700"></i>
-        </div>
-
-        {{-- LANGKAH 3 --}}
-        <div class="bg-black border border-zinc-900 rounded-2xl p-6 md:p-7">
-            <div class="flex items-center gap-3 mb-5">
-                <span class="text-red-800 font-black text-lg leading-none">03</span>
-                <h3 class="text-white font-bold text-base">Atlet diperingkat berdasarkan skor itu</h3>
-            </div>
-
-            @foreach([
-                [1, 'Atlet B', '89,2', false],
-                [2, 'Atlet A', '85,8', true],
-                [3, 'Atlet C', '84,1', false],
-                [4, 'Atlet D', '78,5', false],
-            ] as $a)
-                <div class="flex items-center gap-4 py-3 border-b border-zinc-900 last:border-b-0 {{ $a[3] ? '-mx-3 px-3 bg-red-950/20 rounded-lg border-b-0' : '' }}">
-                    <span class="w-6 text-center text-xs font-bold {{ $a[3] ? 'text-red-400' : 'text-gray-600' }}">{{ $a[0] }}</span>
-                    <span class="flex-1 text-sm {{ $a[3] ? 'text-white font-bold' : 'text-gray-400' }}">
-                        {{ $a[1] }}
-                        @if($a[3])<span class="text-red-500/80 text-[10px] uppercase tracking-widest ml-2">atlet di contoh ini</span>@endif
-                    </span>
-                    <span class="text-sm font-bold {{ $a[3] ? 'text-red-400' : 'text-gray-500' }}">{{ $a[2] }}</span>
-                </div>
-            @endforeach
-
-            <p class="text-gray-600 text-xs leading-relaxed mt-5 pt-5 border-t border-zinc-900">
-                Inilah gunanya penyetaraan tadi. Tanpa itu, Atlet B yang unggul di Bleep Test dan Atlet C yang
-                unggul di 1RM tidak bisa dibandingkan — karena level dan kilogram bukan satuan yang sama.
-            </p>
-        </div>
-    </div>
-</section>
-
 {{-- ══════════ FITUR ══════════ --}}
 <section class="bg-black border-b border-zinc-900 py-16 lg:py-20">
     <div class="container mx-auto px-6 max-w-5xl">
@@ -504,7 +389,7 @@
 
         <div class="grid sm:grid-cols-2 gap-5">
             @foreach([
-                ['fa-medal', 'PPLM & PPLP', 'Program pembinaan yang harus melaporkan perkembangan atlet secara berkala dan terukur.'],
+                ['fa-medal', 'Instansi Olahraga', 'Program pembinaan yang harus melaporkan perkembangan atlet secara berkala dan terukur.'],
                 ['fa-shield-halved', 'Klub & Sekolah Olahraga', 'Pembinaan berjenjang dengan banyak atlet dan banyak angkatan sekaligus.'],
                 ['fa-user-tie', 'Pelatih Fisik Mandiri', 'Pelatih S&C yang menangani beberapa atlet atau tim dan butuh dasar angka untuk programnya.'],
                 ['fa-people-group', 'Pengurus Cabang Olahraga', 'Pihak yang perlu membandingkan kesiapan atlet lintas klub memakai standar yang sama.'],
@@ -606,7 +491,7 @@
 
         <div class="space-y-4">
             @foreach([
-                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola PPLM dan PPLP, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
+                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola instansi olahraga, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
                 ['Tes apa saja yang bisa dicatat?', 'Tes biomotor dan antropometri, Bleep Test untuk kapasitas aerobik, RAST untuk tenaga anaerobik, serta 1RM untuk kekuatan maksimal. Readiness harian atlet juga dapat dicatat.'],
                 ['Apa maksud Performance % terhadap benchmark?', 'Hasil tes tiap atlet dibandingkan dengan nilai benchmark yang ditetapkan, lalu dinyatakan sebagai persentase. Persentase tiap parameter kemudian diringkas menjadi satu skor berbobot sehingga atlet dapat diperingkat secara adil meski satuan tiap tesnya berbeda.'],
                 ['Apakah bisa dipakai untuk lebih dari satu cabang olahraga?', 'Bisa. Benchmark dan parameter tes dapat diatur per angkatan, sehingga cabang olahraga dengan tuntutan fisik berbeda tetap dinilai memakai standarnya masing-masing.'],
