@@ -21,7 +21,7 @@
                     <li><a href="{{ route('program.kedinasan') }}" class="text-gray-500 hover:text-red-500 transition-colors">Persiapan Kedinasan TNI &amp; POLRI</a></li>
                     <li><a href="{{ route('program.kebugaran') }}" class="text-gray-500 hover:text-red-500 transition-colors">Kebugaran &amp; Strength Conditioning</a></li>
                     <li><a href="{{ route('program.atlet') }}" class="text-gray-500 hover:text-red-500 transition-colors">Monitoring Performa Atlet</a></li>
-                    <li><a href="{{ route('kalkulator.polri') }}" class="text-gray-500 hover:text-red-500 transition-colors">Kalkulator Nilai Samapta POLRI</a></li>
+                    <li><a href="{{ route('kalkulator.polri') }}" class="text-gray-500 hover:text-red-500 transition-colors">Kalkulator Tes Fisik Polisi</a></li>
                     <li><a href="{{ route('daftar') }}" class="text-gray-500 hover:text-red-500 transition-colors">Pendaftaran</a></li>
                 </ul>
             </div>

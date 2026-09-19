@@ -1,6 +1,35 @@
 @extends('layouts.app')
-@section('title', 'Kalkulator Nilai Samapta POLRI — Hitung Nilai Tes Jasmani Online Gratis')
-@section('meta_description', 'Kalkulator nilai Samapta POLRI gratis. Masukkan hasil lari 12 menit, pull up, sit up, push up, shuttle run, dan renang 50m — nilai Jasmani A, B, dan nilai akhir UKG dihitung otomatis dengan tabel konversi resmi POLRI untuk pria dan wanita.')
+@section('title', 'Kalkulator Nilai Tes Fisik Polisi (Samapta POLRI) — Gratis & Instan')
+@section('meta_description', 'Hitung nilai tes fisik polisi secara online dan gratis. Masukkan hasil lari 12 menit, pull up, sit up, push up, shuttle run, dan renang 50 meter, lalu nilai Samapta A, Samapta B, dan nilai akhir keluar seketika memakai tabel konversi POLRI untuk pria dan wanita.')
+
+{{--
+    Satu sumber untuk FAQ: dipakai sekaligus oleh JSON-LD di bawah dan oleh
+    bagian FAQ yang tampil di halaman. Keduanya WAJIB sama — Google meminta
+    konten yang di-markup benar-benar terlihat pengguna, dan markup yang tidak
+    punya padanan di halaman bisa diabaikan atau kena tindakan manual.
+
+    Pertanyaannya sengaja memakai "tes fisik polisi", bukan hanya "Samapta".
+    Keduanya merujuk hal yang persis sama, tapi yang pertama itu yang diketik
+    orang di kolom pencarian.
+--}}
+@php
+$faqs = [
+    ['Tes fisik polisi itu sama dengan Samapta?',
+     'Sama. Samapta, atau lengkapnya kesamaptaan jasmani, adalah nama resmi rangkaian tes fisik dalam seleksi POLRI. Sebutan tes fisik polisi dipakai sehari-hari untuk hal yang sama.'],
+    ['Apa saja komponen tes fisik polisi?',
+     'Ada enam komponen: lari 12 menit atau Cooper Test, pull up untuk pria dan chin up untuk wanita, sit up 60 detik, push up 60 detik, shuttle run 6 kali 10 meter, dan renang 50 meter.'],
+    ['Bagaimana cara menghitung nilai tes fisik polisi?',
+     'Nilai Jasmani A diambil dari nilai lari 12 menit. Nilai Jasmani B adalah rata-rata empat komponen Samapta B. Nilai UKG adalah rata-rata nilai A dan B. Nilai akhir dihitung dari nilai UKG dikali 80 persen ditambah nilai renang dikali 20 persen.'],
+    ['Berapa nilai minimal untuk lulus tes fisik polisi?',
+     'Pada kalkulator ini batas kelulusan yang dipakai adalah nilai akhir minimal 70. Ambang resmi dapat berbeda mengikuti ketentuan tiap gelombang seleksi.'],
+    ['Bagaimana cara tahu hasil tes fisik saya sebelum seleksi?',
+     'Lakukan keenam tes itu secara mandiri, catat hasilnya, lalu masukkan ke kalkulator di halaman ini. Nilainya keluar seketika, sehingga Anda tahu komponen mana yang masih perlu dikejar sebelum hari seleksi.'],
+    ['Apakah tabel nilai pria dan wanita berbeda?',
+     'Ya. Kalkulator memakai tabel konversi skor yang terpisah untuk peserta pria dan wanita.'],
+    ['Apakah kalkulator tes fisik polisi ini gratis?',
+     'Ya, perhitungan nilai dapat digunakan gratis tanpa perlu membuat akun, dan hasilnya keluar seketika.'],
+];
+@endphp
 
 @push('schema')
 <script type="application/ld+json">
@@ -9,7 +38,7 @@
     '@graph'   => [
         [
             '@type'               => 'WebApplication',
-            'name'                => 'Kalkulator Nilai Samapta POLRI',
+            'name'                => 'Kalkulator Nilai Tes Fisik Polisi (Samapta POLRI)',
             'url'                 => route('kalkulator.polri'),
             'applicationCategory' => 'HealthApplication',
             'operatingSystem'     => 'Web',
@@ -30,13 +59,7 @@
         ],
         [
             '@type'      => 'FAQPage',
-            'mainEntity' => collect([
-                ['Apa saja komponen tes Samapta POLRI?', 'Terdapat enam komponen: lari 12 menit (Cooper Test), pull up atau chin up, sit up 60 detik, push up 60 detik, shuttle run 6x10 meter, dan renang 50 meter.'],
-                ['Bagaimana cara menghitung nilai Samapta POLRI?', 'Nilai Jasmani A diambil dari nilai lari 12 menit. Nilai Jasmani B adalah rata-rata empat komponen Samapta B. Nilai UKG adalah rata-rata nilai A dan B. Nilai akhir dihitung dari nilai UKG dikali 80 persen ditambah nilai renang dikali 20 persen.'],
-                ['Berapa nilai minimal untuk lulus tes jasmani POLRI?', 'Pada kalkulator ini batas kelulusan yang dipakai adalah nilai akhir minimal 70. Ambang resmi dapat berbeda mengikuti ketentuan tiap gelombang seleksi.'],
-                ['Apakah tabel nilai pria dan wanita berbeda?', 'Ya. Kalkulator memakai tabel konversi skor yang terpisah untuk peserta pria dan wanita.'],
-                ['Apakah kalkulator nilai Samapta POLRI ini gratis?', 'Ya, perhitungan nilai dapat digunakan gratis tanpa perlu membuat akun, dan hasilnya keluar seketika.'],
-            ])->map(fn ($qa) => [
+            'mainEntity' => collect($faqs)->map(fn ($qa) => [
                 '@type'          => 'Question',
                 'name'           => $qa[0],
                 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
@@ -81,10 +104,10 @@
             "SAMAPTA" selama ini terlihat hanya karena ia menyebut `text-red-800`.
         --}}
         <h1 class="text-white text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter mb-3 leading-none">
-            KALKULATOR NILAI <span class="text-red-800">SAMAPTA</span>
+            KALKULATOR NILAI TES FISIK <span class="text-red-800">POLISI</span>
         </h1>
         <p class="text-gray-500 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-            Masukkan hasil tes fisik untuk menghitung nilai Samapta POLRI secara otomatis — gratis dan instan.
+            Masukkan hasil tes fisik Anda untuk menghitung nilai kesamaptaan jasmani (Samapta) POLRI secara otomatis — gratis dan instan.
         </p>
     </div>
 </div>
@@ -414,6 +437,30 @@
                 class="inline-flex items-center justify-center gap-2 border-2 border-zinc-700 hover:border-red-800 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300">
                 <i class="fa-brands fa-whatsapp text-lg"></i> Konsultasi Gratis
             </a>
+        </div>
+    </div>
+</section>
+
+
+{{-- FAQ --}}
+{{-- Isinya diambil dari $faqs yang sama dengan JSON-LD di atas, jadi keduanya
+     mustahil berbeda. --}}
+<section class="bg-black border-t border-zinc-900 py-16">
+    <div class="container mx-auto px-6 max-w-3xl">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tighter mb-3">Pertanyaan Seputar Tes Fisik Polisi</h2>
+        <div class="w-16 h-1 bg-red-800 mb-8"></div>
+
+        <div class="space-y-4">
+            @foreach($faqs as $faq)
+                <details class="bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden">
+                    <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
+                        <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
+                        <i class="fa-solid fa-plus faq-ico-buka text-red-700 text-sm shrink-0"></i>
+                        <i class="fa-solid fa-minus faq-ico-tutup text-red-500 text-sm shrink-0"></i>
+                    </summary>
+                    <p class="px-6 pb-6 text-gray-500 text-sm leading-relaxed">{{ $faq[1] }}</p>
+                </details>
+            @endforeach
         </div>
     </div>
 </section>
