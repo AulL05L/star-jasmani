@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Pelatihan Fisik Persiapan Kedinasan TNI & POLRI di Jakarta | Star Jasmani')
-@section('meta_description', 'Program latihan fisik persiapan seleksi kedinasan TNI, POLRI, dan instansi kedinasan lainnya. Periodisasi individual menuju tes Samapta A & B, analisis postur APECS, dan simulasi penilaian bersama pelatih bersertifikasi ICCA di Jakarta.')
+@section('title', 'Latihan Fisik Masuk Polisi & TNI — Persiapan Tes Samapta di Jakarta')
+@section('meta_description', 'Latihan fisik persiapan masuk polisi dan TNI di Jakarta. Program disusun mundur dari tanggal seleksi untuk menaikkan nilai tes fisik Samapta A dan B, lengkap dengan asesmen awal dan analisis postur, bersama pelatih bersertifikasi ICCA.')
+
+@php
+$faqs = [
+    ['Apa saja tes fisik untuk masuk polisi dan TNI?',
+     'Rangkaian tes fisiknya disebut kesamaptaan jasmani atau Samapta: lari 12 menit, pull up untuk pria dan chin up untuk wanita, sit up, push up, shuttle run, serta renang. Keenamnya punya tabel nilainya masing-masing.'],
+    ['Berapa lama latihan fisik untuk persiapan masuk polisi?',
+     'Tergantung kondisi fisik awal dan jarak waktu menuju seleksi. Karena itu program disusun sebagai periodisasi individual: asesmen awal dilakukan lebih dulu, lalu beban latihan dirancang mundur dari tanggal seleksi peserta.'],
+    ['Apa saja yang diukur pada asesmen awal?',
+     'Pengukuran BMI dan komposisi tubuh, analisis postur serta keseimbangan otot menggunakan APECS, dan asesmen kemampuan fisik awal pada tiap komponen tes.'],
+    ['Komponen apa saja yang dilatih?',
+     'Strength and conditioning, endurance dan kapasitas aerobik untuk lari, speed and agility untuk shuttle run, serta teknik dan stamina renang sesuai standar tes kedinasan.'],
+    ['Apakah saya bisa mengukur nilai tes fisik saya sendiri?',
+     'Bisa. Star Jasmani menyediakan kalkulator nilai tes fisik polisi gratis yang menghitung nilai Jasmani A, Jasmani B, dan nilai akhir dari hasil tes mandiri Anda.'],
+    ['Siapa yang melatih?',
+     'Fariz Fahrun, S.Or., lulusan Ilmu Keolahragaan Universitas Negeri Jakarta dengan lisensi Pelatih Fisik Level 2 Nasional dari ICCA.'],
+];
+@endphp
 
 @push('schema')
 <script type="application/ld+json">
@@ -27,13 +44,7 @@
         ],
         [
             '@type'      => 'FAQPage',
-            'mainEntity' => collect([
-                ['Berapa lama waktu yang dibutuhkan untuk persiapan tes samapta?', 'Tergantung kondisi fisik awal dan jarak waktu menuju seleksi. Karena itu program disusun sebagai periodisasi individual: asesmen awal dilakukan lebih dulu, lalu beban latihan dirancang mundur dari tanggal seleksi peserta.'],
-                ['Apa saja yang diukur pada asesmen awal?', 'Pengukuran BMI dan komposisi tubuh, analisis postur serta keseimbangan otot menggunakan APECS, dan asesmen kemampuan fisik awal pada tiap komponen tes.'],
-                ['Komponen apa saja yang dilatih?', 'Strength and conditioning, endurance dan kapasitas aerobik untuk lari, speed and agility untuk shuttle run, serta teknik dan stamina renang sesuai standar tes kedinasan.'],
-                ['Apakah saya bisa mengukur nilai samapta saya sendiri?', 'Bisa. Star Jasmani menyediakan kalkulator nilai Samapta POLRI gratis yang menghitung nilai Jasmani A, Jasmani B, dan nilai akhir dari hasil tes mandiri Anda.'],
-                ['Siapa yang melatih?', 'Fariz Fahrun, S.Or., lulusan Ilmu Keolahragaan Universitas Negeri Jakarta dengan lisensi Pelatih Fisik Level 2 Nasional dari ICCA.'],
-            ])->map(fn ($qa) => [
+            'mainEntity' => collect($faqs)->map(fn ($qa) => [
                 '@type'          => 'Question',
                 'name'           => $qa[0],
                 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
@@ -64,8 +75,9 @@
         </h1>
         <p class="text-gray-400 text-base md:text-lg leading-relaxed mb-8 max-w-3xl">
             Seleksi kedinasan tidak dimenangkan oleh latihan yang paling berat, melainkan oleh latihan yang paling
-            terarah. Star Jasmani menyusun program fisik Anda mundur dari tanggal seleksi — berbasis data asesmen,
-            bukan asumsi — agar setiap komponen tes Samapta A dan B naik pada waktu yang tepat.
+            terarah. Untuk Anda yang sedang bersiap masuk polisi atau TNI, Star Jasmani menyusun program fisik
+            mundur dari tanggal seleksi — berbasis data asesmen, bukan asumsi — agar setiap komponen tes fisik
+            Samapta A dan B naik pada waktu yang tepat.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4">
@@ -105,7 +117,7 @@
 {{-- KOMPONEN TES --}}
 <section class="bg-zinc-950 border-y border-zinc-900 py-16 lg:py-20">
     <div class="container mx-auto px-6 max-w-4xl">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tighter mb-3">Komponen Tes yang Dilatih</h2>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tighter mb-3">Komponen Tes Fisik yang Dilatih</h2>
         <div class="w-16 h-1 bg-red-800 mb-6"></div>
         <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-8">
             Enam komponen berikut adalah isi tes kesamaptaan jasmani POLRI. Setiap komponen punya tabel konversi
@@ -179,13 +191,7 @@
         <div class="w-16 h-1 bg-red-800 mb-8"></div>
 
         <div class="space-y-4">
-            @foreach([
-                ['Berapa lama waktu yang dibutuhkan untuk persiapan tes samapta?', 'Tergantung kondisi fisik awal dan jarak waktu menuju seleksi. Karena itu program disusun sebagai periodisasi individual: asesmen awal dilakukan lebih dulu, lalu beban latihan dirancang mundur dari tanggal seleksi Anda.'],
-                ['Apa saja yang diukur pada asesmen awal?', 'Pengukuran BMI dan komposisi tubuh, analisis postur serta keseimbangan otot menggunakan APECS, dan asesmen kemampuan fisik awal pada tiap komponen tes.'],
-                ['Komponen apa saja yang dilatih?', 'Strength and conditioning, endurance dan kapasitas aerobik untuk lari, speed and agility untuk shuttle run, serta teknik dan stamina renang sesuai standar tes kedinasan.'],
-                ['Apakah saya bisa mengukur nilai samapta saya sendiri?', 'Bisa. Gunakan kalkulator nilai Samapta POLRI kami secara gratis untuk menghitung nilai Jasmani A, Jasmani B, dan nilai akhir dari hasil tes mandiri Anda.'],
-                ['Siapa yang melatih?', 'Fariz Fahrun, S.Or., lulusan Ilmu Keolahragaan Universitas Negeri Jakarta dengan lisensi Pelatih Fisik Level 2 Nasional dari ICCA.'],
-            ] as $faq)
+            @foreach($faqs as $faq)
                 <details class="bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden">
                     <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
                         <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>

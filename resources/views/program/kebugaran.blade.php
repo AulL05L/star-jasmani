@@ -1,7 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Pelatih Kebugaran & Strength Conditioning Jakarta | Star Jasmani')
-@section('meta_description', 'Program kebugaran dan strength conditioning di Jakarta bersama pelatih bersertifikasi ICCA. Weight management, body shaping, functional strength training, dan program pemulihan pasca cedera — dirancang dari hasil asesmen, bukan program generik.')
+@section('title', 'Personal Trainer Jakarta — Program Kebugaran & Strength Conditioning')
+@section('meta_description', 'Personal trainer di Jakarta bersama pelatih bersertifikasi ICCA. Program kebugaran, turun berat badan, body shaping, functional strength training, dan pemulihan pasca cedera — disusun dari hasil asesmen postur dan komposisi tubuh, bukan program generik.')
+
+@php
+$faqs = [
+    ['Apa bedanya pakai personal trainer dengan latihan sendiri di gym?',
+     'Latihan sendiri berjalan tanpa dasar ukur. Dengan pendampingan, postur, komposisi tubuh, dan kapasitas awal Anda diukur lebih dulu, lalu bebannya dinaikkan bertahap dan dievaluasi ulang secara berkala.'],
+    ['Apakah program ini cocok untuk pemula yang belum pernah latihan?',
+     'Cocok. Program selalu dimulai dari asesmen kondisi fisik awal, termasuk analisis postur, sehingga beban latihan pertama disesuaikan dengan kemampuan nyata peserta, bukan dengan standar orang lain.'],
+    ['Bisa membantu menurunkan berat badan?',
+     'Bisa. Weight management dan body shaping termasuk fokus program, dipantau lewat pencatatan BMI dan komposisi tubuh secara berkala, bukan hanya angka di timbangan.'],
+    ['Apa bedanya dengan program latihan yang saya unduh dari internet?',
+     'Program unduhan tidak mengetahui postur, komposisi tubuh, riwayat cedera, dan kapasitas awal Anda. Di sini ketiga hal itu diukur lebih dulu, lalu latihan disusun progresif dan dievaluasi ulang secara berkala.'],
+    ['Apakah ada program untuk pemulihan setelah cedera?',
+     'Ada. Program pemulihan mencakup latihan penguatan otot pendukung berupa stability dan mobility, serta protokol kembali ke olahraga atau return to sport.'],
+    ['Apa itu analisis postur APECS?',
+     'APECS dipakai untuk mengidentifikasi ketidakseimbangan otot dan potensi risiko cedera sebelum beban latihan diberikan, sehingga program tidak memperburuk masalah yang sudah ada.'],
+    ['Di mana lokasi latihannya?',
+     'Star Jasmani berbasis di Jakarta. Detail lokasi dan jadwal dapat ditanyakan langsung melalui WhatsApp.'],
+];
+@endphp
 
 @push('schema')
 <script type="application/ld+json">
@@ -27,13 +46,7 @@
         ],
         [
             '@type'      => 'FAQPage',
-            'mainEntity' => collect([
-                ['Apakah program ini cocok untuk pemula yang belum pernah latihan?', 'Cocok. Program selalu dimulai dari asesmen kondisi fisik awal, termasuk analisis postur, sehingga beban latihan pertama disesuaikan dengan kemampuan nyata peserta, bukan dengan standar orang lain.'],
-                ['Apa bedanya dengan program latihan yang saya unduh dari internet?', 'Program unduhan tidak mengetahui postur, komposisi tubuh, riwayat cedera, dan kapasitas awal Anda. Di sini ketiga hal itu diukur lebih dulu, lalu latihan disusun progresif dan dievaluasi ulang secara berkala.'],
-                ['Apakah ada program untuk pemulihan setelah cedera?', 'Ada. Program pemulihan mencakup latihan penguatan otot pendukung berupa stability dan mobility, serta protokol kembali ke olahraga atau return to sport.'],
-                ['Apa itu analisis postur APECS?', 'APECS dipakai untuk mengidentifikasi ketidakseimbangan otot dan potensi risiko cedera sebelum beban latihan diberikan, sehingga program tidak memperburuk masalah yang sudah ada.'],
-                ['Di mana lokasi latihannya?', 'Star Jasmani berbasis di Jakarta. Detail lokasi dan jadwal dapat ditanyakan langsung melalui WhatsApp.'],
-            ])->map(fn ($qa) => [
+            'mainEntity' => collect($faqs)->map(fn ($qa) => [
                 '@type'          => 'Question',
                 'name'           => $qa[0],
                 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
@@ -60,12 +73,13 @@
 
         <span class="inline-block text-red-500 text-[11px] font-bold uppercase tracking-[0.25em] mb-4">Modern Lifestyle</span>
         <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tighter leading-tight mb-6">
-            Pelatih Kebugaran &amp; <span class="text-red-800">Strength Conditioning</span> di Jakarta
+            Personal Trainer &amp; <span class="text-red-800">Pelatih Kebugaran</span> di Jakarta
         </h1>
         <p class="text-gray-400 text-base md:text-lg leading-relaxed mb-8 max-w-3xl">
             Transformasi fisik yang bertahan lama tidak lahir dari program yang diunduh, melainkan dari program
-            yang dibuat untuk tubuh Anda sendiri. Kami mengukur dulu postur, komposisi tubuh, dan kapasitas awal
-            Anda — baru menyusun latihannya.
+            yang dibuat untuk tubuh Anda sendiri. Pendampingan satu lawan satu untuk kebugaran umum, penurunan
+            berat badan, dan strength conditioning — postur, komposisi tubuh, dan kapasitas awal Anda diukur
+            dulu, baru latihannya disusun.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4">
@@ -162,13 +176,7 @@
         <div class="w-16 h-1 bg-red-800 mb-8"></div>
 
         <div class="space-y-4">
-            @foreach([
-                ['Apakah program ini cocok untuk pemula yang belum pernah latihan?', 'Cocok. Program selalu dimulai dari asesmen kondisi fisik awal, termasuk analisis postur, sehingga beban latihan pertama disesuaikan dengan kemampuan nyata Anda, bukan dengan standar orang lain.'],
-                ['Apa bedanya dengan program latihan yang saya unduh dari internet?', 'Program unduhan tidak mengetahui postur, komposisi tubuh, riwayat cedera, dan kapasitas awal Anda. Di sini ketiga hal itu diukur lebih dulu, lalu latihan disusun progresif dan dievaluasi ulang secara berkala.'],
-                ['Apakah ada program untuk pemulihan setelah cedera?', 'Ada. Program pemulihan mencakup latihan penguatan otot pendukung berupa stability dan mobility, serta protokol kembali ke olahraga atau return to sport.'],
-                ['Apa itu analisis postur APECS?', 'APECS dipakai untuk mengidentifikasi ketidakseimbangan otot dan potensi risiko cedera sebelum beban latihan diberikan, sehingga program tidak memperburuk masalah yang sudah ada.'],
-                ['Di mana lokasi latihannya?', 'Star Jasmani berbasis di Jakarta. Detail lokasi dan jadwal dapat ditanyakan langsung melalui WhatsApp.'],
-            ] as $faq)
+            @foreach($faqs as $faq)
                 <details class="bg-zinc-950 border border-zinc-900 rounded-2xl overflow-hidden">
                     <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
                         <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>

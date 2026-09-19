@@ -1,7 +1,30 @@
 @extends('layouts.app')
 
-@section('title', 'Star Performance — Sistem Monitoring Performa Atlet untuk Pelatih, Klub & Instansi Olahraga')
-@section('meta_description', 'Star Performance: sistem monitoring dan evaluasi kondisi fisik atlet lintas cabang olahraga. Tes biomotor dan antropometri, Bleep Test, RAST, 1RM, readiness harian, Performance % terhadap benchmark, peringkat atlet, dan laporan sesi — untuk pelatih fisik, klub, dan instansi olahraga.')
+@section('title', 'Aplikasi Monitoring Performa Atlet untuk Pelatih & Klub | Star Performance')
+@section('meta_description', 'Star Performance: aplikasi web monitoring dan evaluasi kondisi fisik atlet lintas cabang olahraga. Tes biomotor dan antropometri, Bleep Test, RAST, 1RM, readiness harian, Performance % terhadap benchmark, peringkat atlet, dan laporan sesi — untuk pelatih fisik, klub, dan instansi olahraga.')
+
+@php
+$faqs = [
+    ['Star Performance itu aplikasi apa?',
+     'Aplikasi berbasis web untuk mencatat dan mengevaluasi kondisi fisik atlet lintas cabang olahraga: hasil tes disimpan per angkatan dan per periode, dibandingkan dengan benchmark, lalu diringkas jadi skor dan peringkat.'],
+    ['Star Performance itu untuk siapa?',
+     'Untuk pelatih fisik, pelatih cabang olahraga, pengelola instansi olahraga, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
+    ['Tes apa saja yang bisa dicatat?',
+     'Tes biomotor dan antropometri, Bleep Test untuk kapasitas aerobik, RAST untuk tenaga anaerobik, serta 1RM untuk kekuatan maksimal. Readiness harian atlet juga dapat dicatat.'],
+    ['Apa maksud Performance % terhadap benchmark?',
+     'Hasil tes tiap atlet dibandingkan dengan nilai benchmark yang ditetapkan, lalu dinyatakan sebagai persentase. Persentase tiap parameter kemudian diringkas menjadi satu skor berbobot sehingga atlet dapat diperingkat secara adil meski satuan tiap tesnya berbeda.'],
+    ['Apakah bisa dipakai untuk lebih dari satu cabang olahraga?',
+     'Bisa. Benchmark dan parameter tes dapat diatur per angkatan, sehingga cabang olahraga dengan tuntutan fisik berbeda tetap dinilai memakai standarnya masing-masing.'],
+    ['Apakah perlu memasang aplikasi di ponsel?',
+     'Tidak. Star Performance dibuka lewat peramban, jadi bisa dipakai dari ponsel maupun komputer tanpa memasang apa pun.'],
+    ['Bagaimana atlet mendapat akun?',
+     'Akun dibuat oleh admin, tidak ada pendaftaran mandiri. Ini menjaga agar hanya atlet binaan Anda yang ada di dalam sistem.'],
+    ['Apakah akunnya sama dengan akun Star Jasmani?',
+     'Tidak. Akun Star Performance terpisah dari akun member Star Jasmani, termasuk datanya.'],
+    ['Bagaimana cara mulai memakainya?',
+     'Mulai dari sesi konsultasi dan demo. Ceritakan cabang olahraga dan jumlah atlet binaan Anda, lalu kami tunjukkan bagaimana benchmark serta peringkatnya akan terbentuk untuk kasus Anda.'],
+];
+@endphp
 
 @push('schema')
 <script type="application/ld+json">
@@ -36,15 +59,7 @@
         ],
         [
             '@type'      => 'FAQPage',
-            'mainEntity' => collect([
-                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola instansi olahraga, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
-                ['Tes apa saja yang bisa dicatat?', 'Tes biomotor dan antropometri, Bleep Test untuk kapasitas aerobik, RAST untuk tenaga anaerobik, serta 1RM untuk kekuatan maksimal. Readiness harian atlet juga dapat dicatat.'],
-                ['Apa maksud Performance % terhadap benchmark?', 'Hasil tes tiap atlet dibandingkan dengan nilai benchmark yang ditetapkan, lalu dinyatakan sebagai persentase. Persentase tiap parameter kemudian diringkas menjadi satu skor berbobot sehingga atlet dapat diperingkat secara adil meski satuan tiap tesnya berbeda.'],
-                ['Apakah bisa dipakai untuk lebih dari satu cabang olahraga?', 'Bisa. Benchmark dan parameter tes dapat diatur per angkatan, sehingga cabang olahraga dengan tuntutan fisik berbeda tetap dinilai memakai standarnya masing-masing.'],
-                ['Bagaimana atlet mendapat akun?', 'Akun dibuat oleh admin, tidak ada pendaftaran mandiri. Ini menjaga agar hanya atlet binaan Anda yang ada di dalam sistem.'],
-                ['Apakah akunnya sama dengan akun Star Jasmani?', 'Tidak. Akun Star Performance terpisah dari akun member Star Jasmani, termasuk datanya.'],
-                ['Bagaimana cara mulai memakainya?', 'Mulai dari sesi konsultasi dan demo. Ceritakan cabang olahraga dan jumlah atlet binaan Anda, lalu kami tunjukkan bagaimana benchmark serta peringkatnya akan terbentuk untuk kasus Anda.'],
-            ])->map(fn ($qa) => [
+            'mainEntity' => collect($faqs)->map(fn ($qa) => [
                 '@type'          => 'Question',
                 'name'           => $qa[0],
                 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
@@ -490,15 +505,7 @@
         <div class="w-16 h-1 bg-red-800 mb-10"></div>
 
         <div class="space-y-4">
-            @foreach([
-                ['Star Performance itu untuk siapa?', 'Untuk pelatih fisik, pelatih cabang olahraga, pengelola instansi olahraga, klub, serta sekolah olahraga yang perlu mencatat dan membandingkan kondisi fisik atletnya secara berkala.'],
-                ['Tes apa saja yang bisa dicatat?', 'Tes biomotor dan antropometri, Bleep Test untuk kapasitas aerobik, RAST untuk tenaga anaerobik, serta 1RM untuk kekuatan maksimal. Readiness harian atlet juga dapat dicatat.'],
-                ['Apa maksud Performance % terhadap benchmark?', 'Hasil tes tiap atlet dibandingkan dengan nilai benchmark yang ditetapkan, lalu dinyatakan sebagai persentase. Persentase tiap parameter kemudian diringkas menjadi satu skor berbobot sehingga atlet dapat diperingkat secara adil meski satuan tiap tesnya berbeda.'],
-                ['Apakah bisa dipakai untuk lebih dari satu cabang olahraga?', 'Bisa. Benchmark dan parameter tes dapat diatur per angkatan, sehingga cabang olahraga dengan tuntutan fisik berbeda tetap dinilai memakai standarnya masing-masing.'],
-                ['Bagaimana atlet mendapat akun?', 'Akun dibuat oleh admin, tidak ada pendaftaran mandiri. Ini menjaga agar hanya atlet binaan Anda yang ada di dalam sistem.'],
-                ['Apakah akunnya sama dengan akun Star Jasmani?', 'Tidak. Akun Star Performance terpisah dari akun member Star Jasmani, termasuk datanya.'],
-                ['Bagaimana cara mulai memakainya?', 'Mulai dari sesi konsultasi dan demo. Ceritakan cabang olahraga dan jumlah atlet binaan Anda, lalu kami tunjukkan bagaimana benchmark serta peringkatnya akan terbentuk untuk kasus Anda.'],
-            ] as $faq)
+            @foreach($faqs as $faq)
                 <details class="bg-black border border-zinc-900 rounded-2xl overflow-hidden">
                     <summary class="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4">
                         <h3 class="flex-1 text-white font-bold text-sm md:text-base">{{ $faq[0] }}</h3>
